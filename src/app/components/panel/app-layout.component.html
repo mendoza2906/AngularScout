@@ -1,0 +1,41 @@
+
+
+<div class="f-column">
+        <div class="main-header f-row">
+            <div class="f-row f-full">
+                <div class="main-title f-animate f-row" [style.width.px]="width">
+                    <img class="app-logo" src="https://www.jeasyui.com/favicon.ico">
+                    <span *ngIf="!collapsed">{{title}}</span>
+                </div>
+                <div class="main-bar f-full">
+                    <span class="main-toggle fa fa-bars" (click)="toggle()"></span>
+                </div>
+            </div>
+            <jqxMenu style='margin-left: 0px; margin-right: 2px; float: right; margin-top: 7px;' #jqxMenu
+            (onItemclick)="itemclick($event)"
+          
+            [theme]="'darkblue'"
+            [showTopLevelArrows]="true"
+            [width]="'100%'"
+            [height]="'62%'">
+           </jqxMenu>  
+        </div>
+        <div class="f-row f-full">
+            <div class="sidebar-body f-animate" [style.width.px]="width">
+                <div *ngIf="!collapsed" class="sidebar-user">
+                    User Panel
+                </div>
+                <eui-sidemenu [data]="menus" [border]="false" [collapsed]="collapsed" (itemClick)="onItemClick($event)"></eui-sidemenu>
+            </div>
+            <div class="main-body f-full">
+                <ng-content></ng-content>
+                <!--
+                    <app-tabs></app-tabs>
+                -->
+                    
+                    
+                
+            </div>
+        </div>
+    </div>
+    

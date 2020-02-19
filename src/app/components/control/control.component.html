@@ -1,0 +1,48 @@
+<div class="f-column">
+   <div class="main-header f-row">
+         <div class="f-row f-full">
+               <div class="main-title f-animate f-row" >
+                   <img class="app-logo" src="https://www.jeasyui.com/favicon.ico">
+                    <span >{{title}}</span>
+                 </div>
+                
+            </div>
+            <jqxMenu style='margin-left: 0px; margin-right: 3px; float: right; margin-top: 7px;' #jqxMenu
+            (onItemclick)="itemclick($event)"
+         
+            [theme]="'darkblue'"
+            [showTopLevelArrows]="true"
+            [width]="'100%'"
+            [height]="'62%'">
+           </jqxMenu>  
+   </div>
+   <div class="f-row f-full">
+     
+        <div style='margin-left: 0px; margin-top: 0px;' class="main-body f-full">
+          <div id="control">
+               
+            <!--  <mat-card class="control-card">
+                
+                   <div style="margin-left: 3px; margin-top: 10px; font-size: 13px; font-family: Verdana;" #eventLog></div>
+                <mat-card-content class="control-card-content"> 
+                    
+                   <eui-panel [title]="description" [bodyStyle]="{padding:'0% 10% 2%'}" style="height:auto">
+                      
+                          <p #content></p>
+                       
+                    </eui-panel> 
+                    
+                 </mat-card-content>            
+                    
+               
+                
+             </mat-card>  --> 
+         
+          </div>
+        </div>
+    </div>
+</div>
+<pre>
+    {{loadedCharacter | json}}
+  </pre> 
+ 

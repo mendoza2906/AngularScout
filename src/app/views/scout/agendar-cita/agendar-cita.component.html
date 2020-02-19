@@ -1,0 +1,183 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card" style="width: 100%">
+      <div class="card-header">
+        <h3> Reserva de Citas </h3>
+      </div>
+      <tbody>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <jqxCalendar #myCalendar style="float: left; margin-right: 20px" [height]="220" [width]="'100%'"
+                [enableTooltips]="false" (onChange)="myCalendarEvent($event)">
+              </jqxCalendar>
+            </div>
+            <div class="col-md-8">
+              <!-- Nested grid -->
+              <div class="row">
+                <div class="col-md-4">Especialidad:</div>
+                <div class="col-md-4">
+                  <jqxComboBox #comboEspecialidad [theme]="'material'" [placeHolder]="'Elija una especialidad...'"
+                    [displayMember]="'descripcion'" [selectedIndex]="-1" [valueMember]="'id'"
+                    [source]="dataAdapterEspecialidad" [height]='25' [width]="'100%'" (onSelect)="listarMedicos()"
+                    name="especialidades" [dropDownHorizontalAlignment]="'left'" [autoDropDownHeight]="true">
+                  </jqxComboBox>
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-md-4">Médico:</div>
+                <div class="col-md-4">
+                  <jqxComboBox #comboMedico [theme]="'material'" [placeHolder]="'Elija un médico...'"
+                    [displayMember]="'nombres'" [valueMember]="'idMedico'" [selectedIndex]="0"
+                    [source]="dataAdapterMedicos" [width]="'100%'" [height]='25' name="medicos" [dropDownWidth]="425"
+                    [autoDropDownHeight]="true" (onChange)="obtenerLabel($event)" [(ngModel)]="citaAng.idMedico">
+                  </jqxComboBox>
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-md-4">Total Disponibles:</div>
+                <div class="col-md-4">{{labelDisponibles}}</div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-md-4">Total Ocupados:</div>
+                <div class="col-md-4">{{labelOcupados}}</div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-md-3">
+                  <jqxButton #botonListarCitas style="margin-right: 5px;" (onClick)="listarCitas()"
+                    [theme]="'material'">
+                    Buscar Horarios
+                  </jqxButton>
+                </div>
+                <div class="col-md-3">
+                  <jqxButton #botonRegresar style="margin-right: 5px;" (onClick)="gotoList()" [theme]="'material'">
+                    Regresar
+                  </jqxButton>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </tbody>
+
+      <div class="card-body" style="height: 100%">
+        <jqxGrid #gridListaCitas style='margin-left: 3px;' [theme]="'material'" [width]="'100%'"
+          [source]="dataAdapterListadoCitas" [columns]="columnsCitas" [filterable]="true"
+          [rendergridrows]="rendergridrows" [sortable]="false" [altrows]="true" [enabletooltips]="true"
+          [autoloadstate]="true" [autosavestate]="true" [localization]="localization" [autoheight]="true"
+          (onRowdoubleclick)="mostrarVentanaRegistroCita($event)">
+        </jqxGrid>
+        <!-- (onRowselect)="comprobarEstudianteHabilitado($event)"  -->
+      </div>
+    </div>
+  </div>
+</div>
+<app-modal-component (PassMethods)="getEvents($event)"></app-modal-component>
+
+
+
+<jqxWindow #myWindow [width]="'60%'" [height]="400" [resizable]="false" [isModal]="false" [autoOpen]="false"
+  [theme]="'material'" [modalOpacity]="'0.01'" [draggable]="false" (onClose)="salir()">
+  <div style="overflow: hidden;">
+    <jqxMenu style='margin-left: 3px; margin-top: 5px;' #jqxMenu (onItemclick)="itemclick($event)" [source]="menus"
+      [theme]="'material'" [width]="'auto'" [height]="30">
+    </jqxMenu>
+    <jqxValidator #myValidator [rules]="rules" [hintType]="'label'">
+      <form id='formCitas' action="./">
+        <div class="container">
+          <br />
+          <br />
+          <div class="row">
+            <div class="col-md-2">Cita Medica para: </div>
+            <div class="col-md-8 col-md-offset-2" [hidden]="ocultarLabels">{{labelMedico}}</div>
+            <div class="col-md-6 col-md-offset-4" [hidden]="ocultarComponente">
+              <jqxComboBox #comboMedico [theme]="'material'" [placeHolder]="'Elija un médico...'" [selectedIndex]="0"
+                [displayMember]="'nombres'" [valueMember]="'idMedico'" [source]="dataAdapterMedicos" [width]="'100%'"
+                [height]='25' name="medicos" [dropDownWidth]="425" [autoDropDownHeight]="true"
+                (onChange)="obtenerLabel($event)" [(ngModel)]="citaAng.idMedico">
+              </jqxComboBox>
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-2">Fecha Cita: </div>
+            <div class="col-md-4 " [hidden]="ocultarLabels">{{varFechaCalendario}}</div>
+            <div class="col-md-4 " [hidden]="ocultarComponente">
+              <jqxDateTimeInput #dateFechaCita class="fecha_citaInput" [width]="'100%'" [height]="22"
+                [(ngModel)]="varFechaCita" (onValueChanged)="valueChangedFechaCita()" [template]="'primary'"
+                name="fechaCita" [disabled]="false">
+              </jqxDateTimeInput>
+            </div>
+            <div class="col-md-2">Hora: </div>
+            <div class="col-md-2 col-md-offset-2" [hidden]="ocultarLabels">{{labelHora}}</div>
+            <div class="col-md-2 col-md-offset-2" [hidden]="ocultarComponente">
+              <jqxComboBox #comboHora [theme]="'material'" [selectedIndex]="-1" [placeHolder]="'Elija una hora...'"
+                [displayMember]="'hora'" [valueMember]="'idHora'" [source]="dataAdapterHoras" [width]="'100%'"
+                [height]='25' name="horas" [autoDropDownHeight]="true">
+                <!-- [(ngModel)]="citaAng.idHora" -->
+              </jqxComboBox>
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-2">Paciente: </div>
+            <div class="col-md-6 ">
+              <jqxComboBox #comboPaciente [theme]="'material'" [placeHolder]="'Elija un paciente...'"
+                [selectedIndex]="-1" [displayMember]="'nombres'" [valueMember]="'idPaciente'"
+                [source]="dataAdapterPacientes" [width]="'100%'" [height]='25' name="pacientes"
+                [autoDropDownHeight]="true" [(ngModel)]="citaAng.idPaciente">
+              </jqxComboBox>
+            </div>
+            <div class="col-md-4">
+              <jqxButton #botonAgregarNuevo style="margin-right: 5px;" (onClick)="crearNuevoPaciente()"
+                [theme]="'material'">
+                Paciente Nuevo
+              </jqxButton>
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-2">Motivo Consulta:</div>
+            <div class="col-md-4">
+              <jqxInput #txtMotivoConsulta class="motConsInput" [placeHolder]="'Ingrese un motivo de su consulta...'"
+                [height]="25" [width]="'100%'" name="motivo" [maxLength]="30" [minLength]="2"
+                [(ngModel)]="citaAng.motivoConsulta" [theme]="'material'"></jqxInput>
+            </div>
+            <div class="col-md-2">Estado Cita:</div>
+            <div class="col-md-4" [hidden]="ocultarLabels">{{labelEstado}}</div>
+            <div class="col-md-4" [hidden]="ocultarComponente">
+              <jqxComboBox #comboEstadoCita [theme]="'material'" [placeHolder]="'Elija un Estado...'"
+                [selectedIndex]="-1" [displayMember]="'estado'" [valueMember]="'codigo'" [source]="sourceEstadoCita"
+                [width]="'100%'" [height]='25' name="estados" [autoDropDownHeight]="true">
+                <!-- [(ngModel)]="citaAng.estadoCita" -->
+              </jqxComboBox>
+            </div>
+          </div>
+          <br />
+          <div class=" row">
+            <div class="col-md-2">Observación:</div>
+            <div class="col-md-4">
+              <jqxTextArea #txtObservacion class="observacionInput" [placeHolder]="'Ingrese una observación...'"
+                [width]="'100%'" [height]="60" [maxLength]="100" name="observacion" [theme]="'material'"
+                [(ngModel)]="citaAng.observacion">
+              </jqxTextArea>
+            </div>
+          </div>
+          <br />
+        </div>
+      </form>
+    </jqxValidator>
+  </div>
+</jqxWindow>
+<pre>
+  {{citaAng |json}}
+<!-- {{dataAdapterPacientes |json}} -->
+<!-- <app-modal-cita (PassMethods)="getEvents($event)"></app-modal-cita> -->
+
+  
+</pre>

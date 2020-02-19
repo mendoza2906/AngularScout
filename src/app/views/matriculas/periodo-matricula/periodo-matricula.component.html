@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card" style="width: 100%">
+      <div class="card-header">
+        <h3> Periodo Matrícula </h3>
+        <jqxMenu style='margin-left: 3px; margin-top: 5px;' (onItemclick)="itemclick($event)" [source]="menuMatricula"
+          [theme]="'darkblue'" [width]="'99%'" [height]="30">
+        </jqxMenu>
+      </div>
+      <div class="card-body">
+        <jqxGrid #myGridPeriodosMatricula style='margin-left: 3px;' [theme]="'darkblue'" [width]="'100%'"
+          [source]="dataAdapterListadoPeriodoMatricula" [columns]="columnsPeriodoMatricula" [filterable]="true"
+          [pageable]="true" (onRowselect)="validarEdicion($event)" [showfilterrow]="true" [localization]="localization" [sortable]="false"
+          [rowdetails]="true"  [initrowdetails]="initRowDetails" [autoheight]="true" 
+          [rowdetailstemplate]="rowdetailstemplate" [ready]="ready"
+          >
+        </jqxGrid>
+      </div>
+    </div>
+  </div>
+</div>
+<app-modal-component (PassMethods)="getEvents($event)"></app-modal-component>
+
+<pre>
+<!-- {{sourceTipoMatricula |json}} -->
+</pre>

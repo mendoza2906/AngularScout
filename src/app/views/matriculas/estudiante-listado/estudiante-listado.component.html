@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card" style="width: 100%">
+      <div class="card-header">
+        <jqxMenu style='margin-left: 3px; margin-top: 5px;' (onItemclick)="itemclick($event)" [source]="menuMatricula"
+          [theme]="'darkblue'" [width]="'99%'" [height]="30">
+        </jqxMenu>
+      </div>
+
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-2">
+            <div style="text-align:left">Facultad:</div>
+          </div>
+          <div class="col-md-4">
+            <jqxComboBox #comboDepartamento [theme]="'darkblue'" [displayMember]="'departamento'" [selectedIndex]="0"
+              [valueMember]="'idDepartamento'" [source]="dataAdapterDepartamento" [width]="'100%'" [height]='25' (onSelect)="ListarOferta()"
+              name="departamento" [dropDownHorizontalAlignment]="'left'" [dropDownWidth]="425" >
+            </jqxComboBox>
+          </div>
+          <div class="col-md-2">
+            <div style="text-align:left">Carrera:</div>
+          </div>
+          <div class="col-md-4">
+            <jqxComboBox #comboOferta [theme]="'darkblue'" [selectedIndex]="0" [displayMember]="'oferta'"
+              [valueMember]="'idDepartamentoOferta'" [source]="dataAdapterOferta" [width]="'100%'" [height]='25'
+              (onSelect)="listarEstudiantes()" name="oferta" [dropDownWidth]="425">
+            </jqxComboBox>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <jqxGrid #gridEstudiantesRegistrados style='margin-left: 3px;' [theme]="'darkblue'" [width]="'100%'"
+          [source]="dataAdapterEstudiantesRegistrados" [columns]="columnsEstudiante" [filterable]="true"
+          [pageable]="true" [showfilterrow]="true" [localization]="localization" [sortable]="false" [height]='600'>
+        </jqxGrid>
+      </div>
+    </div>
+  </div>
+</div>
+<app-modal-component (PassMethods)="getEvents($event)"></app-modal-component>
+
+<pre>
+  <!-- {{dataAdapterOferta |json}} -->
+</pre>

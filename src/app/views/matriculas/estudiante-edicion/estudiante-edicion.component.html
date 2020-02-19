@@ -1,0 +1,231 @@
+<jqxMenu style='margin-left: 3px; margin-top: 5px;' #jqxMenu (onItemclick)="itemclick($event)" [source]="menus"
+  [theme]="'darkblue'" [width]="'auto'" [height]="30">
+</jqxMenu>
+
+<jqxExpander style='margin-left: 3px; margin-top: 5px;' [theme]="'darkblue'" [width]="'auto'" [showArrow]="false"
+  [toggleMode]="'none'">
+  <div>
+    <h3 style="padding: 0; margin: 0;margin-top: 10px; font-family: Verdana">
+      {{labelOpcion}} de Estudiante</h3>
+  </div>
+  <jqxValidator #myValidator [rules]="rules" [hintType]="'label'">
+    <form id='formEstudiante' action="./">
+
+      <div class="card1">
+        <div class="card card-accent-info">
+          <div class="card-header">
+            <h4 style="padding: 0; margin: 0;"> Información Personal</h4>
+          </div>
+          <div class="card-body">
+            <table style="width:100%">
+              <tbody>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <jqxCheckBox #checkBoxValCedula style="margin: 0px;">No validar cédula/marque esta opción en el caso
+                      de extranjeros</jqxCheckBox>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Identificación:</div>
+                  <div class="col-sm-8">
+                    <jqxInput #txtIdenficacion class="identificacionInput" [width]="'100%'" [height]="22"
+                      name="identificacion" [(ngModel)]="personaAng.identificacion" [maxLength]="10"
+                      (onChange)="verificarCedulaExiste()" ></jqxInput>
+                      <!-- (onChange)="ChangeInputIdenficacion($event)" -->
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Apellidos:</div>
+                  <div class="col-sm-8">
+                    <jqxInput #txtApellidos class="apellidosInput" [width]="'100%'" [height]="22" name="apellidos"
+                      [(ngModel)]="personaAng.apellidos" [maxLength]="30">
+                    </jqxInput>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Nombres:</div>
+                  <div class="col-sm-8">
+                    <jqxInput #txtNombres class="nombresInput" [width]="'100%'" [height]="22" name="nombres"
+                      [(ngModel)]="personaAng.nombres" [maxLength]="30">
+                    </jqxInput>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Fecha nacimiento:</div>
+                  <div class="col-sm-8">
+                    <jqxDateTimeInput #dateFechaNace class="fecha_naceInput" [width]="'100%'" [height]="22"
+                      [(ngModel)]="varFechaNacimiento" (onValueChanged)="valueChangedFechaNacimiento()"
+                      [template]="'primary'" name="fechaNace" [disabled]="false">
+                    </jqxDateTimeInput>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Sexo:</div>
+                  <div class="col-sm-8">
+                    <jqxDropDownList #comboGenero class="generoInput" [width]="'100%'" [height]="22" name="genero"
+                      [source]="sourceGenero" [selectedIndex]="-1" [theme]="'darkblue'" [displayMember]="'genero'"
+                      [valueMember]="'codigo'" [(ngModel)]="personaAng.genero" [autoDropDownHeight]="true">
+                    </jqxDropDownList>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Teléfono:</div>
+                  <div class="col-sm-8">
+                    <jqxMaskedInput #masketTelefono class="telefonoInput" [width]="'100%'" [height]="22" name="telefono"
+                      [mask]="'#########'" [(ngModel)]="personaAng.telefono"></jqxMaskedInput>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Celular:</div>
+                  <div class="col-sm-8">
+                    <jqxMaskedInput #masketCelular class="celularInput" [width]="'100%'" [height]="22" name="celular"
+                      [mask]="'##########'" [(ngModel)]="personaAng.celular"></jqxMaskedInput>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">E-mail-personal:</div>
+                  <div class="col-sm-8">
+                    <jqxInput #txtEmailPersonal class="email_personalInput" [placeHolder]="'estudiante@mail.com'"
+                      name="email_personal" [width]="'100%'" [height]="22" [(ngModel)]="personaAng.email_personal">
+                    </jqxInput>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">E-mail-institucional:</div>
+                  <div class="col-sm-8">
+                    <jqxInput #txtEmailInstitucional class="email_institucionalInput"
+                      [placeHolder]="'estudiante@mail.com'" name="email_institucional" [width]="'100%'" [height]="22"
+                      [(ngModel)]="personaAng.email_institucional">
+                    </jqxInput>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Dirección:</div>
+                  <div class="col-sm-8">
+                    <jqxTextArea #txtAreaDireccion class="direccionInput" [width]="'100%'" [height]="50"
+                      [maxLength]="40" name="direccion" [placeHolder]="'Ingrese dirección'"
+                      [(ngModel)]="personaAng.direccion">
+                    </jqxTextArea>
+                  </div>
+                </div>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card1">
+        <div class="card card-accent-info">
+          <div class="card-header">
+            <h4 style="padding: 0; margin: 0;"> Información Académica</h4>
+          </div>
+          <div class="card-body">
+            <table style="width:100%">
+              <tbody>
+                <div class="row">
+                  <div class="col-sm-4">Número de Matrícula:</div>
+                  <div class="col-sm-8">
+                    <jqxInput #txtNumMatricula class="numMatriculaInput" [width]="'100%'" [height]="22" [maxLength]="15"
+                      name="numMatricula" [(ngModel)]="estudianteOfertas.numeroMatricula" [disabled]="true">
+                    </jqxInput>
+                  </div>
+                </div>
+                <br />
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Tipo Estudiante:</div>
+                  <div class="col-sm-8">
+                    <jqxDropDownList #comboTiposEstudiante [theme]="'darkblue'" [selectedIndex]="-1" [autoDropDownHeight]="true"
+                      [displayMember]="'tipoEstudiante'" [valueMember]="'idTipoEstudiante'"
+                      [source]="dataAdapterTiposEstudiante" [width]="'100%'" [height]='25' name="cboTipoEstudiante"
+                      [dropDownWidth]="300" [(ngModel)]="estudiante.idTipoEstudiante">
+                    </jqxDropDownList>
+                  </div>
+                </div>
+                <br />
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Tipo Ingreso:</div>
+                  <div class="col-sm-8">
+                    <jqxDropDownList #comboTiposIngreso [theme]="'darkblue'" [selectedIndex]="-1" [autoDropDownHeight]="true"
+                      [displayMember]="'tipoIngreso'" [valueMember]="'idTipoIngresoEstudiante'"
+                      [source]="dataAdapterTiposIngresoEstudiante" [width]="'100%'" [height]='25' name="cboTipoIngreso"
+                      [dropDownWidth]="300" [(ngModel)]="estudianteOfertas.idTipoIngresoEstudiante"
+                      (onChange)="changeNumeroMatricula($event)"
+                      >
+                    </jqxDropDownList>
+                  </div>
+                </div>
+                <br />
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Facultad:</div>
+                  <div class="col-sm-8">{{labelFacultad}}</div>
+                </div>
+                <br />
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Carrera:</div>
+                  <div class="col-sm-8">{{labelCarrera}}</div>
+                </div>
+                <br />
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Estatus Estudiante:</div>
+                  <div class="col-sm-8">
+                    <jqxDropDownList #comboEstadoEstudiante [theme]="'darkblue'" [selectedIndex]="0" [autoDropDownHeight]="true"
+                      [displayMember]="'estado'" [valueMember]="'codigo'" [source]="sourceEstadoEstudiante"
+                      [width]="'100%'" [height]='25' name="cboEstadoEstudiante" [dropDownWidth]="300"
+                      [(ngModel)]="estudianteOfertas.estadoEstudianteOferta" (onSelect)="habilitarFechas()">
+                    </jqxDropDownList>
+                  </div>
+                </div>
+                <br />
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Desde:</div>
+                  <div class="col-sm-8">
+                    <jqxDateTimeInput #dateDesde class="fechaDesde" [width]="300" [height]="22" [(ngModel)]="varDesde"
+                      name="desde" (onValueChanged)="valueChangedFechaDesde()" [template]="'primary'"
+                      [disabled]="false">
+                    </jqxDateTimeInput>
+                  </div>
+                </div>
+                <br />
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Hasta:</div>
+                  <div class="col-sm-8">
+                    <jqxDateTimeInput #dateHasta class="fechaHasta" [width]="300" [height]="22" [(ngModel)]="varHasta"
+                      name="hasta" (onValueChanged)="valueChangedHasta()" [template]="'primary'" [disabled]="true">
+                    </jqxDateTimeInput>
+                  </div>
+                </div>
+                <br />
+                <br />
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </form>
+  </jqxValidator>
+</jqxExpander>
+<app-modal-component></app-modal-component>
+
+<pre>
+<!-- {{personaAng | json}} -->
+<!-- {{this.estudianteOfertas | json}}   -->
+<!-- {{dataAdapterTiposMatricula | json}}   -->
+
+</pre>
