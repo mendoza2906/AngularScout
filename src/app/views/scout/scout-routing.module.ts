@@ -8,6 +8,8 @@ import { RegistrarConsultaComponent } from './registrar-consulta/registrar-consu
 import { MedicoListadoComponent } from './medico-listado/medico-listado.component';
 import { PacienteListadoComponent } from './paciente-listado/paciente-listado.component';
 import { PersonaEdicionComponent } from './persona-edicion/persona-edicion.component';
+import { SubirArchivoComponent } from './subir-archivo/subir-archivo.component';
+import { RevisarArchivoComponent } from './revisar-archivo/revisar-archivo.component';
 
 
 
@@ -72,6 +74,22 @@ const routes: Routes = [
         canActivate: [ControlAutenticacion],
         data: {
           title: 'Registro de Información'
+        }
+      },
+      {
+        path: 'subir-archivo',
+        component: SubirArchivoComponent,
+        canActivate: [ControlAutenticacion],
+        data: {
+          title: 'Subir Archivo'
+        }
+      },
+      {
+        path: 'revisar-archivo',
+        component: RevisarArchivoComponent,
+        canActivate: [ControlAutenticacion],
+        data: {
+          title: 'Revisar Archivo'
         }
       },
     ]

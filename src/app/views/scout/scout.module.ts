@@ -27,6 +27,10 @@ import { PacienteListadoComponent } from './paciente-listado/paciente-listado.co
 import { jqxPasswordInputModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxpasswordinput';
 import { PersonaEdicionComponent } from './persona-edicion/persona-edicion.component';
 import { ScoutService } from '../../services/scout/scout.service';
+import { SubirArchivoComponent } from './subir-archivo/subir-archivo.component';
+import { RevisarArchivoComponent } from './revisar-archivo/revisar-archivo.component';
+import { jqxPanelModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxPanel';
+import { jqxFileUploadModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxfileupload';
 
 
 @NgModule({
@@ -36,7 +40,9 @@ import { ScoutService } from '../../services/scout/scout.service';
     ConsultaMedicaComponent,
     MedicoListadoComponent,
     PacienteListadoComponent,
-    PersonaEdicionComponent
+    PersonaEdicionComponent,
+    SubirArchivoComponent,
+    RevisarArchivoComponent
 
   ],
   imports: [
@@ -61,6 +67,7 @@ import { ScoutService } from '../../services/scout/scout.service';
     PdfViewerModule,
     NgxExtendedPdfViewerModule,
     FormsModule,
+    jqxFileUploadModule, jqxPanelModule
   ],
   providers: [ScoutModule, ScoutService]
 })

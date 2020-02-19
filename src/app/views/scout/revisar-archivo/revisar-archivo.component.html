@@ -1,0 +1,135 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Revisión Archivo Evidencia Para la el Módulo</h3>
+  </div>
+  <jqxMenu #jqxMenu style='margin-left: 5px; margin-right: 5px; margin-top: 5px;' (onItemclick)="itemclick($event)"
+    [source]="menus" [theme]="'darkblue'" [width]="'auto'" [height]="30">
+  </jqxMenu>
+  <jqxValidator #myValidator [rules]="rules" [hintType]="'label'" (onValidationSuccess)="ValidationSuccess($event)">
+    <form id='formPlanClase' action="./">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card card-accent-info" style='margin-left: 5px; margin-top: 10px;
+          margin-bottom : 5px;'>
+            <div class="card-header">
+              <h5 style="padding: 0; margin: 0;"> Información Básica</h5>
+            </div>
+            <div class="card-body">
+              <div class="form-group row">
+                <div class="col-md-2">Tema:</div>
+                <div class="col-md-10">
+                  <jqxInput #txtTemaContenido [maxLength]="255" class="temaContenidoInput" [width]="'100%'"
+                    [disabled]="true" [height]="22" name="identificacion" [theme]="'darkblue'">
+                  </jqxInput>
+                </div>
+                <!-- (onChange)="verificarCedulaExiste()" -->
+              </div>
+              <div class="form-group row">
+                <div class="col-md-2">Fecha Subida:</div>
+                <div class="col-md-4">
+                  <jqxDateTimeInput #dateFechaClase class="fechaClaseInput" [width]="'100%'" [height]="22"
+                    [(ngModel)]="varFechaClase" (onValueChanged)="valueChangedFechaClase()" [template]="'primary'"
+                    name="fechaNace" [disabled]="false" [theme]="'darkblue'">
+                  </jqxDateTimeInput>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-2">Práctica y Experimentación:</div>
+                <div class="col-md-2">
+                  <jqxNumberInput #txtPractica [width]="'100%'" [height]="22" name="parctica" [disabled]="false"
+                    class="practicaInput" [decimal]="0" [decimalDigits]="0" [digits]="1" [inputMode]="'simple'"
+                    [textAlign]="left" [theme]="'darkblue'" [spinButtons]="true" [(ngModel)]="planClaseAng.horasAea">
+                  </jqxNumberInput>
+                </div>
+                <div class="col-md-2">Trabajo Autónomo:</div>
+                <div class="col-md-2">
+                  <jqxNumberInput #txtTrabajo [width]="'100%'" [height]="22" name="trabajo" [disabled]="false"
+                    class="trabajoInput" [decimal]="0" [decimalDigits]="0" [digits]="1" [inputMode]="'simple'"
+                    [textAlign]="left" [theme]="'darkblue'" [spinButtons]="true" [(ngModel)]="planClaseAng.horasTa">
+                  </jqxNumberInput>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-3">Observación:</div>
+                <div class="col-md-9">
+                  <jqxTextArea #txtAreaContenido class="contenidoInput" [width]="'100%'" [height]="50" [maxLength]="255"
+                    name="direccion" [placeHolder]="'Ingrese el contenido'" [theme]="'darkblue'"
+                    [(ngModel)]="planClaseAng.contenido">
+                  </jqxTextArea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-3">Archivo Práctica:</div>
+                <input class="col-md-3" type="file" (change)="selectFileOut($event)" #fileInput>
+                <!-- <img  class="col-md-3" [src]="foto" width="200px" height="90px" name="foto"> -->
+              </div>
+              <div class="form-group row">
+                <div class="col-md-3">Bibliografía:</div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-3">
+                  <jqxCheckBox #chbCoeva [theme]="'darkblue'" style="margin: 0px;">
+                    Coevaluación</jqxCheckBox>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </jqxValidator>
+</div>
+
+
+<jqxWindow #myWindow [width]="'40%'" [height]="200" [resizable]="false" [isModal]="true" [autoOpen]="false"
+  [theme]="'darkblue'" [modalOpacity]="'0.01'" [draggable]="false">
+  <!-- (onClose)="salir()" -->
+  <div style="overflow: hidden;">
+    <jqxMenu style='margin-left: 3px; margin-top: 5px;' #menuAgregar (onItemclick)="itemclickMenuBiblio($event)"
+      [source]="menus2" [theme]="'darkblue'" [width]="'auto'" [height]="30">
+    </jqxMenu>
+    <jqxValidator #myValidator [rules]="rules" [hintType]="'label'">
+      <form id='formCitas' action="./">
+        <div class="container">
+          <br />
+          <br />
+          <div class="row">
+            <div class="col-md-2">Recurso Bibliográfico: </div>
+            <div class="col-md-8">
+              <jqxComboBox #comboRecursoBiblio [theme]="'darkblue'" [selectedIndex]="-1" [displayMember]="'titulo'"
+                [valueMember]="'idRecursoBibliografico'" [source]="dataAdapterRecursosBibliografias" [width]="'100%'"
+                [height]='25' name="recursos" [autoDropDownHeight]="true" (onChange)="obtenerLabel($event)">
+              </jqxComboBox>
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-md-2">Pag. Desde:</div>
+            <div class="col-md-2">
+              <jqxNumberInput #txtPagDesde [width]="'100%'" [height]="22" name="desde" [disabled]="false" [decimal]="0"
+                [decimalDigits]="0" [digits]="3" [inputMode]="'simple'" [textAlign]="left" [theme]="'darkblue'"
+                [spinButtons]="true" [min]="1" [max]="999">
+              </jqxNumberInput>
+            </div>
+            <div class="col-md-2">Pag. Hasta:</div>
+            <div class="col-md-2">
+              <jqxNumberInput #txtPagHasta [width]="'100%'" [height]="22" name="hasta" [disabled]="false" [decimal]="0"
+                [decimalDigits]="0" [digits]="3" [inputMode]="'simple'" [textAlign]="left" [theme]="'darkblue'"
+                [spinButtons]="true" [min]="1" [max]="999">
+              </jqxNumberInput>
+            </div>
+          </div>
+          <br />
+        </div>
+      </form>
+    </jqxValidator>
+  </div>
+</jqxWindow>
+
+<app-modal-component></app-modal-component>
+
+<pre>
+<!-- {{planClaseAng | json}} -->
+<!-- {{this.estudianteOfertas | json}}   -->
+<!-- {{dataAdapterTiposMatricula | json}}   -->
+</pre>

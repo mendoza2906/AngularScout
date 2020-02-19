@@ -1,0 +1,71 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Registrar Clase</h3>
+  </div>
+  <jqxMenu #jqxMenu style='margin-left: 5px; margin-right: 5px; margin-top: 5px;' (onItemclick)="itemclick($event)"
+    [source]="menus" [theme]="'darkblue'" [width]="'auto'" [height]="30">
+  </jqxMenu>
+  <jqxValidator #myValidator [rules]="rules" [hintType]="'label'" (onValidationSuccess)="ValidationSuccess($event)">
+    <form id='formPlanClase' action="./">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card card-accent-info" style='margin-left: 5px; margin-top: 10px;
+          margin-bottom : 5px;'>
+            <div class="card-header">
+              <h5 style="padding: 0; margin: 0;"> Información Básica</h5>
+            </div>
+            <div class="card-body">
+              <div class="form-group row">
+                <div class="col-md-2">Titulo:</div>
+                <div class="col-md-10">
+                  <jqxInput #txtTitulo [maxLength]="255" class="temaContenidoInput" [width]="'100%'" [disabled]="false"
+                    [height]="22" name="identificacion" [theme]="'darkblue'" [(ngModel)]="documentoAng.titulo">
+                  </jqxInput>
+                </div>
+                <!-- (onChange)="verificarCedulaExiste()" -->
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <jqxFileUpload #myFileUpload style="float: left" (onSelect)="onSelect($event)"
+                    (onRemove)="onRemove($event)" (onUploadStart)="onUploadStart($event)"
+                    (onUploadEnd)="onUploadEnd($event)" [width]="'100%'" [uploadUrl]="'upload.php'"
+                    [fileInputName]="'fileToUpload'">
+                  </jqxFileUpload>
+                </div>
+                <div class="col-md-6">
+                  <div style="margin-bottom: 10px; font-family: Verdana; font-size: smaller">
+                    Datos del Archivo</div>
+                  <jqxPanel #myPanel [width]="'100%'" [height]="150"></jqxPanel>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-3">Descripción:</div>
+                <div class="col-md-9">
+                  <jqxTextArea #txtDescripcion class="contenidoInput" [width]="'100%'" [height]="50" [maxLength]="255"
+                    name="direccion" [placeHolder]="'Ingrese el contenido'" [theme]="'darkblue'"
+                    [(ngModel)]="documentoAng.descripcion">
+                  </jqxTextArea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="img">File</label>
+                <input type="file" class="form-control" id="img" name="img" ngModel>
+              </div>
+              <div class="form-group row">
+                <img [src]="documentoAng.rutaArchivo" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </jqxValidator>
+</div>
+
+<app-modal-component></app-modal-component>
+
+<pre>
+{{documentoAng | json}}
+<!-- {{this.estudianteOfertas | json}}   -->
+<!-- {{dataAdapterTiposMatricula | json}}   -->
+</pre>

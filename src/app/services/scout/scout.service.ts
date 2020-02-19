@@ -3,7 +3,6 @@ import { Injectable, ɵConsole } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
-
 @Injectable()
 
 export class ScoutService {
@@ -19,8 +18,26 @@ export class ScoutService {
 
   }
 
-  //PANTALLA PRINCIPAL CITAS 
+  jsonToUrlParams(json) {
+    return Object.keys(json)
+      .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(json[key]))
+      .join("&");
+  }
 
+  post(tarea: any): Observable<any> {
+    let result: Observable<Object>;
+    let data = this.jsonToUrlParams(tarea);
+    result = this.http.post(this.URL_ROOT_WS + '/grabarDocumento', data);
+    return result;
+  }
+
+  getRecuperarDocumentoId(idDocumento: number): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS + '/recuperarDocumentoId/' + idDocumento);
+  }
+
+
+
+  //PANTALLA PRINCIPAL CITAS 
   getListarEspecialidades(): Observable<any> {
     return this.http.get(this.URL_ROOT_WS + '/listarEspecialidades');
   }

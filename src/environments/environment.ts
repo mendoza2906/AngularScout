@@ -8,10 +8,10 @@
  */
 export const environment = {
   production: false,
-  appVersion: '1.01',
+  appVersion: '0.000000000001',
   baseUrl: 'http://localhost:8000',
   apiResource: '/api',
-  clientId: 'upse-webapp-client',
-  clientSecret: 'UpseWebAppRestAPI',
-  appName: 'Upse'
+  clientId: 'scout-client-webapp',
+  clientSecret: 'ScoutWebAppRestAPI',
+  appName: 'Scouts'
 };

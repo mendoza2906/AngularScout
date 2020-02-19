@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 import { TokenService } from './token.service';
 import { AccountService } from './account.service';
-import {IAccessToken} from '../../model/auth/IAccessToken';
-import {environment} from '../../../environments/environment';
-import {Router} from '@angular/router';
+import { IAccessToken } from '../../model/auth/IAccessToken';
+import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
 
 /**
  * LVT Servicios para verificacion de autorizaciones
@@ -14,9 +14,9 @@ import {Router} from '@angular/router';
 export class AuthService {
 
     constructor(private http: HttpClient,
-                private router: Router,
-                private tokenService: TokenService,
-                private accountService: AccountService) { }
+        private router: Router,
+        private tokenService: TokenService,
+        private accountService: AccountService) { }
 
     login(username: string, password: string) {
         let data: string;
@@ -79,7 +79,7 @@ export class AuthService {
     isAuthenticated() {
         return this.tokenService.isTokenValid(this.tokenService.getToken());
     }
-    
+
     getAllPrivileges() {
         return this.http.get(environment.baseUrl + environment.apiResource + '/account/all-privileges');
     }
