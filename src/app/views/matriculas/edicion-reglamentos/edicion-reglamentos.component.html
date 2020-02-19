@@ -1,0 +1,110 @@
+<br /><jqxMenu style='margin-left: 3px; margin-top: 5px;' #jqxMenu (onItemclick)="itemclick($event)" [source]="menus"
+[theme]="'darkblue'" [width]="'auto'" [height]="30">
+</jqxMenu>
+
+<jqxExpander style='margin-left: 3px; margin-top: 5px;' [theme]="'darkblue'" [width]="'auto'" [showArrow]="false"
+[toggleMode]="'none'">
+<div>
+  <h3 style="padding: 0; margin: 0;margin-top: 10px; font-family: Verdana">
+    {{labelOpcion}} de Reglamento</h3>
+</div>
+<form id='formReglamentos' action="./">
+  <div style="padding: 5px;">
+    <table class="register-table">
+      <div class="card1">
+        <div class="card card-accent-info">
+          <div class="card-header">
+            <h4 style="padding: 0; margin: 0;"> Datos Reglamento</h4>
+          </div>
+          <div class="card-body">
+            <tr>
+              <td style='margin-left: 40px; font-weight:bold; margin-bottom : 100px;' [width]="750">Tipo Reglamento:</td>
+              <td>
+                <jqxDropDownList #comboTiposReglamento [theme]="'darkblue'" [selectedIndex]="-1"
+                  [displayMember]="'descripcionTipo'" [valueMember]="'idTipoReglamento'"
+                  [source]="dataAdapterTiposReglamento" [width]="'100%'" [height]='25' name="cboTiposReglamentos"
+                  [dropDownWidth]="300" (onSelect)="recuperarValidacionesUltimoReglamento()" [(ngModel)]="reglamentoAng.idTipoReglamento">
+                </jqxDropDownList>
+              </td>
+            </tr>
+            <br />
+            <br />
+            <tr>
+              <td style='margin-left: 40px; font-weight:bold; margin-bottom : 100px;' [width]="750">Nombre:</td>
+              <td>
+                <jqxInput #txtNombre [width]="'100%'" [height]="22" name="nombre" [maxLength] = "35" [(ngModel)]="reglamentoAng.nombre">
+                </jqxInput>
+              </td>
+            </tr>
+            <br />
+            <tr>
+              <td style='margin-left: 40px; font-weight:bold; margin-bottom : 100px;' [width]="750">Reglamento Nacional:</td>
+              <td>
+                <jqxInput #txtReglamentoNacional [width]="'100%'" [height]="22" name="reglamentoNacional" [maxLength] = "35"
+                [(ngModel)]="reglamentoAng.reglamentoNacional">
+                </jqxInput>
+              </td>
+            </tr>
+            <br />
+            <tr>
+              <td  style='margin-left: 40px; font-weight:bold; margin-bottom : 100px;' [width]="750">Fecha Aprobación IES:</td>
+              <td>
+                <jqxDateTimeInput #dateFechaAprobacion class="fechaAprobacion" [width]="300" [height]="22"
+                  [(ngModel)]="varFechaAprobacion" name="desdeOrd " (onValueChanged)="valueChangedFechaAprobacion()"
+                  [template]="'primary'">
+                </jqxDateTimeInput>
+              </td>
+            </tr>
+            <br />
+            <tr>
+              <td  style='margin-left: 40px; font-weight:bold; margin-bottom : 100px;' [width]="750">Fecha Hasta:</td>
+              <td>
+                <jqxDateTimeInput #dateHasta class="fechaHasta" [width]="300" [height]="22" [(ngModel)]="varHasta"
+                  name="hastaOrd" (onValueChanged)="valueChangedHasta()" [template]="'primary'">
+                </jqxDateTimeInput>
+              </td>
+            </tr>
+            <br />
+         
+            <tr>
+              <td  style='margin-left: 40px; font-weight:bold; margin-bottom : 100px;' [width]="750"> Tipo de Oferta:</td>
+              <td [width]="900" style='margin-left: 15px; margin-top: 5px;'>
+                <jqxListBox #listBoxTiposOfertas [theme]="'darkblue'" [height]="136"
+                  [source]="dataAdapterTiposOfertas" [displayMember]="'descripcion'" [multipleextended]="true"
+                  [width]="'100%'" [checkboxes]="true" [valueMember]="'idTipoOferta'" [title]="TipoOfertas"
+                  (onCheckChange)="checkChange($event)">
+                </jqxListBox>
+              </td>
+            </tr>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+          </div>
+        </div>
+      </div>
+      <div class="card2">
+        <div class="card card-accent-info">
+          <div class="card-header">
+            <h4 style="padding: 0; margin: 0;">Validaciones Reglamento</h4>
+          </div>
+          <div class="card-body">
+            <jqxGrid #gridValidaciones >
+            </jqxGrid>
+          </div>
+        </div>
+      </div>
+    </table>
+  </div>
+</form>
+</jqxExpander>
+<app-modal-component></app-modal-component>
+
+<pre>
+<!-- {{validacionesTemp | json}}   -->
+<!-- {{reglamentoAng | json}}   -->
+<!-- {{dataAdapterValidacionesReglamento | json}}   -->
+
+</pre>

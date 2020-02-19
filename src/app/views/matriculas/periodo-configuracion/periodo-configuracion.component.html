@@ -1,0 +1,160 @@
+<jqxMenu style='margin-left: 3px; margin-top: 5px;' #jqxMenu (onItemclick)="itemclick($event)" [source]="menus"
+  [theme]="'darkblue'" [width]="'auto'" [height]="30">
+</jqxMenu>
+
+<jqxExpander style='margin-left: 3px; margin-top: 5px;' [theme]="'darkblue'" [width]="'auto'" [showArrow]="false"
+  [toggleMode]="'none'">
+  <div>
+    <h3 style="padding: 0; margin: 0;margin-top: 10px; font-family: Verdana">
+      {{opcion}} del Periodo de Matrícula {{labelPeriodoAcademico}} </h3>
+    <!-- <div #eventLog style="font-size: 25px; margin-top: 20px; font-family: Verdana"></div> -->
+  </div>
+  <form id='formPeriodoMatricula' action="./">
+    <div style="padding: 5px;">
+      <div class="card1">
+        <div class="card card-accent-info">
+          <div class="card-header">
+            <h4 style="padding: 0; margin: 0;"> Configuración de Fechas</h4>
+          </div>
+          <div class="card-body">
+            <table style="width:100%">
+              <tbody>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <jqxCheckBox #checkNivel style="margin: 0px;" [theme]="'darkblue'" >
+                      Habilitar Matrícula por Niveles</jqxCheckBox>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-4">Reglamento:</div>
+                  <div class="col-sm-8">
+                    <jqxComboBox #comboReglamento [theme]="'darkblue'" [selectedIndex]="-1"
+                      [displayMember]="'nombreReglamento'" [valueMember]="'idReglamento'"
+                      [source]="dataAdapterReglamentoMatricula" [width]="'100%'" [height]='25'
+                      (onSelect)="recuperarValidacionesReglamento()" name="cboReglamento" [dropDownWidth]="300">
+                    </jqxComboBox>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-6" style='margin-left: 1px; font-weight:bold; margin-bottom : 7px;' >
+                    Periodo Ordinario:</div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-2">Desde:</div>
+                  <div class="col-sm-4">
+                    <jqxDateTimeInput #dateDesdeOrd class="fechaDesdeOrd" [width]="'100%'" [height]="22"
+                      [(ngModel)]="varDesdeOrd" name="desdeOrd " (onValueChanged)="valueChangedDesdeOrd()"
+                      [template]="'primary'">
+                    </jqxDateTimeInput>
+                  </div>
+
+                  <div class="col-sm-2">Hasta:</div>
+                  <div class="col-sm-4">
+                    <jqxDateTimeInput #dateHastaOrd class="fechaHastaOrd" [width]="'100%'" [height]="22"
+                      [(ngModel)]="varHastaOrd" name="hastaOrd" (onValueChanged)="valueChangedHastaOrd()"
+                      [template]="'primary'">
+                    </jqxDateTimeInput>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-6" style='margin-left: 1px; font-weight:bold; margin-bottom : 7px;'>
+                    Periodo Extraordario:</div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-2">Desde:</div>
+                  <div class="col-sm-4">
+                    <jqxDateTimeInput #dateDesdeExtra class="fechaDesdeExtra" [width]="'100%'" [height]="22"
+                      [(ngModel)]="varDesdeExt" name="desdeExtra" (onValueChanged)="valueChangedDesdeExt()"
+                      [template]="'primary'">
+                    </jqxDateTimeInput>
+                  </div>
+
+                  <div class="col-sm-2">Hasta:</div>
+                  <div class="col-sm-4">
+                    <jqxDateTimeInput #dateHastaExtra class="fechaHastaExtra" [width]="'100%'" [height]="22"
+                      [(ngModel)]="varHastaExt" name="hastaExtra" (onValueChanged)="valueChangedHastaExt()"
+                      [template]="'primary'">
+                    </jqxDateTimeInput>
+                  </div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-6" style='margin-left: 1px; font-weight:bold; margin-bottom : 7px;'>
+                    Periodo Especial:</div>
+                </div>
+                <br />
+                <div class="row">
+                  <div class="col-sm-2">Desde:</div>
+                  <div class="col-sm-4">
+                    <jqxDateTimeInput #dateDesdeEsp class="fechaDesdeEsp" [width]="'100%'" [height]="22"
+                      [(ngModel)]="varDesdeEsp" name="desdeEsp" (onValueChanged)="valueChangedDesdeEsp()"
+                      [template]="'primary'">
+                    </jqxDateTimeInput>
+                  </div>
+
+                  <div class="col-sm-2">Hasta:</div>
+                  <div class="col-sm-4">
+                    <jqxDateTimeInput #dateHastaEsp class="fechaHastaEsp" [width]="'100%'" [height]="22"
+                      [(ngModel)]="varHastaEsp" name="hastaEsp" (onValueChanged)="valueChangedHastaEsp()"
+                      [template]="'primary'">
+                    </jqxDateTimeInput>
+                  </div>
+                </div>
+                <br />
+              </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+      <div class="card2">
+        <div class="card card-accent-info">
+          <div class="card-header">
+            <h4 style="padding: 0; margin: 0;">Validaciones Reglamento</h4>
+          </div>
+          <div class="card-body">
+            <jqxGrid #gridValidaciones [theme]="'darkblue'" [autoheight]="false" [columns]="columnasValidacion"
+              [editable]="false" [height]="295" [width]="'100%'" [localization]="localization"
+              [source]="dataAdapterValidacionesReglamento" [showcolumnheaderlines]="true">
+            </jqxGrid>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</jqxExpander>
+<app-modal-component></app-modal-component>
+
+<pre>
+<!-- {{pojoMatriculaGeneral | json}} -->
+<!-- {{matriculageneralAng | json}}   -->
+<!-- {{dataAdapterTiposMatricula | json}}   -->
+
+</pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

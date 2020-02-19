@@ -1,0 +1,78 @@
+<div bsModal #templateNext="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left" >{{opcion.title}}</h4>
+        <button type="button" class="close" (click)="next()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="text-justify modal-body" style="font-family:Verdana,Arial,san-serif;color: #000;font-size: 15px;">
+        {{opcion.msg}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="next()">Continuar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #template="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left" >{{opcion.title}}</h4>
+        <button type="button" class="close" (click)="template.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="text-justify modal-body" style="font-family:Verdana,Arial,san-serif;color: #000;font-size: 15px;">
+        {{opcion.msg}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="template.hide()">Aceptar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #templateQuestion="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left" >{{opcion.title}}</h4>
+        <button type="button" class="close" (click)="CancelQ()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="text-justify modal-body" style="font-family:Verdana,Arial,san-serif;color: #000;font-size: 15px;">
+        {{opcion.msg}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="Submit()" class="btn btn-primary" >Aceptar</button>
+        <button type="button" class="btn btn-dark" (click)="CancelQ()" data-dismiss="templateQuestion">Cancelar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #templateCustomize="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">{{opcion.title}}</h4>
+        <button type="button" class="close" (click)="cancelVersion()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="text-justify modal-body" style="font-family:Verdana,Arial,san-serif;color: #000;font-size: 15px;">
+        {{opcion.msg}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="nuevaVersion()" class="btn btn-primary">{{opcion.textNuevaVersion}}</button>
+        <button type="button" (click)="nueva()" class="btn btn-primary">{{opcion.textNuevo}}</button>
+        <button type="button" (click)="cancelVersion()" class="btn btn-dark">Cancelar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

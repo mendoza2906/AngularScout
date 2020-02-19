@@ -1,0 +1,200 @@
+<jqxMenu style='margin-left: 3px; margin-top: 5px;' #jqxMenu (onItemclick)="itemclick($event)" [source]="menus"
+  [theme]="'darkblue'" [width]="'auto'" [height]="30">
+</jqxMenu>
+
+<jqxExpander style='margin-left: 3px; margin-top: 5px;' [theme]="'darkblue'" [width]="'auto'" [showArrow]="false"
+  [toggleMode]="'none'" [hidden]="isCollapsed">
+  <div>
+    <h1 style="padding: 0; margin: 0;margin-top: 10px; font-family: Verdana">
+      {{labelOpcion}} Matrícula {{labelPeriodoActual}}
+    </h1>
+    <jqxButton #botonAnular [width]="'25%'" [template]="'primary'" [disabled]="false" [hidden]="ocultarAnular"
+      (click)="anularMatricula()">Anular Matrícula
+    </jqxButton>
+  </div>
+  <form id='formMatricula' action="./">
+    <div>
+      <form id='matriculaForm' action="./">
+        <tbody>
+          <div class="card1">
+            <div class="card card-accent-info">
+              <div class="card-header">
+                <h4 style="padding: 0; margin: 0;"> Datos del Estudiante </h4>
+              </div>
+              <div class="card-body">
+                <tr>
+                  <td style='margin-left: 40px; font-weight:bold; margin-bottom : 100px;' [width]="750">Identificacion:
+                  </td>
+                  <td style='margin-left: 40px; margin-bottom : 100px;' [width]="750">{{labelIdentificacion}}</td>
+                </tr>
+                <br />
+                <tr>
+                  <td style='margin-left: 40px; font-weight:bold; margin-bottom : 100px;' [width]="750">Nombres:</td>
+                  <td style='margin-left: 40px; margin-bottom : 100px;' [width]="750">{{labelNombres}}</td>
+                </tr>
+                <br />
+                <tr>
+                  <td style='margin-left: 40px; font-weight:bold; margin-bottom : 100px;' [width]="750">Carrera:</td>
+                  <td style='margin-left: 40px; margin-bottom : 100px;' [width]="750">{{labelCarrera}}</td>
+                </tr>
+                <br />
+                <tr>
+                  <td style='margin-left: 40px; font-weight:bold; margin-bottom : 100px;' [width]="750">
+                    Numero de Matricula:</td>
+                  <td style='margin-left: 40px; margin-bottom : 100px;' [width]="750">{{labelNumeroMatricula}}</td>
+                </tr>
+                <br />
+                <tr>
+                  <td style='margin-left: 40px; font-weight:bold; margin-bottom : 100px;' [width]="750">Último Periodo
+                    Matriculado:</td>
+                  <td style='margin-left: 40px; margin-bottom : 100px;' [width]="750">{{labelUltimoPeriodoMatricula}}
+                  </td>
+                </tr>
+              </div>
+              <div class="card-footer" style='margin-left: 3px; margin-top: 0px;'>
+                <tr>
+                  <td style='margin-left: 40px;'>ACD : Aprendizaje en Contacto con el Docente</td>
+
+                </tr>
+                <tr>
+                  <td style='margin-left: 40px;'>HTC : Horas Totales Componentes</td>
+                </tr>
+              </div>
+            </div>
+          </div>
+          <div class="card2">
+            <div class="card card-accent-info">
+              <div class="card-header">
+                <h4 style="padding: 0; margin: 0;"> Datos Matricula </h4>
+              </div>
+              <div class="card-body">
+                <tr>
+                  <td style='margin-left: 40px; font-weight:bold; margin-bottom : 100px;' [width]="750">Tipo de
+                    Matricula:</td>
+                  <td style='margin-left: 40px; margin-bottom : 100px;' [width]="150">{{labelTipoMatricula}}</td>
+                  <td style='margin-left: 100px; font-weight:bold; margin-bottom : 100px;'>Valor Total:</td>
+                  <td style='margin-left: 100px; margin-bottom : 100px;' [width]="350">$ {{sumaValorMatricula}}</td>
+                  <!-- <td>
+                    <jqxNumberInput #txtValorMatricula [width]="100" [height]="16" name="costo" [disabled]="true"
+                      [symbol]="'$'" [inputMode]="'simple'" [textAlign]="left">
+                    </jqxNumberInput>
+                  </td> -->
+                </tr>
+                <br />
+                <tr>
+                  <td style='font-weight:bold; margin-bottom : 100px;' [width]="750">Horas Componentes(HTC):</td>
+                  <td style='margin-left: 100px; margin-bottom : 100px;' [width]="350"> {{sumaComponenteAsig}}</td>
+
+                  <td style='font-weight:bold; margin-bottom : 100px;' [width]="750">Horas Docente(ACD): </td>
+                  <td style='margin-left: 100px; margin-bottom : 100px;' [width]="350">{{sumaContactoDocente}}</td>
+                </tr>
+                <br />
+                <tr>
+                  <td style='font-weight:bold; margin-bottom : 100px;' [width]="750">Número de Créditos:</td>
+                  <td style='margin-left: 100px; margin-bottom : 100px;' [width]="350"> {{sumaCreditos}}</td>
+
+                  <td style='font-weight:bold; margin-bottom : 100px;' [width]="750">Nivel Máximo:</td>
+                  <td style='margin-left: 100px; margin-bottom : 100px;' [width]="350"> {{labelNivelMaximo}} Semestre
+                  </td>
+                </tr>
+                <br />
+                <tr>
+                  <td colspan="1" style='margin-left: 150px; font-weight:bold; margin-bottom : 100px;' [width]="750">
+                    Observación:
+                  </td>
+                  <td colspan="3">
+                    <jqxTextArea #txtObservacion class="observacionInput" [width]="'100%'" [height]="30"
+                      [maxLength]="40" name="observacion" [placeHolder]="'Ingrese una observación.....'"
+                      [theme]="'darkblue'">
+                    </jqxTextArea>
+                  </td>
+                </tr>
+                <br />
+              </div>
+              <div class="card-footer" style='margin-left: 3px; margin-top: 0px;'>
+                <tr>
+                  <td colspan="4">NOTA: Las Asignaturas por 2 o 3 Vez son obligatorias! </td>
+                </tr>
+                <tr>
+                  <td colspan="4">Al editar la matrícula no será posible cambiar de paralelo!</td>
+                </tr>
+              </div>
+            </div>
+          </div>
+        </tbody>
+      </form>
+
+      <div class="card3">
+        <jqxGrid #myGriDMatricula [theme]="'darkblue'" [autoheight]="true" (onRowselect)="checkSumaHoras($event)"
+          (onRowunselect)="checkRestarHoras($event)" [width]="'100%'" (onCellendedit)="marcarAsignaturas($event)"
+          [source]="dataAdapterAsignaturasHabilitadas" [columns]="columnasMatriculacion" [editable]="true"
+          [selectionmode]="'none'" [enabletooltips]="true" [showaggregates]="true" [statusbarheight]="50">
+          <!-- (onCellclick)="prueba($event)" -->
+        </jqxGrid>
+      </div>
+
+    </div>
+  </form>
+</jqxExpander>
+
+<jqxWindow #myWindow [width]="'80%'" [height]="400" [isModal]="true" [autoOpen]="false" [theme]="'darkblue'"
+  [modalOpacity]="'0.01'" [draggable]="false">
+  <div style="overflow: hidden;">
+    <table>
+      <tr>
+        <td align="right">Número de Resolución:</td>
+        <td align="left">
+          <jqxInput #myNumeroOficio class="numeroOficioInput" [width]="290" [height]="23"
+            [placeHolder]="'Ingrese un número de Oficio....'" [maxLength]="15" [minLength]="2"></jqxInput>
+        </td>
+      </tr>
+      <tr>
+        <td align="right">Observación:</td>
+        <td align="left">
+          <jqxTextArea #myObservacionMat class="observacionMatInput" [width]="290" [height]="60" name="observacionEdit"
+            [placeHolder]="'Ingrese una observación....'" [maxLength]="40" [minLength]="2">
+          </jqxTextArea>
+        </td>
+      </tr>
+      <tr>
+        <td align="right"></td>
+        <td style="padding-top: 10px;" align="right">
+          <jqxButton #botonActivar style="margin-right: 5px;" (onClick)="btnActivar()" [theme]="'darkblue'">
+            Activar Asignatura
+          </jqxButton>
+          <jqxButton #botonRetirar style="margin-right: 5px;" (onClick)="btnRetirar()" [theme]="'darkblue'">
+            Guardar
+          </jqxButton>
+          <jqxButton style="margin-right: 5px;" (onClick)="cancelBtn()" [theme]="'darkblue'">
+            Cancelar
+          </jqxButton>
+        </td>
+      </tr>
+    </table>
+  </div>
+</jqxWindow>
+
+<div class="card-footer" [hidden]="ocultarPdfViewer">
+  <jqxButton #botonVolver [width]="'60'" [height]="'25'" [theme]="'darkblue'" [disabled]="true"
+    (click)="controlIsCollapsed()">Volver
+  </jqxButton>
+</div>
+<div class="card" [hidden]="ocultarPdfViewer">
+  <div class="card-body">
+    <ngx-extended-pdf-viewer #myPdfViewer [src]="pdfSrc" [hidden]="ocultarPdfViewer" backgroundColor="#ffffff"
+      [height]="'90vh'" [useBrowserLocale]="true">
+    </ngx-extended-pdf-viewer>
+  </div>
+</div>
+
+
+<app-modal-component></app-modal-component>
+
+
+<pre>
+<!-- {{estudianteMatriculasAng | json}}  -->
+<!-- {{pojoEstudianteMatricula | json}}  -->
+<!-- {{dataAdapterDocentesAsignaturas | json}}   -->
+<!-- {{adapterComponenteDocencia | json}}   -->
+
+</pre>

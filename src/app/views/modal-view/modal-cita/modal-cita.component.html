@@ -1,0 +1,242 @@
+<jqxValidator #myValidator [rules]="rules" [animationDuration]="0" (onValidationSuccess)="ValidationSuccess($event)">
+  <div bsModal #formNuevo="bs-modal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 id="dialog-nested-name1" class="modal-title pull-left">Registro de Citas</h4>
+        </div>
+        <div class="modal-body table-responsive-sm">
+          <jqxMenu style='margin-left: 3px; margin-top: 5px;' #jqxMenu (onItemclick)="itemclick($event)"
+            [source]="menus" [theme]="'material'" [width]="'auto'" [height]="30">
+          </jqxMenu>
+          <table class="table  table-sm table-striped table-bordered table-responsive">
+            <tbody>
+              <tr>
+                <!-- <td style="width: 20%">Cita Medica para:</td>
+                <td style="width: 60%" colspan="3" [hidden]="ocultarLabels">{{labelMedico}}</td>
+                <td style="width: 60%" colspan="3" [hidden]="ocultarComponente">
+                  <jqxComboBox #comboMedico [theme]="'material'" [placeHolder]="'Elija un médico...'"
+                    [selectedIndex]="0" [displayMember]="'nombres'" [valueMember]="'idMedico'"
+                    [source]="dataAdapterMedicos" [width]="'100%'" [height]='25' name="medicos" [dropDownWidth]="425"
+                    [autoDropDownHeight]="true" (onChange)="obtenerLabel($event)" [(ngModel)]="citaAng.idMedico">
+                  </jqxComboBox>
+                </td>
+                <td style="width: 20%"></td> -->
+                <td class="col-md-2">Cita Medica para: </td>
+                <td class="col-md-8 col-md-offset-2" [hidden]="ocultarLabels">{{labelMedico}}</td>
+                <td class="col-md-6 col-md-offset-4" [hidden]="ocultarComponente">
+                  <jqxComboBox #comboMedico [theme]="'material'" [placeHolder]="'Elija un médico...'"
+                    [selectedIndex]="0" [displayMember]="'nombres'" [valueMember]="'idMedico'"
+                    [source]="dataAdapterMedicos" [width]="'100%'" [height]='25' name="medicos" [dropDownWidth]="425"
+                    [autoDropDownHeight]="true" (onChange)="obtenerLabel($event)" [(ngModel)]="citaAng.idMedico">
+                  </jqxComboBox>
+                </td>
+              </tr>
+              <tr>
+                <!-- <td style="width: 20%">Fecha Cita:</td>
+                <td style="width: 20%" [hidden]="ocultarLabels">{{varFechaCalendario}}</td>
+                <td style="width: 20%" [hidden]="ocultarComponente">
+                  <jqxDateTimeInput #dateFechaCita class="fecha_citaInput" [width]="'100%'" [height]="22"
+                    [(ngModel)]="varFechaCita" (onValueChanged)="valueChangedFechaCita()" [template]="'primary'"
+                    name="fechaCita" [disabled]="false">
+                  </jqxDateTimeInput>
+                </td>
+                <td style="width: 20%">Hora: </td>
+                <td style="width: 20%" [hidden]="ocultarLabels">{{labelHora}}</td>
+                <td style="width: 20%" [hidden]="ocultarComponente">
+                  <jqxComboBox #comboHora [theme]="'material'" [selectedIndex]="-1" [placeHolder]="'Elija una hora...'"
+                    [displayMember]="'hora'" [valueMember]="'idHora'" [source]="dataAdapterHoras" [width]="'100%'"
+                    [height]='25' name="horas" [autoDropDownHeight]="true" [(ngModel)]="citaAng.idHora">
+                  </jqxComboBox>
+                </td>
+                <td style="width: 20%"></td> -->
+                <td class="col-md-2">Fecha Cita: </td>
+                <td class="col-md-4 " [hidden]="ocultarLabels">{{varFechaCalendario}}</td>
+                <td class="col-md-4 " [hidden]="ocultarComponente">
+                  <jqxDateTimeInput #dateFechaCita class="fecha_citaInput" [width]="'100%'" [height]="22"
+                    [(ngModel)]="varFechaCita" (onValueChanged)="valueChangedFechaCita()" [template]="'primary'"
+                    name="fechaCita" [disabled]="false">
+                  </jqxDateTimeInput>
+                </td>
+                <td class="col-md-2">Hora: </td>
+                <td class="col-md-2 col-md-offset-2" [hidden]="ocultarLabels">{{labelHora}}</td>
+                <td class="col-md-2 col-md-offset-2" [hidden]="ocultarComponente">
+                  <jqxComboBox #comboHora [theme]="'material'" [selectedIndex]="-1" [placeHolder]="'Elija una hora...'"
+                    [displayMember]="'hora'" [valueMember]="'idHora'" [source]="dataAdapterHoras" [width]="'100%'"
+                    [height]='25' name="horas" [autoDropDownHeight]="true" [(ngModel)]="citaAng.idHora">
+                  </jqxComboBox>
+                </td>
+              </tr>
+              <tr>
+                <!-- <td style="width: 20%">Paciente:</td>
+                <td style="width: 40%" colspan="2">
+                  <jqxComboBox #comboPaciente [theme]="'material'" [placeHolder]="'Elija un paciente...'"
+                    [selectedIndex]="-1" [displayMember]="'nombres'" [valueMember]="'idPaciente'"
+                    [source]="dataAdapterPacientes" [width]="'100%'" [height]='25' name="pacientes"
+                    [autoDropDownHeight]="true" [(ngModel)]="citaAng.idPaciente">
+                  </jqxComboBox>
+                </td>
+                <td style="width: 20%">
+                  <jqxButton #botonAgregarNuevo style="margin-right: 5px;" (onClick)="crearNuevoPaciente()"
+                    [theme]="'material'">
+                    Paciente Nuevo
+                  </jqxButton>
+                </td>
+                <td style="width: 20%"></td> -->
+                <td class="col-md-2">Paciente: </td>
+                <td class="col-md-6 ">
+                  <jqxComboBox #comboPaciente [theme]="'material'" [placeHolder]="'Elija un paciente...'"
+                    [selectedIndex]="-1" [displayMember]="'nombres'" [valueMember]="'idPaciente'"
+                    [source]="dataAdapterPacientes" [width]="'100%'" [height]='25' name="pacientes"
+                    [autoDropDownHeight]="true" [(ngModel)]="citaAng.idPaciente">
+                  </jqxComboBox>
+                </td>
+                <td class="col-md-4">
+                  <jqxButton #botonAgregarNuevo style="margin-right: 5px;" (onClick)="crearNuevoPaciente()"
+                    [theme]="'material'">
+                    Paciente Nuevo
+                  </jqxButton>
+                </td>
+              </tr>
+              <tr>
+                <!-- <td style="width: 20%">Motivo Consulta:</td>
+                <td style="width: 30%">
+                  <jqxInput #txtMotivoConsulta class="motConsInput"
+                    [placeHolder]="'Ingrese un motivo de su consulta...'" [height]="25" [width]="'100%'" name="motivo"
+                    [maxLength]="30" [minLength]="2" [(ngModel)]="citaAng.motivoConsulta" [theme]="'material'">
+                  </jqxInput>
+                </td>
+                <td style="width: 20%">Estado Cita:</td>
+                <td style="width: 20%" [hidden]="ocultarLabels">{{labelEstado}}</td>
+                <td style="width: 20%" [hidden]="ocultarComponente">
+                  <jqxComboBox #comboEstadoCita [theme]="'material'" [placeHolder]="'Elija un Estado...'"
+                    [selectedIndex]="-1" [displayMember]="'estado'" [valueMember]="'codigo'" [source]="sourceEstadoCita"
+                    [width]="'100%'" [height]='25' name="estados" [autoDropDownHeight]="true"
+                    [(ngModel)]="citaAng.estadoCita" (onChange)="obtenerLabelHora($event)">
+                  </jqxComboBox>
+                </td>
+                <td style="width: 10%"></td> -->
+                <td class="col-md-2">Motivo Consulta:</td>
+                <td class="col-md-4">
+                  <jqxInput #txtMotivoConsulta class="motConsInput"
+                    [placeHolder]="'Ingrese un motivo de su consulta...'" [width]="'100%'" [height]="25"
+                    [maxLength]="30" [minLength]="2" name="motivo" [theme]="'material'"
+                    [(ngModel)]="citaAng.motivoConsulta">
+                  </jqxInput>
+                </td>
+                <td class="col-md-2">Estado Cita:</td>
+                <td class="col-md-4" [hidden]="ocultarLabels">{{labelEstado}}</td>
+                <td class="col-md-4" [hidden]="ocultarComponente">
+                  <jqxComboBox #comboEstadoCita [theme]="'material'" [placeHolder]="'Elija un Estado...'"
+                    [selectedIndex]="-1" [displayMember]="'estado'" [valueMember]="'codigo'" [source]="sourceEstadoCita"
+                    [width]="'100%'" [height]='25' name="estados" [autoDropDownHeight]="true"
+                    [(ngModel)]="citaAng.estadoCita">
+                  </jqxComboBox>
+                </td>
+              </tr>
+              <tr>
+                <!-- <td style="width: 20%">Observación:</td>
+                <td style="width: 20%" colspan="2">
+                  <jqxTextArea #txtObservacion class="observacionInput" [placeHolder]="'Ingrese una observación...'"
+                    [width]="'100%'" [height]="60" [maxLength]="100" name="observacion" [theme]="'material'"
+                    [(ngModel)]="citaAng.observacion">
+                  </jqxTextArea>
+                </td>
+                <td colspan="2" style="width: 60%"></td> -->
+                <td class="col-md-2">Observación:</td>
+                <td class="col-md-4">
+                  <jqxTextArea #txtObservacion class="observacionInput" [placeHolder]="'Ingrese una observación...'"
+                    [width]="'100%'" [height]="60" [maxLength]="100" name="observacion" [theme]="'material'"
+                    [(ngModel)]="citaAng.observacion">
+                  </jqxTextArea>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <div style="overflow: hidden;">
+
+            <form id='formCitas' action="./">
+              <div class="row">
+                <div class="col-md-2">Cita Medica para: </div>
+                <div class="col-md-8 col-md-offset-2" [hidden]="ocultarLabels"></div>
+                <div class="col-md-6 col-md-offset-4" [hidden]="ocultarComponente">
+                  <jqxComboBox #comboMedico [theme]="'material'" [placeHolder]="'Elija un médico...'"
+                    [selectedIndex]="0" [displayMember]="'nombres'" [valueMember]="'idMedico'"
+                    [source]="dataAdapterMedicos" [width]="'100%'" [height]='25' name="medicos" [dropDownWidth]="425"
+                    [autoDropDownHeight]="true" (onChange)="obtenerLabel($event)" [(ngModel)]="citaAng.idMedico">
+                  </jqxComboBox>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-2">Fecha Cita: </div>
+                <div class="col-md-4 " [hidden]="ocultarLabels">{{varFechaCalendario}}</div>
+                <div class="col-md-4 " [hidden]="ocultarComponente">
+                  <jqxDateTimeInput #dateFechaCita class="fecha_citaInput" [width]="'100%'" [height]="22"
+                    [(ngModel)]="varFechaCita" (onValueChanged)="valueChangedFechaCita()" [template]="'primary'"
+                    name="fechaCita" [disabled]="false">
+                  </jqxDateTimeInput>
+                </div>
+                <div class="col-md-2">Hora: </div>
+                <div class="col-md-2 col-md-offset-2" [hidden]="ocultarLabels">{{labelHora}}</div>
+                <div class="col-md-2 col-md-offset-2" [hidden]="ocultarComponente">
+                  <jqxComboBox #comboHora [theme]="'material'" [selectedIndex]="-1" [placeHolder]="'Elija una hora...'"
+                    [displayMember]="'hora'" [valueMember]="'idHora'" [source]="dataAdapterHoras" [width]="'100%'"
+                    [height]='25' name="horas" [autoDropDownHeight]="true" [(ngModel)]="citaAng.idHora">
+                  </jqxComboBox>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-2">Paciente: </div>
+                <div class="col-md-6 ">
+                  <jqxComboBox #comboPaciente [theme]="'material'" [placeHolder]="'Elija un paciente...'"
+                    [selectedIndex]="-1" [displayMember]="'nombres'" [valueMember]="'idPaciente'"
+                    [source]="dataAdapterPacientes" [width]="'100%'" [height]='25' name="pacientes"
+                    [autoDropDownHeight]="true" [(ngModel)]="citaAng.idPaciente">
+                  </jqxComboBox>
+                </div>
+                <div class="col-md-4">
+                  <jqxButton #botonAgregarNuevo style="margin-right: 5px;" (onClick)="crearNuevoPaciente()"
+                    [theme]="'material'">
+                    Paciente Nuevo
+                  </jqxButton>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-2">Motivo Consulta:</div>
+                <div class="col-md-4">
+                  <jqxInput #txtMotivoConsulta class="motConsInput"
+                    [placeHolder]="'Ingrese un motivo de su consulta...'" [height]="25" [width]="'100%'" name="motivo"
+                    [maxLength]="30" [minLength]="2" [(ngModel)]="citaAng.motivoConsulta" [theme]="'material'">
+                  </jqxInput>
+                </div>
+                <div class="col-md-2">Estado Cita:</div>
+                <div class="col-md-4" [hidden]="ocultarLabels">{{labelEstado}}</div>
+                <div class="col-md-4" [hidden]="ocultarComponente">
+                  <jqxComboBox #comboEstadoCita [theme]="'material'" [placeHolder]="'Elija un Estado...'"
+                    [selectedIndex]="-1" [displayMember]="'estado'" [valueMember]="'codigo'" [source]="sourceEstadoCita"
+                    [width]="'100%'" [height]='25' name="estados" [autoDropDownHeight]="true"
+                    [(ngModel)]="citaAng.estadoCita">
+                  </jqxComboBox>
+                </div>
+              </div>
+
+              <div class=" row">
+                <div class="col-md-2">Observación:</div>
+                <div class="col-md-4">
+                  <jqxTextArea #txtObservacion class="observacionInput" [placeHolder]="'Ingrese una observación...'"
+                    [width]="'100%'" [height]="60" [maxLength]="100" name="observacion" [theme]="'material'"
+                    [(ngModel)]="citaAng.observacion">
+                  </jqxTextArea>
+                </div>
+              </div>
+            </form>
+          </div> -->
+        </div><!-- /.modal-body -->
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</jqxValidator>
+<app-modal-component (PassMethods)="getEvents($event)"></app-modal-component>
