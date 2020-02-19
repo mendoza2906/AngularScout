@@ -1,9 +1,0 @@
-
- <app-layout [menus]="menus" [title]="'SIIA App'" (itemClick)="onItemClick($event)">
-        <div style="padding:20px">    
-                <p *ngIf="selectedMenu">{{selectedMenu.text}}</p>
-                <p *ngIf="!selectedMenu"><app-inicio></app-inicio></p>
-                
-            </div>
- </app-layout>
- 
