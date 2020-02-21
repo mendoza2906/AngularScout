@@ -13,7 +13,7 @@ import { ScoutService } from '../../services/scout/scout.service';
 })
 export class DefaultLayoutComponent implements OnInit, OnDestroy {
 
-  constructor(private consultorioService: ScoutService,
+  constructor(private scoutService: ScoutService,
     @Inject(DOCUMENT) _document?: any) {
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = _document.body.classList.contains('sidebar-minimized');
@@ -57,7 +57,7 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
   // }
 
   listarPerfiles() {
-    this.consultorioService.getListarPerfiles().subscribe(data => {
+    this.scoutService.getListarPerfiles().subscribe(data => {
       let idPerfilLogeado: any
       if (localStorage.getItem('datosUsuario')) {
         let datosUsuario = JSON.parse(localStorage.getItem('datosUsuario'));

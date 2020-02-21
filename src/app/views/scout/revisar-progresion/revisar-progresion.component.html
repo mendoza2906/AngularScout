@@ -1,0 +1,86 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card" style="width: 100%">
+      <div class="card-header">
+        <h3> Revisión de Progresión </h3>
+      </div>
+      <tbody>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <!-- Nested grid -->
+              <div class="row">
+                <div class="col-md-3">Nombre:</div>
+                <div class="col-md-5">{{labelNombres}}</div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-md-3">Tipo Scout:</div>
+                <div class="col-md-5">{{labelTipoScout}}</div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-md-3">Rama:</div>
+                <div class="col-md-5">{{labelRama}}</div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-md-3">Grupo:</div>
+                <div class="col-md-5">{{labelGrupo}}</div>
+              </div>
+              <br />
+              
+              <br />
+              <div class="row">
+                <div class="col-md-3">
+                  <jqxButton #botonRegresar style="margin-right: 5px;" (onClick)="gotoList()" [theme]="'material'">
+                    Regresar
+                  </jqxButton>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-3">
+              <div class="row">
+                <!-- <div class="col-md-5">Insignia Actual:</div> -->
+                <div class="col-md-8">{{labelInsignia}}</div>
+              </div>
+              <img class="img-thumbnail img-responsive center-block" align="center" [src]="labelImagen" alt="">
+            </div>
+            <div class="col-md-3">
+              <!-- <div class="row">
+                <div class="col-md-12">Porcentaje de Avance:</div>
+              </div> -->
+              <div class="progress-percentage-wrapper">
+                <div class="progress-percentage ng-cloak">{{current}}%</div>
+                <round-progress [current]="current" [max]="100" [color]="'#0174DF'" [background]="'#eaeaea'"
+                  [radius]="80" [stroke]="25" [semicircle]="false" [rounded]="false" [clockwise]="true"
+                  [responsive]="false" [duration]="800" [animation]="'easeInOutQuint'" [animationDelay]="0"
+                  (onRender)="doSomethingWithCurrentValue($event)"> </round-progress>
+              </div>
+            </div>
+            </div>
+          </div>
+      </tbody>
+      <div class="card-header">
+        <h3> Insignias Conseguidas </h3>
+      </div>
+      <div class="card-body" style="height: 100%">
+        <jqxGrid #gridListaInsignias style='margin-left: 3px;' [theme]="'material'" [width]="'100%'"
+          [source]="dataAdapterInsignias" [columns]="columnsInsignias" [filterable]="true"
+          [rendergridrows]="rendergridrows" [sortable]="false" [altrows]="true" [enabletooltips]="true"
+          [autoloadstate]="true" [autosavestate]="true" [localization]="localization" [autoheight]="true"
+          [rowdetails]="true"  [initrowdetails]="initRowDetails" [autorowheight]="true" 
+          [rowdetailstemplate]="rowdetailstemplate" [ready]="ready">
+        </jqxGrid>
+        <!-- (onRowdoubleclick)="mostrarVentanaRegistroCita($event)" -->
+        <!-- (onRowselect)="comprobarEstudianteHabilitado($event)"  -->
+      </div>
+    </div>
+  </div>
+</div>
+<app-modal-component></app-modal-component>
+<pre>
+  <!-- {{sourceInsignias |json}} -->
+<!-- {{dataAdapterPacientes |json}} -->
+</pre>

@@ -31,7 +31,10 @@ import { SubirArchivoComponent } from './subir-archivo/subir-archivo.component';
 import { RevisarArchivoComponent } from './revisar-archivo/revisar-archivo.component';
 import { jqxPanelModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxPanel';
 import { jqxFileUploadModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxfileupload';
-
+import { ProgresionListadoComponent } from './progresion-listado/progresion-listado.component';
+import { RoundProgressModule} from 'angular-svg-round-progressbar';
+import { RevisarProgresionComponent } from './revisar-progresion/revisar-progresion.component';
+ 
 
 @NgModule({
   declarations: [
@@ -42,7 +45,9 @@ import { jqxFileUploadModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxfileuploa
     PacienteListadoComponent,
     PersonaEdicionComponent,
     SubirArchivoComponent,
-    RevisarArchivoComponent
+    RevisarArchivoComponent,
+    ProgresionListadoComponent,
+    RevisarProgresionComponent
 
   ],
   imports: [
@@ -66,6 +71,7 @@ import { jqxFileUploadModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxfileuploa
     ScoutRoutingModule,
     PdfViewerModule,
     NgxExtendedPdfViewerModule,
+    RoundProgressModule,
     FormsModule,
     jqxFileUploadModule, jqxPanelModule
   ],

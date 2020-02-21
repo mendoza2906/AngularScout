@@ -31,7 +31,7 @@ export interface NavData {
 
 export const navItems: NavData[] = [
   {
-    name: 'Consultorio',
+    name: 'Distrito Santa Elena',
     url: '/dashboard',
     icon: 'icon-speedometer',
     badge: {
@@ -52,13 +52,13 @@ export const navItems: NavData[] = [
     icon: 'icon-cursor',
     children: [
       {
-        name: 'Médicos',
-        url: '/consultorio/medico-listado/',
+        name: 'Comisionados',
+        url: '/scout/medico-listado/',
         icon: 'icon-grid'
       },
       {
-        name: 'Pacientes',
-        url: '/consultorio/paciente-listado/',
+        name: 'Scouts',
+        url: '/scout/paciente-listado/',
         icon: 'icon-grid'
       }
     ]
@@ -72,7 +72,7 @@ export const navItems: NavData[] = [
 
   // Menu Consultorio
   {
-    name: 'Administración',
+    name: 'Progresión',
     icon: 'icon-cursor',
     children: [
       {
@@ -83,6 +83,11 @@ export const navItems: NavData[] = [
       {
         name: 'Revisar Módulo',
         url: '/scout/revisar-archivo/',
+        icon: 'icon-grid'
+      },
+      {
+        name: 'Listado de Progresión Scout',
+        url: '/scout/progresion-listado/',
         icon: 'icon-grid'
       },
     ]
@@ -99,11 +104,6 @@ export const navItems: NavData[] = [
         url: '/reportes/distributivo/',
         icon: 'icon-grid'
       },
-      {
-        name: 'Docente asignatura',
-        url: '/reportes/docente-asignatura/',
-        icon: 'icon-grid'
-      }
     ]
   },
   {

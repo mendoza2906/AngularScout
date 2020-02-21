@@ -1,0 +1,30 @@
+// .positionRelative{
+//     position: relative;
+
+// }
+
+// .percentageValue {
+//     left: 10px;
+//     top: 40%;
+//     position: absolute;
+//     width: 100%;
+//     text-align: center;
+//     font-size: 13px;
+//     font-weight: 600;
+// }
+
+.progress-percentage-wrapper {
+    position: relative;
+    margin: 20px auto;
+    font-size: 30px;
+    width: 160px;
+    height: 160px;
+}
+
+.progress-percentage {
+    position: absolute;
+    color: #bbb;
+    width: 100%;
+    text-align: center;
+    top: 35%;
+}

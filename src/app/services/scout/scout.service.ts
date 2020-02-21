@@ -17,25 +17,43 @@ export class ScoutService {
   constructor(private http: HttpClient) {
 
   }
-
-  jsonToUrlParams(json) {
-    return Object.keys(json)
-      .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(json[key]))
-      .join("&");
-  }
-
+//PARA PANTALLA DE SUBIDA DE ARCHIVOS
   post(tarea: any): Observable<any> {
     let result: Observable<Object>;
-    let data = this.jsonToUrlParams(tarea);
-    result = this.http.post(this.URL_ROOT_WS + '/grabarDocumento', data);
+    result = this.http.post(this.URL_ROOT_WS + '/grabarDocumento', tarea);
     return result;
   }
 
   getRecuperarDocumentoId(idDocumento: number): Observable<any> {
     return this.http.get(this.URL_ROOT_WS + '/recuperarDocumentoId/' + idDocumento);
   }
+//FIN PANTALLA DE SUBIDA DE ARCHIVOS
 
+//PARA PANTALLA DE PROGRESION
+getListarRamas(): Observable<any> {
+  return this.http.get(this.URL_ROOT_WS + '/listarRamas');
+}
 
+getListarGrupos(idRama: number): Observable<any> {
+  return this.http.get(this.URL_ROOT_WS + '/listarGrupos/' + idRama);
+}
+
+getListarScouts(idGrupoRama: number): Observable<any> {
+  return this.http.get(this.URL_ROOT_WS + '/listarScouts/' + idGrupoRama);
+}
+
+getRecuperarUltimaInsigniaScout(idScout: number): Observable<any> {
+  return this.http.get(this.URL_ROOT_WS + '/recuperarUltimaInsigniaScout/' + idScout);
+}
+
+getRecuperarInsigniasObtenidas(idScout: number): Observable<any> {
+  return this.http.get(this.URL_ROOT_WS + '/recuperarInsigniasObtenidas/' + idScout);
+}
+
+getRecuperarDetalleInsignias(idScout: number): Observable<any> {
+  return this.http.get(this.URL_ROOT_WS + '/recuperarDetalleInsignias/' + idScout);
+}
+//FIN PANTALLA DE PROGRESION
 
   //PANTALLA PRINCIPAL CITAS 
   getListarEspecialidades(): Observable<any> {

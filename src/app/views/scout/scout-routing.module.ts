@@ -1,57 +1,28 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { ControlAutenticacion } from '../../security/control-autenticacion';
 import { AgendarCitaComponent } from './agendar-cita/agendar-cita.component';
-import { ConsultaMedicaComponent } from './consulta-medica/consulta-medica.component';
-import { RegistrarConsultaComponent } from './registrar-consulta/registrar-consulta.component';
 import { MedicoListadoComponent } from './medico-listado/medico-listado.component';
 import { PacienteListadoComponent } from './paciente-listado/paciente-listado.component';
 import { PersonaEdicionComponent } from './persona-edicion/persona-edicion.component';
 import { SubirArchivoComponent } from './subir-archivo/subir-archivo.component';
 import { RevisarArchivoComponent } from './revisar-archivo/revisar-archivo.component';
-
-
+import { ProgresionListadoComponent } from './progresion-listado/progresion-listado.component';
+import { RevisarProgresionComponent } from './revisar-progresion/revisar-progresion.component';
 
 
 const routes: Routes = [
   {
     path: '',
     data: {
-      title: 'Consultorio'
+      title: 'SCOUTS'
     },
     children: [
       {
         path: '',
         redirectTo: 'agendar-cita',
         pathMatch: 'full'
-      },
-
-      //Listar
-      {
-        path: 'agendar-cita',
-        component: AgendarCitaComponent,
-        canActivate: [ControlAutenticacion],
-        data: {
-          title: 'Registro de Citas'
-        }
-      },
-      {
-        path: 'consulta-medica',
-        component: ConsultaMedicaComponent,
-        canActivate: [ControlAutenticacion],
-        data: {
-          title: 'Citas Medicas'
-        }
-      },
-      {
-        path: 'registrar-consulta/:idCita/:idConsulta',
-        component: RegistrarConsultaComponent,
-        canActivate: [ControlAutenticacion],
-        data: {
-          title: 'Registrar Consulta '
-        }
-      },
+      },  
       {
         path: 'medico-listado',
         component: MedicoListadoComponent,
@@ -90,6 +61,22 @@ const routes: Routes = [
         canActivate: [ControlAutenticacion],
         data: {
           title: 'Revisar Archivo'
+        }
+      },
+      {
+        path: 'progresion-listado',
+        component: ProgresionListadoComponent,
+        canActivate: [ControlAutenticacion],
+        data: {
+          title: 'Progresiones'
+        }
+      },
+      {
+        path: 'revisar-progresion/:idScout',
+        component: RevisarProgresionComponent,
+        canActivate: [ControlAutenticacion],
+        data: {
+          title: 'Visualizar Progresión Scout'
         }
       },
     ]

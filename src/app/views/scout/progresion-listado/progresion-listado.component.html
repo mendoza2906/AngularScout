@@ -1,0 +1,72 @@
+<div class="row">
+  <div class="col-md-12" [hidden]="isCollapsed">
+    <div class="card" style="width: 100%">
+      <div class="card-header">
+        <h3> Listado de Scouts y nivel de Progresión </h3>
+        <jqxMenu style='margin-left: 3px; margin-top: 5px;' (onItemclick)="itemclick($event)" [source]="menuMatricula"
+          [theme]="'material'" [width]="'99%'" [height]="30">
+        </jqxMenu>
+      </div>
+      <div class="card-header" [hidden]="isCollapsed">
+        <div class="row">
+          <div class="col-md-3">Rama:</div>
+          <div class="col-md-3">
+            <jqxComboBox #comboRama [theme]="'material'" [placeHolder]="'Elija una rama...'"
+              [displayMember]="'nombre'" [selectedIndex]="-1" [valueMember]="'id'"
+              [source]="dataAdapterRamas" [height]='25' [width]="'100%'" name="ramas"
+              [dropDownHorizontalAlignment]="'left'" [autoDropDownHeight]="true" (onSelect)="listarGrupos()">
+            </jqxComboBox>
+          </div>
+          <div class="col-md-3">Grupo:</div>
+          <div class="col-md-3">
+            <jqxComboBox #comboGrupo [theme]="'material'" [placeHolder]="'Elija un grupo...'"
+              [displayMember]="'nombre'" [selectedIndex]="-1" [valueMember]="'idGrupoRama'"
+              [source]="dataAdapterGrupos" [height]='25' [width]="'100%'" name="grupos"
+              [dropDownHorizontalAlignment]="'left'" [autoDropDownHeight]="true" (onSelect)="listarScouts()">
+            </jqxComboBox>
+          </div>
+        </div>
+      </div>
+      <div class="card-body" [hidden]="isCollapsed">
+        <jqxGrid #gridScouts style='margin-left: 3px;' [theme]="'material'" [width]="'100%'"
+          [source]="dataAdapterScouts" [columns]="columnsScouts" [filterable]="true" [pageable]="true"
+          [showfilterrow]="true" [localization]="localization" [sortable]="false" [height]='600'>
+        </jqxGrid>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer" [hidden]="ocultarPdfViewer" class="col-sm-12">
+    <div class="form-group row">
+      <div class="col-md-1">Desde: </div>
+      <div class="col-md-2">
+        <jqxDateTimeInput #dateDesde [formatString]="'yyyy-MM-dd'" [height]="22" [width]="'100%'"
+          [(ngModel)]="varFechaDesde" [theme]="'material'" [disabled]="false" name="desde">
+        </jqxDateTimeInput>
+      </div>
+      <div class="col-md-1">Hasta:</div>
+      <div class="col-md-2">
+        <jqxDateTimeInput #dateHasta [formatString]="'yyyy-MM-dd'" [height]="22" [width]="'100%'"
+          [(ngModel)]="varFechaHasta" [theme]="'material'" [disabled]="false" name="hasta">
+        </jqxDateTimeInput>
+      </div>
+      <div class="col-md-4">
+        <jqxButton #botonVolver [width]="'60'" [height]="'25'" [theme]="'darkblue'" [disabled]="true"
+          (click)="controlIsCollapsed()">Volver
+        </jqxButton>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-12">
+        <ngx-extended-pdf-viewer #myPdfViewer [src]="pdfSrc" [hidden]="ocultarPdfViewer" backgroundColor="#ffffff"
+          [height]="'90vh'" [useBrowserLocale]="true">
+        </ngx-extended-pdf-viewer>
+      </div>
+    </div>
+  </div>
+</div>
+<app-modal-component (PassMethods)="getEvents($event)"></app-modal-component>
+
+<pre>
+  <!-- {{dataAdapterOferta |json}} -->
+</pre>
