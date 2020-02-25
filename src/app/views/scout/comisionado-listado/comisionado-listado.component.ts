@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { jqxDateTimeInputComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxdatetimeinput';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessagerService } from 'ng-easyui/components/messager/messager.service';
-import { jqxComboBoxComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxcombobox';
 import { jqxGridComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxgrid';
 import { ModalComponentComponent } from '../../modal-view/modal-component/modal-component.component';
 import { getLocalization } from 'jqwidgets-scripts/scripts/localization';
@@ -12,13 +11,12 @@ import { NgxExtendedPdfViewerComponent } from 'ngx-extended-pdf-viewer';
 import { ScoutService } from '../../../services/scout/scout.service';
 
 @Component({
-  selector: 'app-medico-listado',
-  templateUrl: './medico-listado.component.html',
-  styleUrls: ['./medico-listado.component.scss']
+  selector: 'app-comisionado-listado',
+  templateUrl: './comisionado-listado.component.html',
+  styleUrls: ['./comisionado-listado.component.scss']
 })
-export class MedicoListadoComponent implements OnInit {
-  @ViewChild('comboEspecialidad') comboEspecialidad: jqxComboBoxComponent;
-  @ViewChild('gridMedicos') gridMedicos: jqxGridComponent;
+export class ComisionadoListadoComponent implements OnInit {
+  @ViewChild('gridComisionados') gridComisionados: jqxGridComponent;
   @ViewChild(ModalComponentComponent) myModal: ModalComponentComponent;
   @ViewChild('botonVolver') botonVolver: jqxButtonComponent;
   @ViewChild('myPdfViewer') myPdfViewer: NgxExtendedPdfViewerComponent;
@@ -40,7 +38,7 @@ export class MedicoListadoComponent implements OnInit {
   };
 
   //Variable paa cargar datos del objeto 
-  listaMedicos: Array<any>;
+  listaComisionados: Array<any>;
   rowindex: number = -1;
   banderaDepencia: boolean = false
   ocultarPdfViewer: boolean = true;
@@ -55,7 +53,7 @@ export class MedicoListadoComponent implements OnInit {
   varHasta: string;
 
   ngOnInit() {
-    this.listarEspecialidades();
+    this.listadoComisionados();
   }
 
   ngAfterViewInit(): void {
@@ -81,13 +79,8 @@ export class MedicoListadoComponent implements OnInit {
       'text': 'Eliminar',
       'parentid': '-1',
       'subMenuWidth': '250px'
-    },
-    {
-      'id': '4',
-      'text': 'Imprimir Agenda Médico',
-      'parentid': '-1',
-      'subMenuWidth': '250px'
-    },
+    }
+
   ];
 
   sourceMenu =
@@ -109,59 +102,48 @@ export class MedicoListadoComponent implements OnInit {
 
   itemclick(event: any): void {
     // captura el id seleccionado
-    const selectedrowindex = this.gridMedicos.getselectedrowindex();
-    const idPersonaSel = this.gridMedicos.getcellvalue(selectedrowindex, 'idPersona');
-    const idMedicoSel = this.gridMedicos.getcellvalue(selectedrowindex, 'idMedico');
-    let idComboEspecialidad = this.comboEspecialidad.val()
+    const selectedrowindex = this.gridComisionados.getselectedrowindex();
+    const idScoutSel = this.gridComisionados.getcellvalue(selectedrowindex, 'idScout');
     var opt = event.args.innerText;
 
     switch (opt) {
       case 'Nuevo':
         this.setFormularioState();
-        this.router.navigate(['consultorio/persona-edicion', 0, 'med']);
+        this.router.navigate(['scout/persona-edicion', 0, 'com']);
         break;
       case 'Editar':
-        if (idPersonaSel) {
+        if (idScoutSel) {
           this.setFormularioState();
-          this.router.navigate(['consultorio/persona-edicion', idPersonaSel, 'med']);
+          this.router.navigate(['scout/persona-edicion', idScoutSel, 'com']);
         } else {
-          this.myModal.alertMessage({ title: 'Registro de Médicos', msg: 'Seleccione un Estudiante!' });
+          this.myModal.alertMessage({ title: 'Registro de Comisionados', msg: 'Seleccione un Comisionado!' });
         }
         break;
       case 'Eliminar':
-        if (idPersonaSel) {
+        if (idScoutSel) {
           if (this.banderaDepencia == false) {
             this.myModal.alertQuestion({
-              title: 'Registro de Médicos',
-              msg: 'Desea eliminar este registro?',
+              title: 'Registro de Comisionados',
+              msg: '¿Desea eliminar este registro?',
               result: (k) => {
                 if (k) {
-                  // this.eliminarEstudiante(idPersonaSel)
-                  this.myModal.alertMessage({ title: 'Registro de Médicos', msg: 'Estudiante eliminado Correctamente!' });
-                  this.gridMedicos.clear()
-                  this.gridMedicos.clearselection()
-                  this.listarMedicos()
-                  this.gridMedicos.refreshdata()
+                  // this.eliminarComisionado(idPersonaSel)
+                  this.myModal.alertMessage({ title: 'Registro de Comisionados', msg: 'Comisionado eliminado Correctamente!' });
+                  this.gridComisionados.clear()
+                  this.gridComisionados.clearselection()
+                  this.listadoComisionados()
+                  this.gridComisionados.refreshdata()
                 }
               }
             })
           } else {
             this.myModal.alertMessage({
-              title: 'Registro de Médicos',
+              title: 'Registro de Comisionados',
               msg: 'No es posible eliminar este registro activo, por sus dependencias con otros registros!'
             });
           }
         } else {
-          this.myModal.alertMessage({ title: 'Registro de Médicos', msg: 'Seleccione un Estudiante!' });
-        }
-        break;
-      case 'Imprimir Agenda Médico':
-        if (idPersonaSel) {
-          this.valueChangedFechas()
-          // this.reportAgendaMedico(idMedicoSel, this.varDesde, this.varHasta)
-          this.reportAgendaMedico(idMedicoSel, '2020-01-01', '2020-02-01')
-        } else {
-          this.myModal.alertMessage({ title: 'Registro de Médicos', msg: 'Seleccione un Médico!' });
+          this.myModal.alertMessage({ title: 'Registro de Comisionados', msg: 'Seleccione un Comisionado!' });
         }
         break;
       default:
@@ -201,57 +183,34 @@ export class MedicoListadoComponent implements OnInit {
     }
   }
 
-  // eliminarEstudiante(idPersona: number) {
-  //   this.MatriculasService.borrarEstudiante(idPersona).subscribe(result => {
+  // eliminarComisionado(idPersona: number) {
+  //   this.MatriculasService.borrarComisionado(idPersona).subscribe(result => {
   //   }, error => console.error(error));
   // }
 
-  listarEspecialidades() {
-    this.consultorioService.getListarEspecialidades().subscribe(data => {
-      this.sourceEspecilidad.localdata = data;
-      this.dataAdapterEspecialidad.dataBind();
-    })
 
-  }
-
-  //FUENTE DE DATOS PARA EL COMBOBOX DE ESPECIALIDAD
-  sourceEspecilidad: any =
+  sourceComisionados: any =
+  {
+    datatype: 'array',
+    id: 'idScout',
+    datafields:
+      [
+        { name: 'idScout', type: 'int' },
+        { name: 'idTipoScout', type: 'int' },
+        { name: 'idGrupoRama', type: 'int' },
+        { name: 'identificacion', type: 'string' },
+        { name: 'nombresCompletos', type: 'string' },
+        { name: 'tipoScout', type: 'string'},
+        { name: 'direccion', type: 'string' },
+        { name: 'celular', type: 'string' },
+      ],
+    hierarchy:
     {
-      datatype: 'json',
-      id: 'id',
-      localdata:
-        [
-          { name: 'id', type: 'string' },
-          { name: 'descripcion', type: 'string' },
-          { name: 'codigo', type: 'string' },
-          { name: 'estado', type: 'string' }
-        ],
-    };
-  //CARGAR ORIGEN DEL COMBOBOX DE ESPECIALIDAD
-  dataAdapterEspecialidad: any = new jqx.dataAdapter(this.sourceEspecilidad);
-
-  sourceMedicos: any =
-    {
-      datatype: 'array',
-      id: 'idPersona',
-      datafields:
-        [
-          { name: 'idPersona', type: 'int' },
-          { name: 'idMedico', type: 'int' },
-          { name: 'idUsuario', type: 'int' },
-          { name: 'identificacion', type: 'string' },
-          { name: 'nombresCompletos', type: 'string' },
-          { name: 'especilidad', type: 'string' },
-          { name: 'direccion', type: 'string' },
-          { name: 'celular', type: 'string' },
-        ],
-      hierarchy:
-      {
-        keyDataField: { name: 'idPersona' },
-        parentDataField: { name: 'padre_id' }
-      }
-    };
-  dataAdapterMedicos: any = new jqx.dataAdapter(this.sourceMedicos);
+      keyDataField: { name: 'idScout' },
+      parentDataField: { name: 'padre_id' }
+    }
+  };
+  dataAdapterComisionados: any = new jqx.dataAdapter(this.sourceComisionados);
 
   //metodo de reinderizado de filas del grid
   rendergridrows = (params: any): any[] => {
@@ -259,26 +218,23 @@ export class MedicoListadoComponent implements OnInit {
   }
 
 
-  listarMedicos() {
-    if (this.comboEspecialidad.val() == "") {
-      return;
-    }
-    this.consultorioService.getListadoMedicos(this.comboEspecialidad.val()).subscribe(data => {
-      this.listaMedicos = data;
-      this.sourceMedicos.localdata = data;
-      this.dataAdapterMedicos.dataBind();
-      this.gridMedicos.gotopage(this.pageinformation.page)
+  listadoComisionados() {
+    this.consultorioService.getListadoComisionados().subscribe(data => {
+      this.listaComisionados = data;
+      this.sourceComisionados.localdata = data;
+      this.dataAdapterComisionados.dataBind();
+      this.gridComisionados.gotopage(this.pageinformation.page)
     });
   }
 
-  columnsMedico: any[] =
+  columnsComisionados: any[] =
     [
-      { text: 'Id Persona', datafield: 'idPersona', width: '5%', filtertype: 'none' },
-      { text: 'Id Médico', datafield: 'idMedico', width: '5%', hidden: true, filtertype: 'none' },
-      { text: 'Id Usuario', datafield: 'idUsuario', width: '5%', hidden: true, filtertype: 'none' },
+      { text: 'Id Scout', datafield: 'idScout', width: '5%', filtertype: 'none' },
+      { text: 'Id TipoScout', datafield: 'idTipoScout', width: '5%', hidden: true, filtertype: 'none' },
+      { text: 'Id GrupoRama', datafield: 'idGrupoRama', width: '5%', hidden: true, filtertype: 'none' },
       { text: 'Identificacion', datafield: 'identificacion', width: '15%', cellsalign: 'center', center: 'center' },
       { text: 'Nombres', datafield: 'nombresCompletos', width: '30%' },
-      { text: 'Especilidad', datafield: 'especialidad', width: '25%' },
+      { text: 'Tipo Scout', datafield: 'tipoScout', width: '25%' },
       { text: 'Dirección', datafield: 'direccion', width: '15%', cellsalign: 'center', center: 'center' },
       { text: 'Celular', datafield: 'celular', width: '10%', cellsalign: 'center', center: 'center' },
     ];
@@ -301,26 +257,23 @@ export class MedicoListadoComponent implements OnInit {
   //graba el estado del grid y combox
   setFormularioState() {
     //Prepara estado de grabado del grid
-    let EspecialidadState = JSON.stringify(this.comboEspecialidad.getSelectedItem());
-    let gridState = JSON.stringify(this.gridMedicos.savestate())
+    let gridState = JSON.stringify(this.gridComisionados.savestate())
     this.pageinformation.page = JSON.parse(gridState).pagenum;
     localStorage.setItem('pageinformation', JSON.stringify(this.pageinformation));
-    localStorage.setItem('cbxEspecialidadState', EspecialidadState);
-    localStorage.setItem('gridMedicostate', gridState);
+    localStorage.setItem('gridComisionadoState', gridState);
   }
 
   getStorageFormularioState() {
-    if (localStorage.getItem('gridMedicostate')) {
+    if (localStorage.getItem('gridComisionadoState')) {
       //recupera el estado del grid y combobox
       let EspecialidadState = JSON.parse(localStorage.getItem('cbxEspecialidadState'));
       //carga el estado recuperado de los combobox y grid
-      this.comboEspecialidad.selectedIndex(EspecialidadState.index);
-      let gridState = JSON.parse(localStorage.getItem('gridMedicostate'));
-      this.gridMedicos.loadstate(gridState);
+      let gridState = JSON.parse(localStorage.getItem('gridComisionadoState'));
+      this.gridComisionados.loadstate(gridState);
       this.pageinformation.page = JSON.stringify(gridState.pagenum)
-      this.gridMedicos.gotopage(this.pageinformation.page)
+      this.gridComisionados.gotopage(this.pageinformation.page)
       localStorage.removeItem('cbxEspecialidadState');
-      localStorage.removeItem('gridMedicostate');
+      localStorage.removeItem('gridComisionadoState');
     }
   }
   nombreArchivo(): string {

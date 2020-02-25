@@ -1,12 +1,12 @@
 <div class="card">
   <div class="card-header">
-    <h3>Registrar Clase</h3>
+    <h3>Registrar Documento</h3>
   </div>
   <jqxMenu #jqxMenu style='margin-left: 5px; margin-right: 5px; margin-top: 5px;' (onItemclick)="itemclick($event)"
-    [source]="menus" [theme]="'darkblue'" [width]="'auto'" [height]="30">
+    [source]="menus" [theme]="'material'" [width]="'auto'" [height]="30">
   </jqxMenu>
   <jqxValidator #myValidator [rules]="rules" [hintType]="'label'" (onValidationSuccess)="ValidationSuccess($event)">
-    <form id='formPlanClase' action="./">
+    <form id='formArchivos' action="./">
       <div class="row">
         <div class="col-md-6">
           <div class="card card-accent-info" style='margin-left: 5px; margin-top: 10px;
@@ -16,20 +16,29 @@
             </div>
             <div class="card-body">
               <div class="form-group row">
-                <div class="col-md-2">Titulo:</div>
-                <div class="col-md-10">
-                  <jqxInput #txtTitulo [maxLength]="255" class="temaContenidoInput" [width]="'100%'" [disabled]="false"
-                    [height]="22" name="identificacion" [theme]="'darkblue'" [(ngModel)]="documentoAng.titulo">
-                  </jqxInput>
-                </div>
-                <!-- (onChange)="verificarCedulaExiste()" -->
+                <div class="col-md-3">Nombre Módulo:</div>
+                <h4>{{labelUltimoModuloHabilitado}}</h4>
               </div>
               <div class="form-group row">
+                <div class="col-md-3">Descripción:</div>
+                <h4>{{labelDescripcionModulo}}</h4>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-3">Titulo:</div>
+                <div class="col-md-9" [hidden]="ocultarAdmin">
+                  <jqxInput #txtTitulo [maxLength]="255" class="tituloInput" [width]="'100%'" [disabled]="false"
+                    [height]="22" name="titulo" [theme]="'material'" [(ngModel)]="documentoAng.titulo">
+                  </jqxInput>
+                </div>
+                <div class="col-md-9">{{labelTitulo}}</div>
+                <!-- (onChange)="verificarCedulaExiste()" -->
+              </div>
+              <!-- <div class="form-group row">
                 <div class="col-md-6">
                   <jqxFileUpload #myFileUpload style="float: left" (onSelect)="onSelect($event)"
                     (onRemove)="onRemove($event)" (onUploadStart)="onUploadStart($event)"
                     (onUploadEnd)="onUploadEnd($event)" [width]="'100%'" [uploadUrl]="'upload.php'"
-                    [fileInputName]="'fileToUpload'">
+                    [fileInputName]="'fileToUpload'" [localization]="localization" >
                   </jqxFileUpload>
                 </div>
                 <div class="col-md-6">
@@ -37,31 +46,73 @@
                     Datos del Archivo</div>
                   <jqxPanel #myPanel [width]="'100%'" [height]="150"></jqxPanel>
                 </div>
-              </div>
+              </div> -->
               <div class="form-group row">
-                <div class="col-md-3">Descripción:</div>
-                <div class="col-md-9">
-                  <jqxTextArea #txtDescripcion class="contenidoInput" [width]="'100%'" [height]="50" [maxLength]="255"
-                    name="direccion" [placeHolder]="'Ingrese el contenido'" [theme]="'darkblue'"
+                <div class="col-md-3">Descripción documento:</div>
+                <div class="col-md-9" [hidden]="ocultarAdmin">
+                  <jqxTextArea #txtDescripcion class="descripcionInput" [width]="'100%'" [height]="50" [maxLength]="255"
+                    name="direccion" [placeHolder]="'Ingrese la descripcion'" [theme]="'material'"
                     [(ngModel)]="documentoAng.descripcion">
                   </jqxTextArea>
                 </div>
+                <div class="col-md-9">{{labelDescripcion}}</div>
+              </div>
+              <div class="form-group row" [hidden]="ocultarBen">
+                <div class="col-md-3">Observación:</div>
+                <div class="col-md-9">
+                  <jqxTextArea #txtObservacion class="observacionInput" [width]="'100%'" [height]="50" [maxLength]="255"
+                    name="observacion" [placeHolder]="'Ingrese la Observación'" [theme]="'material'"
+                    [(ngModel)]="scoutModulosAng.observacion">
+                  </jqxTextArea>
+                </div>
+              </div>
+              <div class="form-group row" [hidden]="ocultarBen">
+                <div class="col-md-6">
+                  <jqxCheckBox #chbAprobado [theme]="'material'" style="margin: 0px;">
+                    Aprobar Documento</jqxCheckBox>
+                </div>
               </div>
               <div class="form-group row">
-                <label for="img">File</label>
+                <!-- <label for="img">File</label> -->
+                <div class="col-md-6" [hidden]="ocultarAdmin">
+                  <div class="row">
+                    <div class="col-md-12">Archivo: </div>
+                  </div>
+                  <br />
+                  <div class="row">
+                    <div class="col-md-12"> 
+                      <input type="file" class="form-control" id="img" name="img" ngModel>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div align="center" class="item">
+                    <!-- height="190" width="190" -->
+                    <img style="width:100%; height:190px" class="img-thumbnail center-block" 
+                    [src]="imagenDefecto" alt="">
+                  </div>
+                </div>
+              </div>
+              
+              <!-- <div class="form-group row">
+                <div class="col-md-3">Archivo:</div>
                 <input type="file" class="form-control" id="img" name="img" ngModel>
               </div>
               <div class="form-group row">
                 <img [src]="documentoAng.rutaArchivo" alt="">
-              </div>
+              </div> -->
             </div>
           </div>
+        </div>
+        <div class="card-footer" class="col-md-6" style='margin-top: 10px; margin-bottom : 5px;'>
+          <!-- [hidden]="ocultarPdfViewer" [src]="pdfSrc" [base64Src]="pdfSrc64" -->
+          <ngx-extended-pdf-viewer #myPdfViewer backgroundColor="#ffffff" [height]="'100%'" [useBrowserLocale]="true">
+          </ngx-extended-pdf-viewer>
         </div>
       </div>
     </form>
   </jqxValidator>
 </div>
-
 <app-modal-component></app-modal-component>
 
 <pre>

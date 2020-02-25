@@ -17,56 +17,133 @@ export class ScoutService {
   constructor(private http: HttpClient) {
 
   }
-//PARA PANTALLA DE SUBIDA DE ARCHIVOS
-  post(tarea: any): Observable<any> {
+  //PARA PANTALLA DE SUBIDA DE ARCHIVOS
+  grabarDocumento(documentoAng: any): Observable<any> {
     let result: Observable<Object>;
-    result = this.http.post(this.URL_ROOT_WS + '/grabarDocumento', tarea);
+    result = this.http.post(this.URL_ROOT_WS + '/grabarDocumento', documentoAng);
     return result;
   }
 
   getRecuperarDocumentoId(idDocumento: number): Observable<any> {
     return this.http.get(this.URL_ROOT_WS + '/recuperarDocumentoId/' + idDocumento);
   }
-//FIN PANTALLA DE SUBIDA DE ARCHIVOS
 
-//PARA PANTALLA DE PROGRESION
-getListarRamas(): Observable<any> {
-  return this.http.get(this.URL_ROOT_WS + '/listarRamas');
-}
-
-getListarGrupos(idRama: number): Observable<any> {
-  return this.http.get(this.URL_ROOT_WS + '/listarGrupos/' + idRama);
-}
-
-getListarScouts(idGrupoRama: number): Observable<any> {
-  return this.http.get(this.URL_ROOT_WS + '/listarScouts/' + idGrupoRama);
-}
-
-getRecuperarUltimaInsigniaScout(idScout: number): Observable<any> {
-  return this.http.get(this.URL_ROOT_WS + '/recuperarUltimaInsigniaScout/' + idScout);
-}
-
-getRecuperarInsigniasObtenidas(idScout: number): Observable<any> {
-  return this.http.get(this.URL_ROOT_WS + '/recuperarInsigniasObtenidas/' + idScout);
-}
-
-getRecuperarDetalleInsignias(idScout: number): Observable<any> {
-  return this.http.get(this.URL_ROOT_WS + '/recuperarDetalleInsignias/' + idScout);
-}
-//FIN PANTALLA DE PROGRESION
-
-  //PANTALLA PRINCIPAL CITAS 
-  getListarEspecialidades(): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS + '/listarEspecialidades');
+  getRecuperarDatosScout(usuario: string): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS + '/recuperarDatosScout/' + usuario);
   }
 
-  getListarMedicos(idEspecialidad: number): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS + '/listarMedicos/' + idEspecialidad);
+  getRecuperarUltimaModuloInsignia(idScout: number): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS + '/recuperarUltimaModuloInsignia/' + idScout);
   }
 
-  getListarPacientes(): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS + '/listarPacientes');
+  getBuscarPorScoutModulo(IdModulo: number, idScout: number): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS + '/buscarPorScoutModulo/' + IdModulo + '/' + idScout);
   }
+
+  grabarDocumentoModulos(ScoutModulo: any): Observable<any> {
+    let result: Observable<Object>;
+    result = this.http.post(this.URL_ROOT_WS + '/grabarDocumentoModulos', ScoutModulo);
+    return result;
+  }
+  //FIN PANTALLA DE SUBIDA DE ARCHIVOS
+
+  //PARA PANTALLA DE PROGRESION
+  getListarRamas(): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS + '/listarRamas');
+  }
+
+  getListarGrupos(idRama: number): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS + '/listarGrupos/' + idRama);
+  }
+
+  getListarScouts(idGrupoRama: number): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS + '/listarScouts/' + idGrupoRama);
+  }
+
+  getRecuperarUltimaInsigniaScout(idScout: number): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS + '/recuperarUltimaInsigniaScout/' + idScout);
+  }
+
+  getRecuperarInsigniasObtenidas(idScout: number): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS + '/recuperarInsigniasObtenidas/' + idScout);
+  }
+
+  getRecuperarDetalleInsignias(idScout: number): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS + '/recuperarDetalleInsignias/' + idScout);
+  }
+  //FIN PANTALLA DE PROGRESION
+
+  //PANTALLA PERSONAS
+  getListarPerfiles(): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/listarPerfiles');
+  }
+
+  getListarTiposScouts(): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/listarTiposScouts');
+  }
+
+  getListadoScouts(): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/listadoScouts');
+  }
+
+  getListadoComisionados(): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/listadoComisionados');
+  }
+
+  getRecuperarScoutId(idScout: number): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/recuperarScoutId/' + idScout);
+  }
+
+  getRecuperarCombosGrupoRama(idGrupoRama: number): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/recuperarCombosGrupoRama/' + idGrupoRama);
+  }
+
+  getRecuperarPorCedula(cedula: string): Observable<any> {
+    console.log(this.URL_ROOT_WS_PER + '/recuperarPorCedula/' + cedula)
+    return this.http.get(this.URL_ROOT_WS_PER + '/recuperarPorCedula/' + cedula);
+  }
+
+  getBuscarUsuario(usuario: string): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/buscarUsuario/' + usuario);
+  }
+
+  grabarScout(Scout: any): Observable<any> {
+    let result: Observable<Object>;
+    result = this.http.post(this.URL_ROOT_WS_PER + '/grabarScout', Scout);
+    return result;
+  }
+  //PANTALLA PERSONAS
+
+  //PANTALLA ASISTENCIA
+  getRecuperarAsistenciaId(idAsistencia: number): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/recuperarAsistenciaId/' + idAsistencia);
+  }
+
+  getListarActividades(): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/listarActividades');
+  }
+
+  getListarAsistencias(): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/listarAsistencias');
+  }
+
+  grabarAsistencia(Asistencia: any): Observable<any> {
+    let result: Observable<Object>;
+    result = this.http.post(this.URL_ROOT_WS_PER + '/grabarAsistencia', Asistencia);
+    return result;
+  }
+
+  getRecuperarCombosScouts(idScout: number): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/recuperarCombosScouts/' + idScout);
+  }
+  //PANTALLA ASISTENCIA
+
+
+
+
+
+
+
 
   getListarCitas(fechaCita: string): Observable<any> {
     return this.http.get(this.URL_ROOT_WS + '/listarCitas/' + fechaCita);
@@ -88,11 +165,7 @@ getRecuperarDetalleInsignias(idScout: number): Observable<any> {
     return this.http.get(this.URL_ROOT_WS + '/listarCitaId/' + idCita);
   }
 
-  grabarCita(citaPojo: any): Observable<any> {
-    let result: Observable<Object>;
-    result = this.http.post(this.URL_ROOT_WS + '/grabarCita', citaPojo);
-    return result;
-  }
+
 
   borrarMatricula(idEstudianteMatricula: number) {
     return this.http.delete(this.URL_ROOT_WS + '/borrarMatricula/' + idEstudianteMatricula);
@@ -124,37 +197,13 @@ getRecuperarDetalleInsignias(idScout: number): Observable<any> {
     return this.http.get(this.URL_ROOT_WS_PER + '/listadoPacientes');
   }
 
-  getListarPerfiles(): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS_PER + '/listarPerfiles');
-  }
-
-  getRecuperarUltimoPaciente(): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS_PER + '/recuperarUltimoPaciente');
-  }
-
-  getBuscarPersonaId(idConsulta: number): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS + '/buscarPersonaId/' + idConsulta);
-  }
-
-  getRecuperarPorCedula(cedula: string): Observable<any> {
-    console.log(this.URL_ROOT_WS_PER + '/recuperarPorCedula/' + cedula)
-    return this.http.get(this.URL_ROOT_WS_PER + '/recuperarPorCedula/' + cedula);
-  }
-
-  grabarPersona(personaPojo: any): Observable<any> {
-    let result: Observable<Object>;
-    result = this.http.post(this.URL_ROOT_WS_PER + '/grabarPersona', personaPojo);
-    return result;
-  }
 
   //PANTALLA  MEDICOS 
   getListadoMedicos(idEspecialidad: number): Observable<any> {
     return this.http.get(this.URL_ROOT_WS_PER + '/listadoMedicos/' + idEspecialidad);
   }
 
-  getBuscarUsuario(usuario: string): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS_PER + '/buscarUsuario/' + usuario);
-  }
+
 
   getAgendaMedico(idMedico: number, pi_fecha_inicio: string, pi_fecha_fin: string): Observable<Blob> {
     return this.http.get(this.URL_ROOT_WS_PER + '/getAgendaMedico/' + idMedico + '/' + pi_fecha_inicio +

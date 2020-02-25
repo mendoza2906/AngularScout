@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalCitaComponent } from './modal-cita.component';
+import { ComisionadoListadoComponent } from './comisionado-listado.component';
 
-describe('ModalCitaComponent', () => {
-  let component: ModalCitaComponent;
-  let fixture: ComponentFixture<ModalCitaComponent>;
+describe('ComisionadoListadoComponent', () => {
+  let component: ComisionadoListadoComponent;
+  let fixture: ComponentFixture<ComisionadoListadoComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ModalCitaComponent]
+      declarations: [ComisionadoListadoComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ModalCitaComponent);
+    fixture = TestBed.createComponent(ComisionadoListadoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

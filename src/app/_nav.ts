@@ -53,12 +53,12 @@ export const navItems: NavData[] = [
     children: [
       {
         name: 'Comisionados',
-        url: '/scout/medico-listado/',
+        url: '/scout/comisionado-listado/',
         icon: 'icon-grid'
       },
       {
         name: 'Scouts',
-        url: '/scout/paciente-listado/',
+        url: '/scout/scout-listado/',
         icon: 'icon-grid'
       }
     ]
@@ -81,8 +81,8 @@ export const navItems: NavData[] = [
         icon: 'icon-grid'
       },
       {
-        name: 'Revisar Módulo',
-        url: '/scout/revisar-archivo/',
+        name: 'Módulo Scout',
+        url: '/scout/revisar-progresion/'+2,
         icon: 'icon-grid'
       },
       {
@@ -93,6 +93,24 @@ export const navItems: NavData[] = [
     ]
   },
 
+  // modulo adacemico
+  {
+    title: true,
+    name: 'Control de Asistencia'
+  },
+
+  // Menu Consultorio
+  {
+    name: 'Control de Asistencia',
+    icon: 'icon-cursor',
+    children: [
+      {
+        name: 'Listado de Actividades',
+        url: '/scout/asistencia-listado/',
+        icon: 'icon-grid'
+      },
+    ]
+  },
   //Menu Reportes
   {
     name: 'Reportes',

@@ -6,11 +6,11 @@
     [source]="menus" [theme]="'material'" [width]="'auto'" [height]="30">
   </jqxMenu>
 
-  <jqxValidator #myValidator [rules]="rules" [hintType]="'label'">
+  <jqxValidator #myValidator [rules]="rules" [hintType]="'label'" (onValidationSuccess)="ValidationSuccess($event)">
     <form id='formPersona' action="./">
       <div class="row">
-        <div class="col-sm-12">
-          <div class="card card-accent-info" style='margin-left: 5px; margin-right: 5px; margin-top: 10px;
+        <div class="col-md-8">
+          <div class="card card-accent-info" style='margin-left: 5px; margin-top: 10px;
           margin-bottom : 5px;'>
             <div class="card-header">
               <h5 style="padding: 0; margin: 0;"> Datos Personales</h5>
@@ -22,116 +22,173 @@
                     No validar cédula/marque esta opción en el caso de extranjeros</jqxCheckBox>
                 </div>
               </div>
+              <br />
               <div class="form-group row">
                 <div class="col-md-2">Identificación:</div>
-                <div class="col-md-2">
-                  <jqxInput #txtIdenficacion [maxLength]="10" class="identificacionInput" [width]="'100%'" [height]="22"
-                    name="identificacion" [(ngModel)]="personaAng.identificacion" [theme]="'material'"></jqxInput>
+                <div class="col-md-4">
+                  <jqxInput #txtIdenficacion class="identificacionInput" [width]="'100%'" [height]="22"
+                      name="identificacion" [(ngModel)]="ScoutAng.identificacion" [maxLength]="10" 
+                    ></jqxInput>
                 </div>
-                <!-- (onChange)="verificarCedulaExiste()" -->
-                <div class="col-md-2">Fecha nacimiento:</div>
-                <div class="col-md-2">
+                <div class="col-md-3">Fecha nacimiento:</div>
+                <div class="col-md-3">
                   <jqxDateTimeInput #dateFechaNace class="fechaNaceInput" [width]="'100%'" [height]="22"
                     [(ngModel)]="varFechaNacimiento" (onValueChanged)="valueChangedFechaNacimiento()"
                     [template]="'primary'" name="fechaNace" [disabled]="false" [theme]="'material'">
                   </jqxDateTimeInput>
                 </div>
-                <div class="col-md-1">E-mail:</div>
-                <div class="col-md-3">
-                  <jqxInput #txtEmailPersonal class="emailPersonalInput" [placeHolder]="'persona@mail.com'"
-                    name="emailPersonal" [width]="'100%'" [height]="22" [theme]="'material'"
-                    [(ngModel)]="personaAng.emailPersonal">
-                  </jqxInput>
-                </div>
               </div>
+              <br />
               <div class="form-group row">
                 <div class="col-md-2">Nombres:</div>
                 <div class="col-md-4">
                   <jqxInput #txtNombres class="nombresInput" [width]="'100%'" [height]="22" name="nombres"
-                    [(ngModel)]="personaAng.nombres" [maxLength]="30" [theme]="'material'">
+                    [(ngModel)]="ScoutAng.nombres" [maxLength]="30" [theme]="'material'">
                   </jqxInput>
                 </div>
+              <!-- </div>
+              <br />
+              <div class="form-group row"> -->
                 <div class="col-md-2">Apellidos:</div>
                 <div class="col-md-4">
                   <jqxInput #txtApellidos class="apellidosInput" [width]="'100%'" [height]="22" name="apellidos"
-                    [(ngModel)]="personaAng.apellidos" [maxLength]="30" [theme]="'material'">
+                    [(ngModel)]="ScoutAng.apellidos" [maxLength]="30" [theme]="'material'">
                   </jqxInput>
                 </div>
               </div>
+              <br />
+              <div class="form-group row">
+                <div class="col-md-2">Correo:</div>
+                <div class="col-md-10">
+                  <jqxInput #txtEmailPersonal class="correoInput" [placeHolder]="'persona@mail.com'" name="correo"
+                    [width]="'100%'" [height]="22" [theme]="'material'" [(ngModel)]="ScoutAng.correo">
+                  </jqxInput>
+                </div>
+              </div>
+              <br />
               <div class="form-group row">
                 <div class="col-md-2">Celular:</div>
-                <div class="col-md-2">
+                <div class="col-md-4">
                   <jqxMaskedInput #masketCelular class="celularInput" [width]="'100%'" [height]="22" name="celular"
-                    [mask]="'##########'" [(ngModel)]="personaAng.celular" [theme]="'material'">
+                    [mask]="'##########'" [(ngModel)]="ScoutAng.celular" [theme]="'material'">
                   </jqxMaskedInput>
                 </div>
-                <div class="col-md-1">Sexo:</div>
-                <div class="col-md-2">
-                  <jqxDropDownList #comboGenero class="generoInput" [width]="'100%'" [height]="22" name="genero"
-                    [source]="sourceGenero" [selectedIndex]="-1" [theme]="'material'" [displayMember]="'genero'"
-                    [valueMember]="'codigo'" [(ngModel)]="personaAng.genero" [autoDropDownHeight]="true">
-                  </jqxDropDownList>
-                </div>
-                <div class="col-md-1">Dirección:</div>
+                <div class="col-md-2">Sexo:</div>
                 <div class="col-md-4">
-                  <jqxTextArea #txtAreaDireccion class="direccionInput" [width]="'100%'" [height]="50" [maxLength]="40"
-                    name="direccion" [placeHolder]="'Ingrese dirección'" [theme]="'material'"
-                    [(ngModel)]="personaAng.direccion">
-                  </jqxTextArea>
-                </div>
-              </div>
-              <div class="form-group row" [hidden]="ocultarElementosPaciente">
-                <div class="col-md-3">
-                  <jqxCheckBox [hidden]="ocultarElementosPaciente" #chbAlgeria style="margin: 0px;"
-                    [theme]="'material'">
-                    Presenta alguna Alérgia
-                  </jqxCheckBox>
-                </div>
-              </div>
-              <div class="form-group row">
-                <div class="col-md-2" [hidden]="ocultarElementosPaciente">N° Historial Médico:</div>
-                <div class="col-md-2" [hidden]="ocultarElementosPaciente">
-                  <jqxInput #txtHistorialMed class="histMedicoInput" [width]="'100%'" [height]="22" [maxLength]="15"
-                    name="numMatricula" [disabled]="true" [theme]="'material'" [(ngModel)]="paciente.historialMedico">
-                  </jqxInput>
-                </div>
-                <div class="col-md-2" [hidden]="ocultarElementosPaciente">Tipo de Sangre</div>
-                <div class="col-md-2" [hidden]="ocultarElementosPaciente">
-                  <jqxDropDownList #comboTipoSangre [theme]="'material'" [selectedIndex]="0" [autoDropDownHeight]="true"
-                    [displayMember]="'tipo'" [valueMember]="'codigo'" [source]="sourceTipoSangre" [width]="'100%'"
-                    [height]='25' name="cboTipoSangre" [dropDownWidth]="300" [(ngModel)]="paciente.tipoSangre">
-                  </jqxDropDownList>
-                </div>
-                <div class="col-md-2" [hidden]="ocultarEspecialidad">Especialidad:</div>
-                <div class="col-md-2" [hidden]="ocultarEspecialidad">
-                  <jqxComboBox #comboEspecialidad [theme]="'material'" [placeHolder]="'Elija una especialidad...'"
-                    [displayMember]="'descripcion'" [selectedIndex]="-1" [valueMember]="'id'"
-                    [source]="dataAdapterEspecialidad" [height]='25' [width]="'100%'" name="especialidades"
-                    [dropDownHorizontalAlignment]="'left'" [autoDropDownHeight]="true"
-                    [(ngModel)]="medico.idEspecialidad">
+                  <jqxComboBox #comboGenero class="generoInput" [width]="'100%'" [height]="22" name="genero"
+                    [source]="sourceGenero" [selectedIndex]="-1" [theme]="'material'" [displayMember]="'genero'"
+                    [valueMember]="'codigo'" [(ngModel)]="ScoutAng.genero" [autoDropDownHeight]="true">
                   </jqxComboBox>
                 </div>
               </div>
-
+              <br />
+              <div class="form-group row">
+                <div class="col-md-2">Dirección:</div>
+                <div class="col-md-10">
+                  <jqxTextArea #txtAreaDireccion class="direccionInput" [width]="'100%'" [height]="50" [maxLength]="40"
+                    name="direccion" [placeHolder]="'Ingrese dirección'" [theme]="'material'"
+                    [(ngModel)]="ScoutAng.direccion">
+                  </jqxTextArea>
+                </div>
+              </div>
+              <br />
               <div class="form-group row">
                 <div class="col-md-2">Usuario:</div>
-                <div class="col-md-2">
+                <div class="col-md-4">
                   <jqxInput #txtUsuario class="usuarioInput" [placeHolder]="'Ingrese un usuario'" name="usuario"
                     [width]="'100%'" [height]="22" [(ngModel)]="usuario.usuario" [theme]="'material'">
                   </jqxInput>
                 </div>
                 <div class="col-md-2">Contraseña:</div>
-                <div class="col-md-2">
+                <div class="col-md-4">
                   <jqxPasswordInput #passwordInput id="myPasswordInput" class="passwordInput" [width]="'100%'"
                     [height]="22" [(ngModel)]="usuario.claveAuxiliar" name="claveAuxiliar" [theme]="'material'">
                   </jqxPasswordInput>
                 </div>
-                <div class="col-md-2">Confirmar Contraseña:</div>
-                <div class="col-md-2">
+                </div>
+              <br />
+              <div class="form-group row">
+                <div class="col-md-2">Confirmar :</div>
+                <div class="col-md-4">
                   <jqxPasswordInput #passwordInputCon id="myPasswordInputCon" class="passwordInputCon" [width]="'100%'"
                     [height]="22" [(ngModel)]="usuario.clave" name="claveAuxiliar" [theme]="'material'"
                     (onChange)="verificarCoincideClave()">
                   </jqxPasswordInput>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card card-accent-info" style='margin-right: 5px; margin-top: 10px;
+          margin-bottom : 5px;'>
+            <div class="card-header">
+              <h5 style="padding: 0; margin: 0;"> Datos Adicionales</h5>
+            </div>
+            <div class="card-body">
+              <div class="form-group row">
+                <div class="col-md-3">Rama:</div>
+                <div class="col-md-9">
+                  <jqxComboBox #comboRama class="ramaInput" [theme]="'material'" [placeHolder]="'Elija una rama...'"
+                    [displayMember]="'nombre'" [selectedIndex]="-1" [valueMember]="'id'" [source]="dataAdapterRamas"
+                    [height]='25' [width]="'100%'" name="ramas" [dropDownHorizontalAlignment]="'left'"
+                    [autoDropDownHeight]="true" (onSelect)="listarGrupos()">
+                  </jqxComboBox>
+                </div>
+              </div>
+              <br />
+              <div class="form-group row">
+                <div class="col-md-3">Grupo:</div>
+                <div class="col-md-9">
+                  <jqxComboBox #comboGrupo class="grupoInput" [theme]="'material'" [placeHolder]="'Elija un grupo...'"
+                    [displayMember]="'nombre'" [selectedIndex]="-1" [valueMember]="'idGrupoRama'"
+                    [source]="dataAdapterGrupos" [height]='25' [width]="'100%'" name="grupos"
+                    [dropDownHorizontalAlignment]="'left'" [autoDropDownHeight]="true"
+                    [(ngModel)]="ScoutAng.idGrupoRama">
+                  </jqxComboBox>
+                </div>
+              </div>
+              <br />
+              <div class="form-group row">
+                <!-- [hidden]="ocultarEspecialidad" -->
+                <div class="col-md-3">Tipo Scout:</div>
+                <div class="col-md-9">
+                  <jqxComboBox #comboTipoScout class="tipoScoutsInput" [theme]="'material'"
+                    [placeHolder]="'Elija un tipo de Scout...'" [displayMember]="'tipoScout'" [selectedIndex]="-1"
+                    [valueMember]="'idTipoScout'" [source]="dataAdapterTipoScout" [height]='25' [width]="'100%'"
+                    name="tipoScouts" [dropDownHorizontalAlignment]="'left'" [autoDropDownHeight]="true"
+                    [(ngModel)]="ScoutAng.idTipoScout">
+                  </jqxComboBox>
+                </div>
+              </div>
+              <div class="form-group row" [hidden]="ocultarComisionado">
+                <div class="col-md-3">Desde:</div>
+                <div class="col-md-3">
+                  <jqxNumberInput #txtAnioDesde class="anioDesdeInput" [width]="'100%'" [height]="25" name="anioDesde"
+                    [disabled]="false" [decimal]="0" [decimalDigits]="0" [digits]="4" [inputMode]="'simple'"
+                    [textAlign]="left" [theme]="'material'" [spinButtons]="true" [(ngModel)]="comisionado.anioDesde">
+                  </jqxNumberInput>
+                </div>
+                <div class="col-md-3">Hasta:</div>
+                <div class="col-md-3">
+                  <jqxNumberInput #txtAnioHasta class="anioHastaInput" [width]="'100%'" [height]="25" name="anioHasta"
+                    [disabled]="false" [decimal]="0" [decimalDigits]="0" [digits]="4" [inputMode]="'simple'"
+                    [textAlign]="left" [theme]="'material'" [spinButtons]="true" [(ngModel)]="comisionado.anioHasta">
+                  </jqxNumberInput>
+                </div>
+              </div>
+
+              <div class="form-group row" [hidden]="ocultarComisionado">
+                <!-- <label for="img">File</label> -->
+                <div class="col-md-3">Imagen:</div>
+                <input type="file" class="form-control" id="img" name="img" ngModel>
+              </div>
+
+              <div class="form-group row" [hidden]="ocultarComisionado">
+                <div align="center" class="item">
+                  <!-- height="190" width="190" -->
+                  <img style="width:100%; height:190px" class="img-thumbnail center-block" 
+                  [src]="comisionado.imagen" alt="">
                 </div>
               </div>
             </div>
@@ -144,7 +201,7 @@
 <app-modal-component (PassMethods)="getEvents($event)"></app-modal-component>
 
 <pre>
-{{personaAng | json}}
+{{ScoutAng | json}}
 <!-- {{this.estudianteOfertas | json}}   -->
 <!-- {{dataAdapterTiposMatricula | json}}   -->
 </pre>

@@ -25,8 +25,8 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
     });
   }
 
-  // public navItems;
-  public navItems = navItems;
+  public navItems;
+  // public navItems = navItems;
   public sidebarMinimized = true;
   private changes: MutationObserver;
   public element: HTMLElement;
@@ -34,10 +34,8 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
   public messagerService: MessagerService;
   private router: Router;
   private route: ActivatedRoute;
-
-
-  ///////
-
+  idScoutLogeado:number
+  ocultarElementos:boolean=false
 
   ngOnInit(): void {
     this.listarPerfiles()
@@ -48,29 +46,25 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
     this.changes.disconnect();
   }
 
-  // getStorageFormularioState() {
-  //   if (localStorage.getItem('datosUsuario')) {
-  //     let datosUsuario = JSON.parse(localStorage.getItem('datosUsuario'));
-  //     this.gridMedicos.loadstate(gridState);
-  //     this.pageinformation.page = JSON.stringify(gridState.pagenum)
-  //   }
-  // }
-
   listarPerfiles() {
     this.scoutService.getListarPerfiles().subscribe(data => {
       let idPerfilLogeado: any
       if (localStorage.getItem('datosUsuario')) {
         let datosUsuario = JSON.parse(localStorage.getItem('datosUsuario'));
+        alert(JSON.stringify(data))
         idPerfilLogeado = datosUsuario.idPerfil
+        this.idScoutLogeado=datosUsuario.idScout
+        // alert(this.idScoutLogeado)
         if (data.length > 0) {
           for (let i = 0; i < data.length; i++) {
             if (data[i].idPer == idPerfilLogeado) {
-              if (data[i].codigo == 'ADM' || data[i].codigo == 'MED')
+              if (data[i].codigo == 'COM' || data[i].codigo == 'CMU'|| data[i].codigo == 'DRG')
                 this.navItems = this.itemsAdmin
-              else if (data[i].codigo == 'PAC')
-                this.navItems = this.itemsPac
-              else if (data[i].codigo == 'ASI')
-                this.navItems = this.itemsAsi
+              else if (data[i].codigo == 'BEN'){
+                this.navItems = this.itemsBeneficiario
+                this.itemsBeneficiario[2].children[0].url= '/scout/revisar-progresion/'+this.idScoutLogeado
+              }else if (data[i].codigo == 'EXT'){
+                this.ocultarElementos=true}
             }
           }
         }
@@ -80,7 +74,7 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
 
   itemsAdmin = [
     {
-      name: 'Consultorio',
+      name: 'Distrito Santa Elena',
       url: '/dashboard',
       icon: 'icon-speedometer',
       badge: {
@@ -88,60 +82,88 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
         text: 'Menú'
       }
     },
-    // Modulo de mantenimiento
     {
       title: true,
       name: 'Seguridad'
     },
-    // Menu Seguridad
     {
       name: 'Seguridad',
       url: '/seguridad/usuarios/',
       icon: 'icon-cursor',
       children: [
         {
-          name: 'Médicos',
-          url: '/consultorio/medico-listado/',
+          name: 'Comisionados',
+          url: '/scout/comisionado-listado/',
           icon: 'icon-grid'
         },
         {
-          name: 'Pacientes',
-          url: '/consultorio/paciente-listado/',
+          name: 'Scouts',
+          url: '/scout/scout-listado/',
           icon: 'icon-grid'
         }
       ]
     },
-    // modulo adacemico
     {
       title: true,
-      name: 'Actividades'
+      name: 'Revisión de Avance de Insignias'
     },
-    // Menu Consultorio
     {
-      name: 'Administración',
-      url: '/consultorio/agendar-cita',
+      name: 'Progresión',
       icon: 'icon-cursor',
       children: [
         {
-          name: 'Citas y Consultas',
-          url: '/consultorio/consulta-medica/',
+          name: 'Módulos Habilitados',
+          url: '/scout/subir-archivo/',
+          icon: 'icon-grid'
+        },
+        {
+          name: 'Listado de Progresión Scout',
+          url: '/scout/progresion-listado/',
           icon: 'icon-grid'
         },
       ]
     },
     {
-      name: 'Upse Online',
-      url: 'https://upse.edu.ec',
+      title: true,
+      name: 'Control de Asistencia'
+    },
+    {
+      name: 'Control de Asistencia',
+      icon: 'icon-cursor',
+      children: [
+        {
+          name: 'Listado de Actividades',
+          url: '/scout/asistencia-listado/',
+          icon: 'icon-grid'
+        },
+      ]
+    },
+    {
+      name: 'Reportes',
+      url: '/reportes/distributivo/',
+      icon: 'icon-cursor',
+      children: [
+        {
+          name: 'Distributivo',
+          url: '/reportes/distributivo/',
+          icon: 'icon-grid'
+        },
+      ]
+    },
+    {
+      name: 'Scouts Distrito Santa Elena',
+      url: 'https://www.scoutsecuador.org/site/grupos-scouts',
       icon: 'icon-layers',
       class: 'mt-auto',
       variant: 'success',
       attributes: { target: '_blank', rel: 'noopener' }
     }
   ];
+  
 
-  itemsPac = [
+  itemsBeneficiario = [
     {
-      name: 'Consultorio',
+      name: 'Distrito Santa Elena',
       url: '/dashboard',
       icon: 'icon-speedometer',
       badge: {
@@ -149,93 +171,24 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
         text: 'Menú'
       }
     },
-    // Modulo de mantenimiento
     {
       title: true,
-      name: 'Seguridad'
+      name: 'Revisión de Avance de Insignias'
     },
-    // modulo adacemico
     {
-      title: true,
-      name: 'Actividades'
-    },
-    // Menu Consultorio
-    {
-      name: 'Citas',
-      url: '/consultorio/agendar-cita',
+      name: 'Progresión',
       icon: 'icon-cursor',
       children: [
         {
-          name: 'Registrar Cita',
-          url: '/consultorio/agendar-cita/',
+          name: 'Revisar mi progresión',
+          url: '/scout/revisar-progresion/'+this.idScoutLogeado,
           icon: 'icon-grid'
         },
       ]
     },
     {
-      name: 'Upse Online',
-      url: 'https://upse.edu.ec',
-      icon: 'icon-layers',
-      class: 'mt-auto',
-      variant: 'success',
-      attributes: { target: '_blank', rel: 'noopener' }
-    }
-  ];
-
-  itemsAsi = [
-    {
-      name: 'Consultorio',
-      url: '/dashboard',
-      icon: 'icon-speedometer',
-      badge: {
-        variant: 'info',
-        text: 'Menú'
-      }
-    },
-    // Modulo de mantenimiento
-    {
-      title: true,
-      name: 'Seguridad'
-    },
-    // Menu Seguridad
-    {
-      name: 'Seguridad',
-      url: '/seguridad/usuarios/',
-      icon: 'icon-cursor',
-      children: [
-        {
-          name: 'Médicos',
-          url: '/consultorio/medico-listado/',
-          icon: 'icon-grid'
-        },
-        {
-          name: 'Pacientes',
-          url: '/consultorio/paciente-listado/',
-          icon: 'icon-grid'
-        }
-      ]
-    },
-    // modulo adacemico
-    {
-      title: true,
-      name: 'Actividades'
-    },
-    // Menu Consultorio
-    {
-      name: 'Citas',
-      url: '/consultorio/agendar-cita',
-      icon: 'icon-cursor',
-      children: [
-        {
-          name: 'Registrar Cita',
-          url: '/consultorio/agendar-cita/',
-          icon: 'icon-grid'
-        },
-      ]
-    },
-    {
-      name: 'Upse Online',
-      url: 'https://upse.edu.ec',
+      name: 'Scouts Distrito Santa Elena',
+      url: 'https://www.scoutsecuador.org/site/grupos-scouts',
       icon: 'icon-layers',
       class: 'mt-auto',
       variant: 'success',

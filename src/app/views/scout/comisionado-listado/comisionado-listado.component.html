@@ -1,26 +1,37 @@
 <div class="row">
-  <div class="col-sm-12">
+  <div class="col-sm-12" [hidden]="isCollapsed">
     <div class="card" style="width: 100%">
       <div class="card-header">
-        <h3> Listado de Pacientes </h3>
+        <h3> Listado de Comisionados Registrados </h3>
         <jqxMenu style='margin-left: 3px; margin-top: 5px;' (onItemclick)="itemclick($event)" [source]="menuMatricula"
           [theme]="'material'" [width]="'99%'" [height]="30">
         </jqxMenu>
       </div>
       <div class="card-body" [hidden]="isCollapsed">
-        <jqxGrid #gridPacientes style='margin-left: 3px;' [theme]="'material'" [width]="'100%'"
-          [source]="dataAdapterPacientes" [columns]="columnsPaciente" [filterable]="true" [pageable]="true"
+        <jqxGrid #gridComisionados style='margin-left: 3px;' [theme]="'material'" [width]="'100%'"
+          [source]="dataAdapterComisionados" [columns]="columnsComisionados" [filterable]="true" [pageable]="true"
           [showfilterrow]="true" [localization]="localization" [sortable]="false" [height]='600'>
         </jqxGrid>
       </div>
     </div>
   </div>
 
-
   <div class="card-footer" [hidden]="ocultarPdfViewer" class="col-sm-12">
     <div class="form-group row">
+      <div class="col-md-1">Desde: </div>
+      <div class="col-md-2">
+        <jqxDateTimeInput #dateDesde [formatString]="'yyyy-MM-dd'" [height]="22" [width]="'100%'"
+          [(ngModel)]="varFechaDesde" [theme]="'material'" [disabled]="false" name="desde">
+        </jqxDateTimeInput>
+      </div>
+      <div class="col-md-1">Hasta:</div>
+      <div class="col-md-2">
+        <jqxDateTimeInput #dateHasta [formatString]="'yyyy-MM-dd'" [height]="22" [width]="'100%'"
+          [(ngModel)]="varFechaHasta" [theme]="'material'" [disabled]="false" name="hasta">
+        </jqxDateTimeInput>
+      </div>
       <div class="col-md-4">
-        <jqxButton #botonVolver [width]="'60'" [height]="'25'" [theme]="'material'" [disabled]="true"
+        <jqxButton #botonVolver [width]="'60'" [height]="'25'" [theme]="'darkblue'" [disabled]="true"
           (click)="controlIsCollapsed()">Volver
         </jqxButton>
       </div>
@@ -37,5 +48,5 @@
 <app-modal-component (PassMethods)="getEvents($event)"></app-modal-component>
 
 <pre>
-  <!-- {{dataAdapterPacientes |json}} -->
+  <!-- {{dataAdapterOferta |json}} -->
 </pre>

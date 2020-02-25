@@ -13,7 +13,6 @@ import { jqxInputModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxinput';
 import { jqxDateTimeInputModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxdatetimeinput';
 import { ReactiveFormsModule } from '@angular/forms';
 import { jqxListBoxModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxlistbox';
-import { ModalCitaComponent } from './modal-view/modal-cita/modal-cita.component';
 import { jqxComboBoxModule, jqxComboBoxComponent } from 'jqwidgets-scripts/jqwidgets-ng/jqxcombobox';
 import { jqxTextAreaModule, jqxTextAreaComponent } from 'jqwidgets-scripts/jqwidgets-ng/jqxtextarea';
 import { jqxMenuModule, jqxMenuComponent } from 'jqwidgets-scripts/jqwidgets-ng/jqxmenu';
@@ -22,7 +21,6 @@ import { jqxMenuModule, jqxMenuComponent } from 'jqwidgets-scripts/jqwidgets-ng/
   declarations: [jqxButtonComponent,
     jqxFormattedInputComponent,
     ModalComponentComponent,
-    ModalCitaComponent
   ],
 
   imports: [
@@ -43,7 +41,6 @@ import { jqxMenuModule, jqxMenuComponent } from 'jqwidgets-scripts/jqwidgets-ng/
   exports: [jqxButtonComponent,
     jqxMenuComponent,
     ModalComponentComponent,
-    ModalCitaComponent,
     jqxInputModule,
     jqxFormModule,
     jqxComboBoxComponent,

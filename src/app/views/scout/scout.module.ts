@@ -19,11 +19,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { FormsModule } from '@angular/forms'
 import { ScoutRoutingModule } from './scout-routing.module';
-import { AgendarCitaComponent } from './agendar-cita/agendar-cita.component';
-import { RegistrarConsultaComponent } from './registrar-consulta/registrar-consulta.component';
 import { ConsultaMedicaComponent } from './consulta-medica/consulta-medica.component';
-import { MedicoListadoComponent } from './medico-listado/medico-listado.component';
-import { PacienteListadoComponent } from './paciente-listado/paciente-listado.component';
 import { jqxPasswordInputModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxpasswordinput';
 import { PersonaEdicionComponent } from './persona-edicion/persona-edicion.component';
 import { ScoutService } from '../../services/scout/scout.service';
@@ -34,20 +30,24 @@ import { jqxFileUploadModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxfileuploa
 import { ProgresionListadoComponent } from './progresion-listado/progresion-listado.component';
 import { RoundProgressModule} from 'angular-svg-round-progressbar';
 import { RevisarProgresionComponent } from './revisar-progresion/revisar-progresion.component';
+import { ScoutListadoComponent } from './scout-listado/scout-listado.component';
+import { ComisionadoListadoComponent } from './comisionado-listado/comisionado-listado.component';
+import { AsistenciaListadoComponent } from './asistencia-listado/asistencia-listado.component';
+import { AsistenciaRegistroComponent } from './asistencia-registro/asistencia-registro.component';
  
 
 @NgModule({
   declarations: [
-    AgendarCitaComponent,
-    RegistrarConsultaComponent,
     ConsultaMedicaComponent,
-    MedicoListadoComponent,
-    PacienteListadoComponent,
+    ScoutListadoComponent,
+    AsistenciaListadoComponent,
+    ComisionadoListadoComponent,
     PersonaEdicionComponent,
     SubirArchivoComponent,
     RevisarArchivoComponent,
     ProgresionListadoComponent,
-    RevisarProgresionComponent
+    RevisarProgresionComponent,
+    AsistenciaRegistroComponent
 
   ],
   imports: [

@@ -12,19 +12,19 @@ import { NgxExtendedPdfViewerComponent } from 'ngx-extended-pdf-viewer';
 import { ScoutService } from '../../../services/scout/scout.service';
 
 @Component({
-  selector: 'app-paciente-listado',
-  templateUrl: './paciente-listado.component.html',
-  styleUrls: ['./paciente-listado.component.scss']
+  selector: 'app-scout-listado',
+  templateUrl: './scout-listado.component.html',
+  styleUrls: ['./scout-listado.component.scss']
 })
-export class PacienteListadoComponent implements OnInit {
-  @ViewChild('gridPacientes') gridPacientes: jqxGridComponent;
+export class ScoutListadoComponent implements OnInit {
+  @ViewChild('gridScouts') gridScouts: jqxGridComponent;
   @ViewChild(ModalComponentComponent) myModal: ModalComponentComponent;
   @ViewChild('botonVolver') botonVolver: jqxButtonComponent;
   @ViewChild('myPdfViewer') myPdfViewer: NgxExtendedPdfViewerComponent;
 
   constructor(public messagerService: MessagerService,
     private router: Router, private route: ActivatedRoute,
-    private consultorioService: ScoutService,
+    private ScoutService: ScoutService,
     private validadorService: ValidadorService, ) { }
 
 
@@ -37,7 +37,7 @@ export class PacienteListadoComponent implements OnInit {
   };
 
   //Variable paa cargar datos del objeto 
-  listaPacientes: Array<any>;
+  listaScouts: Array<any>;
   rowindex: number = -1;
   banderaDepencia: boolean = false
   ocultarPdfViewer: boolean = true;
@@ -46,7 +46,7 @@ export class PacienteListadoComponent implements OnInit {
   isCollapsed: boolean = false;
 
   ngOnInit() {
-    this.listadoPacientes()
+    this.listadoScouts()
   }
 
   ngAfterViewInit(): void {
@@ -73,12 +73,6 @@ export class PacienteListadoComponent implements OnInit {
       'parentid': '-1',
       'subMenuWidth': '250px'
     },
-    {
-      'id': '4',
-      'text': 'Historial Médico Paciente',
-      'parentid': '-1',
-      'subMenuWidth': '250px'
-    },
   ];
 
   sourceMenu =
@@ -100,57 +94,48 @@ export class PacienteListadoComponent implements OnInit {
 
   itemclick(event: any): void {
     // captura el id seleccionado
-    const selectedrowindex = this.gridPacientes.getselectedrowindex();
-    const idPersonaSel = this.gridPacientes.getcellvalue(selectedrowindex, 'idPersona');
-    const idPacienteSel = this.gridPacientes.getcellvalue(selectedrowindex, 'idPaciente');
+    const selectedrowindex = this.gridScouts.getselectedrowindex();
+    const idScoutSel = this.gridScouts.getcellvalue(selectedrowindex, 'idScout');
     var opt = event.args.innerText;
 
     switch (opt) {
       case 'Nuevo':
-        this.router.navigate(['consultorio/persona-edicion', 0, 'pac']);
+        this.router.navigate(['scout/persona-edicion', 0, 'sco']);
         break;
       case 'Editar':
-        if (idPersonaSel) {
+        if (idScoutSel) {
           this.setFormularioState();
-          this.router.navigate(['consultorio/persona-edicion', idPersonaSel, 'pac']);
+          this.router.navigate(['scout/persona-edicion', idScoutSel, 'sco']);
         } else {
-          this.myModal.alertMessage({ title: 'Registro de Pacientes', msg: 'Seleccione un Paciente!' });
+          this.myModal.alertMessage({ title: 'Registro de Scouts', msg: 'Seleccione un Scout!' });
         }
         break;
       case 'Eliminar':
-        if (idPersonaSel) {
+        if (idScoutSel) {
           if (this.banderaDepencia == false) {
             this.myModal.alertQuestion({
-              title: 'Registro de Pacientes',
-              msg: 'Desea eliminar este registro?',
+              title: 'Registro de Scouts',
+              msg: '¿Desea eliminar este registro?',
               result: (k) => {
                 if (k) {
                   // this.eliminarPaciente(idPersonaSel)
-                  this.myModal.alertMessage({ title: 'Registro de Pacientes', msg: 'Paciente eliminado Correctamente!' });
-                  this.gridPacientes.clear()
-                  this.gridPacientes.clearselection()
-                  this.listadoPacientes()
-                  this.gridPacientes.refreshdata()
+                  this.myModal.alertMessage({ title: 'Registro de Scouts', msg: 'Scout eliminado Correctamente!' });
+                  this.gridScouts.clear()
+                  this.gridScouts.clearselection()
+                  this.listadoScouts()
+                  this.gridScouts.refreshdata()
                 }
               }
             })
           } else {
             this.myModal.alertMessage({
-              title: 'Registro de Pacientes',
+              title: 'Registro de Scouts',
               msg: 'No es posible eliminar este registro activo, por sus dependencias con otros registros!'
             });
           }
         } else {
-          this.myModal.alertMessage({ title: 'Registro de Pacientes', msg: 'Seleccione un Paciente!' });
+          this.myModal.alertMessage({ title: 'Registro de Scouts', msg: 'Seleccione un Paciente!' });
         }
-        break;
-      case 'Historial Médico Paciente':
-        if (idPersonaSel) {
-          this.reportAgendaMedico(idPacienteSel)
-        } else {
-          this.myModal.alertMessage({ title: 'Registro de Médicos', msg: 'Seleccione un Médico!' });
-        }
-        break;
         break;
       default:
     }
@@ -162,49 +147,51 @@ export class PacienteListadoComponent implements OnInit {
   //   }, error => console.error(error));
   // }
 
-  sourcePacientes: any =
+  sourceScouts: any =
     {
       datatype: 'array',
-      id: 'idPersona',
+      id: 'idScout',
       datafields:
         [
-          { name: 'idPersona', type: 'int' },
-          { name: 'idPaciente', type: 'int' },
-          { name: 'idUsuario', type: 'int' },
+          { name: 'idScout', type: 'int' },
+          { name: 'idTipoScout', type: 'int' },
+          { name: 'idGrupoRama', type: 'int' },
           { name: 'identificacion', type: 'string' },
           { name: 'nombresCompletos', type: 'string' },
+          { name: 'tipoScout', type: 'string'},
           { name: 'direccion', type: 'string' },
           { name: 'celular', type: 'string' },
         ],
       hierarchy:
       {
-        keyDataField: { name: 'idPersona' },
+        keyDataField: { name: 'idScout' },
         parentDataField: { name: 'padre_id' }
       }
     };
-  dataAdapterPacientes: any = new jqx.dataAdapter(this.sourcePacientes);
+  dataAdapterScouts: any = new jqx.dataAdapter(this.sourceScouts);
 
   //metodo de reinderizado de filas del grid
   rendergridrows = (params: any): any[] => {
     return params.data;
   }
 
-  listadoPacientes() {
-    this.consultorioService.getListadoPacientes().subscribe(data => {
-      this.listaPacientes = data;
-      this.sourcePacientes.localdata = data;
-      this.dataAdapterPacientes.dataBind();
-      this.gridPacientes.gotopage(this.pageinformation.page)
+  listadoScouts() {
+    this.ScoutService.getListadoScouts().subscribe(data => {
+      this.listaScouts = data;
+      this.sourceScouts.localdata = data;
+      this.dataAdapterScouts.dataBind();
+      this.gridScouts.gotopage(this.pageinformation.page)
     });
   }
 
-  columnsPaciente: any[] =
+  columnsScouts: any[] =
     [
-      { text: 'Id Persona', datafield: 'idPersona', width: '5%', filtertype: 'none' },
-      { text: 'Id Paciente', datafield: 'idPaciente', width: '5%', hidden: true, filtertype: 'none' },
-      { text: 'Id Usuario', datafield: 'idUsuario', width: '5%', hidden: true, filtertype: 'none' },
+      { text: 'Id Scout', datafield: 'idScout', width: '5%', filtertype: 'none' },
+      { text: 'Id TipoScout', datafield: 'idTipoScout', width: '5%', hidden: true, filtertype: 'none' },
+      { text: 'Id GrupoRama', datafield: 'idGrupoRama', width: '5%', hidden: true, filtertype: 'none' },
       { text: 'Identificacion', datafield: 'identificacion', width: '15%', cellsalign: 'center', center: 'center' },
       { text: 'Nombres', datafield: 'nombresCompletos', width: '30%' },
+      { text: 'Tipo Scout', datafield: 'tipoScout', width: '25%' },
       { text: 'Dirección', datafield: 'direccion', width: '15%', cellsalign: 'center', center: 'center' },
       { text: 'Celular', datafield: 'celular', width: '10%', cellsalign: 'center', center: 'center' },
     ];
@@ -227,22 +214,21 @@ export class PacienteListadoComponent implements OnInit {
   //graba el estado del grid y combox
   setFormularioState() {
     //Prepara estado de grabado del grid
-    let gridState = JSON.stringify(this.gridPacientes.savestate())
+    let gridState = JSON.stringify(this.gridScouts.savestate())
     this.pageinformation.page = JSON.parse(gridState).pagenum;
     localStorage.setItem('pageinformation', JSON.stringify(this.pageinformation));
-    localStorage.setItem('gridPacientestate', gridState);
+    localStorage.setItem('gridScoutState', gridState);
   }
 
   getStorageFormularioState() {
-    if (localStorage.getItem('gridPacientestate')) {
-      //carga el estado recuperado de los combobox y grid
-      let gridState = JSON.parse(localStorage.getItem('gridPacientestate'));
-      this.gridPacientes.loadstate(gridState);
+    if (localStorage.getItem('gridScoutState')) {
+      let gridState = JSON.parse(localStorage.getItem('gridScoutState'));
+      this.gridScouts.loadstate(gridState);
       this.pageinformation.page = JSON.stringify(gridState.pagenum)
       //recupera y asigana puntero fila del grid seleccionad
-      this.gridPacientes.gotopage(this.pageinformation.page)
+      this.gridScouts.gotopage(this.pageinformation.page)
       //borra la variable temporal de control de estados del grid
-      localStorage.removeItem('gridPacientestate');
+      localStorage.removeItem('gridScoutState');
     }
   }
 
@@ -255,7 +241,7 @@ export class PacienteListadoComponent implements OnInit {
 
   reportAgendaMedico(idPaciente: number) {
     this.ocultarReporte();
-    this.consultorioService.getHistorialPaciente(idPaciente).subscribe((blob: Blob) => {
+    this.ScoutService.getHistorialPaciente(idPaciente).subscribe((blob: Blob) => {
       // Para navegadores de Microsoft.
       if (window.navigator && window.navigator.msSaveOrOpenBlob) {
         window.navigator.msSaveOrOpenBlob(blob);

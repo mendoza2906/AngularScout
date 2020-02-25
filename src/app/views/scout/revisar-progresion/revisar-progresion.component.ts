@@ -23,13 +23,8 @@ export class RevisarProgresionComponent implements OnInit, AfterViewInit {
   @ViewChild('eventLog') eventLog: ElementRef;
   @ViewChild('gridListaCitas') gridListaCitas: jqxGridComponent;
   @ViewChild(ModalComponentComponent) myModal: ModalComponentComponent;
-  @ViewChild('comboEspecialidad', { read: false }) comboEspecialidad: jqxComboBoxComponent;
-  @ViewChild('comboMedico') comboMedico: jqxComboBoxComponent;
-  @ViewChild('comboPaciente') comboPaciente: jqxComboBoxComponent;
-  @ViewChild('comboEstadoCita') comboEstadoCita: jqxComboBoxComponent;
-  @ViewChild('comboHora') comboHora: jqxComboBoxComponent;
-  @ViewChild('botonAnular') botonAnular: jqxButtonComponent;
-  @ViewChild('botonAgregarNuevo') botonAgregarNuevo: jqxButtonComponent;
+  @ViewChild('botonRegresar') botonRegresar: jqxButtonComponent;
+  @ViewChild('botonRevisar') botonRevisar: jqxButtonComponent;
   @ViewChild('txtObservacion') txtObservacion: jqxTextAreaComponent;
   @ViewChild('dateFechaCita') dateFechaCita: jqxDateTimeInputComponent;
   @ViewChild('txtMotivoConsulta') txtMotivoConsulta: jqxInputComponent;
@@ -45,14 +40,11 @@ export class RevisarProgresionComponent implements OnInit, AfterViewInit {
 
   //Variable paa cargar datos del objeto 
   sub: Subscription;
-  citaAng: any = {};
   //declaraciones para ordenamiento
   sortinformation: any
   editrow: number = -1;
   rowindex: number = -1;
-  idPeriodoActualGlobal: any;
   idScoutPar: number;
-  banderaMatriculaActual: boolean;
   labelNombres: string;
   labelTipoScout: string;
   labelRama: string;
@@ -60,11 +52,10 @@ export class RevisarProgresionComponent implements OnInit, AfterViewInit {
   labelEstado: string;
   labelInsignia: string;
   labelImagen: string;
-  varFechaCalendario: string;
-  varFechaCal: any = new Date();
-  ocultarLabels: boolean = false;
-  ocultarComponente: boolean = true;
   current: number;
+  codigoPerfil:string
+  ocultarAdmin:boolean=false
+  ocultarBen:boolean=false
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.idScoutPar = params['idScout'];
@@ -73,6 +64,12 @@ export class RevisarProgresionComponent implements OnInit, AfterViewInit {
         this.recuperarUltimaInsigniaScout()
         this.recuperarDetalleInsignias()
         this.listarInsignias()
+        this.recuperarIdScout()
+      }
+      if(this.codigoPerfil=='BEN'){
+        this.ocultarBen=true
+      }else{
+        this.ocultarAdmin=true
       }
     });
 
@@ -86,51 +83,24 @@ export class RevisarProgresionComponent implements OnInit, AfterViewInit {
     // alert('estoy pendejo')
 
   }
-
+  recuperarIdScout() {
+    if (localStorage.getItem('datosScout')) {
+      let datosUsuario = JSON.parse(localStorage.getItem('datosScout'));
+      this.codigoPerfil= datosUsuario[0].codigo
+    }
+  }
 
   gotoList() {
     this.router.navigate(['scout/progresion-listado']);
   }
 
-
-  nuevaCita() {
-    //PARA ARAMAR EL JASON CITA 
-    this.txtMotivoConsulta.val('')
-    this.txtObservacion.val('')
-    this.comboPaciente.selectIndex(-1)
-    this.citaAng = {};
-    this.citaAng.id = null
-    // this.citaAng.estadoCita = 'CIT'
-    this.citaAng.estado = "A"
-    this.citaAng.usuarioIngresoId = "1"
-    this.citaAng.version = "0"
+  revisarModulo(){
+    this.router.navigate(['scout/subir-archivo', this.idScoutPar]);
   }
 
-  recuperarCita(idCita: number) {
-    this.ScoutService.getListarCitaId(idCita).subscribe(data => {
-      if (data) {
-        this.citaAng = data;
-        // this.varFechaCita = new Date(data.fechaCita)
-        this.comboEstadoCita.val(data.estadoCita)
-        this.comboPaciente.val(data.idPaciente)
-        this.comboHora.val(data.citaAng.idHora)
-      }
-    });
+  subirModulo(){
+    this.router.navigate(['scout/subir-archivo', this.idScoutPar]);
   }
-
-  generarJsonGrabar() {
-    let idCita = this.gridListaCitas.getcellvalue(this.rowindex, 'idCita')
-    let idHora = this.gridListaCitas.getcellvalue(this.rowindex, 'idHora')
-    if (!idCita) {
-      this.citaAng.estadoCita = "CIT"
-      this.citaAng.fechaCita = this.varFechaCal
-      this.citaAng.idHora = idHora
-    } else {
-      this.citaAng.estadoCita = this.comboEstadoCita.val()
-      this.citaAng.idHora = this.comboHora.val()
-    }
-  }
-
 
   recuperarUltimaInsigniaScout() {
     this.ScoutService.getRecuperarUltimaInsigniaScout(this.idScoutPar).subscribe(data => {
@@ -143,30 +113,6 @@ export class RevisarProgresionComponent implements OnInit, AfterViewInit {
         this.labelTipoScout = data[0].tipoScout
         this.current = Math.round((data[0].contCumplidos * 100) / data[0].contTotales)
       }
-    })
-  }
-
-  //FUENTE DE DATOS PARA EL COMBOBOX DE MEDICO
-  sourceMedicos: any =
-    {
-      datatype: 'json',
-      id: 'idMedico',
-      localdata:
-        [
-          { name: 'idPersona', type: 'int' },
-          { name: 'idMedico', type: 'int' },
-          { name: 'nombres', type: 'string' },
-          // { name: 'estado', type: 'string' }
-
-        ],
-    };
-  //CARGAR ORIGEN DEL COMBOBOX DE MEDICO
-  dataAdapterMedicos: any = new jqx.dataAdapter(this.sourceMedicos);
-
-  listarMedicos() {
-    this.ScoutService.getListarMedicos(this.comboEspecialidad.val()).subscribe(data => {
-      this.sourceMedicos.localdata = data;
-      this.dataAdapterMedicos.dataBind();
     })
   }
 
@@ -192,7 +138,7 @@ export class RevisarProgresionComponent implements OnInit, AfterViewInit {
     };
   dataAdapterInsignias: any = new jqx.dataAdapter(this.sourceInsignias);
 
-  //Busca todas las oferta_distrbiutivo
+
   listarInsignias() {
     this.ScoutService.getRecuperarInsigniasObtenidas(this.idScoutPar).subscribe(data => {
       this.sourceInsignias.localdata = data;

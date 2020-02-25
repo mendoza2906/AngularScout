@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ControlAutenticacion } from '../../security/control-autenticacion';
-import { AgendarCitaComponent } from './agendar-cita/agendar-cita.component';
-import { MedicoListadoComponent } from './medico-listado/medico-listado.component';
-import { PacienteListadoComponent } from './paciente-listado/paciente-listado.component';
+import { ComisionadoListadoComponent } from './comisionado-listado/comisionado-listado.component';
 import { PersonaEdicionComponent } from './persona-edicion/persona-edicion.component';
 import { SubirArchivoComponent } from './subir-archivo/subir-archivo.component';
 import { RevisarArchivoComponent } from './revisar-archivo/revisar-archivo.component';
 import { ProgresionListadoComponent } from './progresion-listado/progresion-listado.component';
 import { RevisarProgresionComponent } from './revisar-progresion/revisar-progresion.component';
+import { ScoutListadoComponent } from './scout-listado/scout-listado.component';
+import { AsistenciaListadoComponent } from './asistencia-listado/asistencia-listado.component';
+import { AsistenciaRegistroComponent } from './asistencia-registro/asistencia-registro.component';
 
 
 const routes: Routes = [
@@ -20,27 +21,27 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'agendar-cita',
+        redirectTo: '',
         pathMatch: 'full'
       },  
       {
-        path: 'medico-listado',
-        component: MedicoListadoComponent,
+        path: 'comisionado-listado',
+        component: ComisionadoListadoComponent,
         canActivate: [ControlAutenticacion],
         data: {
           title: 'Listado de Médicos'
         }
       },
       {
-        path: 'paciente-listado',
-        component: PacienteListadoComponent,
+        path: 'scout-listado',
+        component: ScoutListadoComponent,
         canActivate: [ControlAutenticacion],
         data: {
           title: 'Listado de Pacientes'
         }
       },
       {
-        path: 'persona-edicion/:idPersona/:tipo',
+        path: 'persona-edicion/:idScout/:tipo',
         component: PersonaEdicionComponent,
         canActivate: [ControlAutenticacion],
         data: {
@@ -48,7 +49,7 @@ const routes: Routes = [
         }
       },
       {
-        path: 'subir-archivo',
+        path: 'subir-archivo/:idScout',
         component: SubirArchivoComponent,
         canActivate: [ControlAutenticacion],
         data: {
@@ -77,6 +78,22 @@ const routes: Routes = [
         canActivate: [ControlAutenticacion],
         data: {
           title: 'Visualizar Progresión Scout'
+        }
+      },
+      {
+        path: 'asistencia-listado',
+        component: AsistenciaListadoComponent,
+        canActivate: [ControlAutenticacion],
+        data: {
+          title: 'Listado de Actividades '
+        }
+      },
+      {
+        path: 'asistencia-registro/:idAsistencia',
+        component: AsistenciaRegistroComponent,
+        canActivate: [ControlAutenticacion],
+        data: {
+          title: 'Registrar Asistencia'
         }
       },
     ]

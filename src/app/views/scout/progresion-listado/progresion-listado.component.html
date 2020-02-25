@@ -9,16 +9,16 @@
       </div>
       <div class="card-header" [hidden]="isCollapsed">
         <div class="row">
-          <div class="col-md-3">Rama:</div>
-          <div class="col-md-3">
+          <div class="col-md-2">Rama:</div>
+          <div class="col-md-4">
             <jqxComboBox #comboRama [theme]="'material'" [placeHolder]="'Elija una rama...'"
               [displayMember]="'nombre'" [selectedIndex]="-1" [valueMember]="'id'"
               [source]="dataAdapterRamas" [height]='25' [width]="'100%'" name="ramas"
               [dropDownHorizontalAlignment]="'left'" [autoDropDownHeight]="true" (onSelect)="listarGrupos()">
             </jqxComboBox>
           </div>
-          <div class="col-md-3">Grupo:</div>
-          <div class="col-md-3">
+          <div class="col-md-2">Grupo:</div>
+          <div class="col-md-4">
             <jqxComboBox #comboGrupo [theme]="'material'" [placeHolder]="'Elija un grupo...'"
               [displayMember]="'nombre'" [selectedIndex]="-1" [valueMember]="'idGrupoRama'"
               [source]="dataAdapterGrupos" [height]='25' [width]="'100%'" name="grupos"

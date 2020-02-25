@@ -32,7 +32,17 @@
               
               <br />
               <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-3" [hidden]="ocultarAdmin">
+                  <jqxButton #botonSubir style="margin-right: 5px;" (onClick)="subirModulo()" [theme]="'material'">
+                    Subir Módulo
+                  </jqxButton>
+                </div>
+                <div class="col-md-3"  [hidden]="ocultarBen">
+                  <jqxButton #botonRevisar style="margin-right: 5px;" (onClick)="revisarModulo()" [theme]="'material'">
+                    Revisar Módulo
+                  </jqxButton>
+                </div>
+                <div class="col-md-3"  [hidden]="ocultarBen">
                   <jqxButton #botonRegresar style="margin-right: 5px;" (onClick)="gotoList()" [theme]="'material'">
                     Regresar
                   </jqxButton>

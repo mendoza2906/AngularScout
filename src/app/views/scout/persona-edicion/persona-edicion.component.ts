@@ -4,7 +4,6 @@ import { MessagerService } from 'ng-easyui/components/messager/messager.service'
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalComponentComponent } from '../../modal-view/modal-component/modal-component.component';
 import { jqxValidatorComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxvalidator';
-import { jqxDropDownListComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxdropdownlist';
 import { jqxDateTimeInputComponent } from 'jqwidgets-scripts/jqwidgets-ng/jqxdatetimeinput';
 import { jqxInputComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxinput';
 import { ValidadorService } from '../../../services/validacion/validador.service';
@@ -12,10 +11,22 @@ import { jqxMaskedInputComponent } from 'jqwidgets-scripts/jqwidgets-ng/jqxmaske
 import { jqxTextAreaComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxtextarea';
 import { jqxCheckBoxComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxcheckbox';
 import { jqxPasswordInputComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxpasswordinput';
-
+import { jqxNumberInputComponent } from 'jqwidgets-scripts/jqwidgets-ng/jqxnumberinput';
 import { jqxComboBoxComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxcombobox';
 import { jqxMenuComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxmenu';
 import { ScoutService } from '../../../services/scout/scout.service';
+import * as CryptoJS from 'crypto-js';
+// var CryptoJS = require("crypto-js");
+// var ReverseMd5 = require("reverse-md5")
+// var rev = ReverseMd5({
+// 	lettersUpper: false,
+// 	lettersLower: true,
+// 	numbers: true,
+// 	special: false,
+// 	whitespace: true,
+// 	maxLen: 12
+// })
+
 @Component({
   selector: 'app-persona-edicion',
   templateUrl: './persona-edicion.component.html',
@@ -31,70 +42,69 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
   @ViewChild('txtApellidos') txtApellidos: jqxInputComponent;
   @ViewChild('txtNombres') txtNombres: jqxInputComponent;
   @ViewChild('dateFechaNace') dateFechaNace: jqxDateTimeInputComponent;
-  @ViewChild('comboGenero') comboGenero: jqxDropDownListComponent;
+  @ViewChild('comboGenero') comboGenero: jqxComboBoxComponent;
+  @ViewChild('comboGrupo') comboGrupo: jqxComboBoxComponent;
+  @ViewChild('comboRama') comboRama: jqxComboBoxComponent;
+  @ViewChild('comboTipoScout') comboTipoScout: jqxComboBoxComponent;
   @ViewChild('masketCelular') masketCelular: jqxMaskedInputComponent;
   @ViewChild('txtEmailPersonal') txtEmailPersonal: jqxInputComponent;
-  @ViewChild('txtAreaDireccion') txtAreaDireccion: jqxTextAreaComponent;
-  @ViewChild('txtHistorialMed') txtHistorialMed: jqxInputComponent;
-  @ViewChild('comboTipoSangre') comboTipoSangre: jqxDropDownListComponent;
+  @ViewChild('txtAreaDireccion') txtAreaDireccion: jqxTextAreaComponent
   @ViewChild('txtUsuario') txtUsuario: jqxInputComponent;
   @ViewChild('passwordInput') passwordInput: jqxPasswordInputComponent;
   @ViewChild('passwordInputCon') passwordInputCon: jqxPasswordInputComponent;
   @ViewChild('checkBoxValCedula') checkBoxValCedula: jqxCheckBoxComponent;
-  @ViewChild('chbAlgeria') chbAlgeria: jqxCheckBoxComponent;
-  @ViewChild('comboEspecialidad') comboEspecialidad: jqxComboBoxComponent;
   @ViewChild('jqxMenu') jqxMenu: jqxMenuComponent;
+  @ViewChild('txtAnioDesde') txtAnioDesde: jqxNumberInputComponent;
+  @ViewChild('txtAnioHasta') txtAnioHasta: jqxNumberInputComponent;
+  banderaSubioArchivo: boolean;
 
   constructor(public messagerService: MessagerService,
     private router: Router, private route: ActivatedRoute,
-    private consultorioService: ScoutService,
+    private ScoutService: ScoutService,
     private validadorService: ValidadorService,
   ) { }
 
   sub: Subscription;
-  personaAng: any = {};
-  paciente: any = {};
-  medico: any = {};
+  ScoutAng: any = {};
+  comisionado: any = {};
   usuario: any = {};
-  idPersonaPar: number;
+  idScoutPar: number;
   idTipoPar: string;
   idUltimaMalla: number;
   labelOpcion: string;
   labelPersona: string;
   valido: boolean
-  ocultarEspecialidad: boolean
-  ocultarElementosPaciente: boolean
-  //variables usadas para recuperar los datos en la edición
+  ocultarComisionado: boolean
+  banderaDatosValidos: boolean = false
   varFechaNacimiento: any = new Date();
 
   ngOnInit() {
-    this.listarEspecialidades()
+    this.listarRamas()
+    this.listarTiposScouts()
   }
 
   ngAfterContentInit() {
     this.sub = this.route.params.subscribe(params => {
-      this.idPersonaPar = params['idPersona'];
+      this.idScoutPar = params['idScout'];
       this.idTipoPar = params['tipo'];
       // Evalua si el parametro id se paso.
-      if (this.idPersonaPar) {
-        if (this.idTipoPar == 'pac') {
-          this.labelPersona = 'Paciente'
-          this.ocultarEspecialidad = true
-          this.ocultarElementosPaciente = false
+      if (this.idScoutPar) {
+        if (this.idTipoPar == 'sco') {
+          this.labelPersona = 'Scout'
+          this.ocultarComisionado = true
         } else {
-          this.labelPersona = 'Médico'
-          this.ocultarEspecialidad = false
-          this.ocultarElementosPaciente = true
+          this.labelPersona = 'Comisionado'
+          this.ocultarComisionado = false
         }
-        if (this.idPersonaPar != 0) {
+        if (this.idScoutPar != 0) {
           this.labelOpcion = 'Edición '
-          this.buscarPersona(this.idPersonaPar)
+          this.buscarScout(this.idScoutPar)
         } else {
           this.labelOpcion = 'Registro'
           this.listarPerfiles()
           this.nuevoPersona()
-          if (this.idTipoPar == 'pac')
-            this.generarHistorialMedico()
+          // if (this.idTipoPar == 'sco')
+          //   this.generarHistorialMedico()
         }
       }
     });
@@ -135,26 +145,30 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
   menus = this.getAdapter(this.source1).getRecordsHierarchy('id', 'parentid', 'items', [{ name: 'text', map: 'label' }]);
 
   gotoList() {
-    if (this.idTipoPar == 'pac')
-      this.router.navigate(['/consultorio/paciente-listado']);
+    if (this.idTipoPar == 'sco')
+      this.router.navigate(['/scout/scout-listado']);
     else
-      this.router.navigate(['/consultorio/medico-listado']);
+      this.router.navigate(['/scout/comisionado-listado']);
   }
 
   itemclick(event: any): void {
     var opt = event.args.innerText;
     switch (opt) {
       case 'Grabar':
-        if (this.idTipoPar == 'pac') { this.personaAng.paciente.alergia = this.chbAlgeria.val() }
         this.myValidator.validate(document.getElementById('formPersona'));
         if (this.validaDatos()) {
+          let constrasenaCifrada = '{MD5}' + CryptoJS.MD5(this.usuario.clave);
+          this.usuario.clave = constrasenaCifrada
+          // ReverseMd5(constrasenaCifrada) //returns 'hi'
+          // this.usuario.claveDescifrada=rev(constrasenaCifrada)
+          this.generarImagen()
           this.myValidator.hide();
           this.myModal.alertQuestion({
             title: 'Registro de ' + this.labelPersona,
             msg: '¿Desea grabar este registro?',
             result: (k) => {
               if (k) {
-                this.consultorioService.grabarPersona(this.personaAng).subscribe(result => {
+                this.ScoutService.grabarScout(this.ScoutAng).subscribe(result => {
                   this.gotoList();
                 }, error => console.error(error));
               }
@@ -175,137 +189,151 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
     }
   };
 
+  ValidationSuccess(event: any): void {
+    this.banderaDatosValidos = true
+  }
+
   nuevoPersona() {
     //PARA ARAMAR EL JASON PERSONA 
-    this.personaAng.id = null
-    this.personaAng.estado = "A"
-    this.personaAng.version = "0"
-    this.personaAng.usuarioIngresoId = "1"
-    //PARA ARAMAR EL JASON PACIENTE 
-    this.paciente.id = null
-    this.paciente.idPersona = null
-    this.paciente.estado = "A"
-    this.paciente.usuarioIngresoId = "1"
-    this.paciente.version = "0"
-    //PARA ARAMAR EL JASON PACIENTE 
-    this.medico.id = null
-    this.medico.idPersona = null
-    this.medico.estado = "A"
-    this.medico.usuarioIngresoId = "1"
-    this.medico.version = "0"
-    //PARA ARAMAR EL JASON USUARIO
+    this.ScoutAng.id = null
+    this.ScoutAng.estado = "A"
+    this.ScoutAng.version = "0"
+    this.ScoutAng.usuarioIngresoId = "1"
+    //PARA ARAMAR EL JASON Scout 
+    this.comisionado.id = null
+    this.comisionado.idScout = null
+    this.comisionado.imagen = 'assets/defecto.jpg'
+    this.comisionado.estado = "A"
+    this.comisionado.usuarioIngresoId = "1"
+    this.comisionado.version = "0"
+    //PARA ARAMAR EL JASON USUARI
     this.usuario.id = null
-    this.usuario.idPersona = null
+    this.usuario.idScout = null
     this.usuario.estado = "A"
     this.usuario.usuarioIngresoId = "1"
     this.usuario.version = "0"
-    this.personaAng.usuario = this.usuario;
-    if (this.idTipoPar == 'pac')
-      this.personaAng.paciente = this.paciente;
-    else
-      this.personaAng.medico = this.medico;
+    this.ScoutAng.usuario = this.usuario;
+    if (this.idTipoPar == 'com')
+      this.ScoutAng.comisionado = this.comisionado;
   }
 
-  editarPersona(persona: any) {
-    if (persona) {
-      this.personaAng = persona;
-      this.varFechaNacimiento = new Date(persona.fechaNace);
-      this.comboGenero.val(persona.genero);
-      if (this.idTipoPar == 'pac') {
-        if (persona.paciente) {
-          this.paciente = persona.paciente;
-          this.comboTipoSangre.val(persona.paciente.tipoSangre)
-          this.chbAlgeria.checked(persona.paciente.alergia)
-        } else {
-          this.personaAng.paciente = this.paciente;
-        }
-      } else if (this.idTipoPar == 'med') {
-        if (persona.medico) {
-          this.medico = persona.medico;
-          this.comboEspecialidad.val(persona.medico.idEspecialidad)
-        } else {
-          this.personaAng.medico = this.medico;
+  recuperarCombosAnidados(idGrupoRama: number) {
+    this.ScoutService.getRecuperarCombosGrupoRama(idGrupoRama).subscribe(data => {
+      if (data.length > 0) {
+        if (data[0].idGrupoRama == idGrupoRama) {
+          this.comboRama.val(data[0].idRama)
+          this.ScoutService.getListarGrupos(data[0].idRama).subscribe(data => {
+            this.sourceGrupos.localdata = data;
+            this.dataAdapterGrupos.dataBind();
+            let dataAdapter = this.sourceGrupos.localdata;
+            for (let i = 0; i < dataAdapter.length; i++) {
+              let record = dataAdapter[i];
+              if (record.idGrupoRama == data[0].idGrupoRama) {
+                this.comboGrupo.selectIndex(i+1)
+              }
+            }
+          })
         }
       }
-      if (persona.usuario) {
-        this.usuario = persona.usuario
+    });
+  }
+
+  editarPersona(scout: any) {
+    if (scout) {
+      this.ScoutAng = scout;
+      this.varFechaNacimiento = new Date(scout.fechaNace);
+      this.comboGenero.val(scout.genero);
+      this.comboTipoScout.val(scout.idTipoScout)
+      this.recuperarCombosAnidados(scout.idGrupoRama)
+      // this.comboGrupo.val(scout.idGrupoRama)
+      if (this.idTipoPar == 'com') {
+        if (scout.comisionado) {
+          this.comisionado = scout.comisionado;
+        } else {
+          this.ScoutAng.comisionado = this.comisionado;
+        }
+      }
+      if (scout.usuario) {
+        this.usuario = scout.usuario
       } else {
         this.listarPerfiles()
         this.usuario.id = null
-        this.usuario.idPersona = persona.id
+        this.usuario.idPersona = scout.id
         this.usuario.estado = "A"
         this.usuario.usuarioIngresoId = "1"
         this.usuario.version = "0"
-        this.personaAng.usuario = this.usuario
+        this.ScoutAng.usuario = this.usuario
       }
     }
   }
 
-  buscarPersona(idPersona: number) {
-    this.consultorioService.getBuscarPersonaId(idPersona).subscribe(data => {
+  buscarScout(idPersona: number) {
+    this.ScoutService.getRecuperarScoutId(idPersona).subscribe(data => {
       if (data) {
         this.editarPersona(data)
       }
     });
   }
+  generarImagen() {
+    let fileInput: any = document.getElementById("img");
+    let files = fileInput.files[0];
+    if (!this.comisionado.imagen || (this.comisionado.imagen && files)) {
+      if (files) {
+        this.banderaSubioArchivo = true
+        let arregloDeSubCadenas = files.type.split("/", 2);
+        console.log(files.type + ' XD ' + arregloDeSubCadenas[1]);
+        let imgPromise = this.getFileBlob(files);
+        imgPromise.then(blob => {
+          if (arregloDeSubCadenas[1] == 'jpg' || arregloDeSubCadenas[1] == 'png' || arregloDeSubCadenas[1] == 'jpeg')
+            this.comisionado.imagen = blob;
+          else
+            this.myModal.alertMessage({
+              title: 'Registro de Scout', msg: 'Solo puede subir archivos tipo Imagen!'
+            })
+          return
+        }).catch(e => console.log(e));
+      } else {
+        this.myModal.alertMessage({
+          title: 'Registro de Scout',
+          msg: 'Carque un foto!'
+        })
+        return
+      }
+    }
+  }
+
+  getFileBlob(file) {
+    var reader = new FileReader();
+    return new Promise(function (resolve, reject) {
+      reader.onload = (function (theFile) {
+        return function (e) {
+          resolve(e.target.result);
+        };
+      })(file);
+      reader.readAsDataURL(file);
+    });
+  }
+
 
   verificarCedulaExiste(): boolean {
     let cedula = this.txtIdenficacion.val()
-    // alert(cedula)
-    this.consultorioService.getRecuperarPorCedula(cedula).subscribe(data => {
+    this.ScoutService.getRecuperarPorCedula(cedula).subscribe(data => {
       this.valido = true
-      // alert(JSON.stringify(data))
       if (data) {
-        if (data.id != this.idPersonaPar) {
-          if (this.idTipoPar = 'pac') {
-            if (data.paciente) {
-              this.valido = false
-              this.myModal.alertMessage({
-                title: 'Cédula Incorrecta',
-                msg: 'Ya existe una paciente registrada con esa cédula!'
-              });
-              return this.valido
-            } else if (!data.medico) {
-              this.valido = true
-              // this.limpiarRegistros()
-              this.editarPersona(data)
-              return this.valido
-            } else if (!data.paciente) {
-              this.valido = true
-              // this.limpiarRegistros()
-              this.editarPersona(data)
-              return this.valido
-            }
-          } else {
-            if (data.medico) {
-              this.valido = false
-              this.myModal.alertMessage({
-                title: 'Cédula Incorrecta',
-                msg: 'Ya existe un medico registrado con esa cédula!'
-              });
-              return this.valido
-            } else if (!data.paciente) {
-              this.valido = true
-              // this.limpiarRegistros()
-              this.editarPersona(data)
-              return this.valido
-            }
-            else if (!data.medico) {
-              this.valido = true
-              // this.limpiarRegistros()
-              this.editarPersona(data)
-              return this.valido
-            }
-          }
+        if (data.id != this.idScoutPar) {
+          this.valido = false
+          this.myModal.alertMessage({
+            title: 'Cédula Incorrecta',
+            msg: 'Ya existe un Scout registrado con esa cédula!'
+          });
+          return this.valido
         }
       } else {
         this.valido = true
         this.editarPersona(data)
         return this.valido
-
       }
     })
-    // alert(this.valido)
     return this.valido
   }
 
@@ -320,6 +348,9 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
 
 
   limpiarRegistros() {
+    // this.txtUsuario.val('')
+    // this.passwordInput.val('')
+    // this.passwordInputCon.val('')
     this.txtNombres.val('')
     this.txtApellidos.val('')
     let nacimiento = new Date();
@@ -334,71 +365,96 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
     let fechaNacimiento: Date
     fechaNacimiento = this.dateFechaNace.value()
     this.varFechaNacimiento = fechaNacimiento
-    if (this.personaAng) {
-      this.personaAng.fechaNace = fechaNacimiento
+    if (this.ScoutAng) {
+      this.ScoutAng.fechaNace = fechaNacimiento
     }
   }
 
 
   sourceGenero = [{ "genero": "Masculino", "codigo": 'M' }, { "genero": "Femenino", "codigo": 'F' }];
 
-  sourceTipoSangre = [{ "tipo": "O+", "codigo": 'OPO' }, { "tipo": "O-", "codigo": 'ONE' },
-  { "tipo": "A+", "codigo": 'APO' }, { "tipo": "A-", "codigo": 'ANE' }, { "tipo": "B-", "codigo": 'BNE' },
-  { "tipo": "B+", "codigo": 'BPO' }, { "tipo": "AB-", "codigo": 'ABN' }, { "tipo": "AB+", "codigo": 'ABP' }];
-
-
-  generarHistorialMedico() {
-    let numeroRegistro: string
-    this.consultorioService.getRecuperarUltimoPaciente().subscribe(data => {
-      if (data.length > 0) {
-
-        let numero = data[0].historialMedico
-        let numeroNuevo = Number(numero) + 1
-        let llenarCero = numero.length - String(numeroNuevo).length
-        numeroRegistro = new Array(llenarCero + (/\./.test(String(numeroNuevo)) ? 2 : 1)).join('0') + String(numeroNuevo)
-      }
-      if (this.idPersonaPar == 0) {
-        this.paciente.historialMedico = numeroRegistro
-      }
-      this.txtHistorialMed.val(numeroRegistro)
-    });
-  }
-
-  listarEspecialidades() {
-    this.consultorioService.getListarEspecialidades().subscribe(data => {
-      this.sourceEspecilidad.localdata = data;
-      this.dataAdapterEspecialidad.dataBind();
-    })
-
-  }
-
-  //FUENTE DE DATOS PARA EL COMBOBOX DE ESPECIALIDAD
-  sourceEspecilidad: any =
+  //FUENTE DE DATOS PARA EL COMBOBOX DE RAMAS
+  sourceRamas: any =
     {
       datatype: 'json',
       id: 'id',
       localdata:
         [
           { name: 'id', type: 'string' },
-          { name: 'descripcion', type: 'string' },
+          { name: 'nombre', type: 'string' },
           { name: 'codigo', type: 'string' },
           { name: 'estado', type: 'string' }
         ],
     };
-  //CARGAR ORIGEN DEL COMBOBOX DE ESPECIALIDAD
-  dataAdapterEspecialidad: any = new jqx.dataAdapter(this.sourceEspecilidad);
+  //CARGAR ORIGEN DEL COMBOBOX DE RAMAS
+  dataAdapterRamas: any = new jqx.dataAdapter(this.sourceRamas);
 
+  listarRamas() {
+    this.ScoutService.getListarRamas().subscribe(data => {
+      this.sourceRamas.localdata = data;
+      this.dataAdapterRamas.dataBind();
+    })
+  }
+
+  //FUENTE DE DATOS PARA EL COMBOBOX DE GRUPOS
+  sourceGrupos: any =
+    {
+      datatype: 'json',
+      id: 'id',
+      localdata:
+        [
+          { name: 'id', type: 'string' },
+          { name: 'idGrupoRama', type: 'string' },
+          { name: 'idRama', type: 'string' },
+          { name: 'nombre', type: 'string' },
+          { name: 'codigo', type: 'string' },
+          { name: 'estado', type: 'string' }
+        ],
+    };
+  //CARGAR ORIGEN DEL COMBOBOX DE GRUPOS
+  dataAdapterGrupos: any = new jqx.dataAdapter(this.sourceGrupos);
+
+  listarGrupos() {
+    this.ScoutService.getListarGrupos(this.comboRama.val()).subscribe(data => {
+      this.sourceGrupos.localdata = data;
+      this.dataAdapterGrupos.dataBind();
+    })
+  }
+
+
+  //FUENTE DE DATOS PARA EL COMBOBOX DE TIPO SCOUTS
+  sourceTipoScout: any =
+    {
+      datatype: 'json',
+      id: 'idTipoScout',
+      localdata:
+        [
+          { name: 'idTipoScout', type: 'string' },
+          { name: 'codigo', type: 'string' },
+          { name: 'tipoScout', type: 'string' },
+          { name: 'descripcion', type: 'string' },
+        ],
+    };
+  //CARGAR ORIGEN DEL COMBOBOX DE ESPECIALIDAD
+  dataAdapterTipoScout: any = new jqx.dataAdapter(this.sourceTipoScout);
+
+  listarTiposScouts() {
+    this.ScoutService.getListarTiposScouts().subscribe(data => {
+      this.sourceTipoScout.localdata = data;
+      this.dataAdapterTipoScout.dataBind();
+    })
+  }
 
   listarPerfiles() {
-    this.consultorioService.getListarPerfiles().subscribe(data => {
+    this.ScoutService.getListarPerfiles().subscribe(data => {
       if (data.length > 0) {
         for (let i = 0; i < data.length; i++) {
-          if (data[i].codigo == 'PAC') {
-            if (this.idTipoPar == 'pac') {
+          if (data[i].codigo == 'BEN') {
+            if (this.idTipoPar == 'sco') {
               this.usuario.idPerfil = data[i].idPer
             }
-          } else if (data[i].codigo == 'MED') {
-            if (this.idTipoPar == 'med') {
+          } else if (data[i].codigo == 'COM') {
+            if (this.idTipoPar == 'com') {
               this.usuario.idPerfil = data[i].idPer
             }
           }
@@ -419,7 +475,8 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
       {
         input: '.identificacionInput', message: 'Identificación repetida no válida', action: 'keyup, change, blur',
         rule: (input: any, commit: any): any => {
-          return (this.verificarCedulaExiste())
+          if (this.txtIdenficacion.val())
+            return (this.verificarCedulaExiste())
         }
       },
       { input: '.nombresInput', message: 'Nombres requeridos!', action: 'keyup, blur', rule: 'required' },
@@ -429,7 +486,7 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
       { input: '.apellidosInput', message: 'Apellidos deben contener solo letras!', action: 'keyup', rule: 'notNumber' },
       { input: '.apellidosInput', message: 'Apellidos deben tener entre 3 e 30 caracteress!', action: 'keyup', rule: 'length=2,30' },
       {
-        input: '.fechaNaceInput', message: 'Solo de 5 a 90 años.', action: 'keyup',
+        input: '.fechaNaceInput', message: 'Solo de 5 a 60 años.', action: 'keyup',
         rule: (input: any, commit: any): any => {
           return (this.validaFechaNacimiento(this.dateFechaNace.value()));
         }
@@ -437,12 +494,33 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
       {
         input: '.generoInput', message: 'Seleccione Género', action: 'change',
         rule: (input: any, commit: any): any => {
-          let selectedIndex = this.comboGenero.selectIndex
-          if (selectedIndex) { return selectedIndex; };
+          let selectedIndex = this.comboGenero.getSelectedIndex()
+          if (selectedIndex) { return false; };
         }
       },
-      { input: '.emailPersonalInput', message: 'E-mail requerido!', action: 'keyup, blur', rule: 'required' },
-      { input: '.emailPersonalInput', message: 'E-mail incorrecto!', action: 'keyup', rule: 'email' },
+      {
+        input: '.ramaInput', message: 'Seleccione una Rama', action: 'change',
+        rule: (input: any, commit: any): any => {
+          let selectedIndex = this.comboRama.getSelectedIndex()
+          if (selectedIndex) { return false; };
+        }
+      },
+      {
+        input: '.grupoInput', message: 'Seleccione Grupo', action: 'change',
+        rule: (input: any, commit: any): any => {
+          let selectedIndex = this.comboGrupo.getSelectedIndex()
+          if (selectedIndex) { return false; };
+        }
+      },
+      {
+        input: '.tipoScoutsInput', message: 'Seleccione un Tipo de Scout', action: 'change',
+        rule: (input: any, commit: any): any => {
+          let selectedIndex = this.comboTipoScout.getSelectedIndex()
+          if (selectedIndex) { return false; };
+        }
+      },
+      { input: '.correoInput', message: 'E-mail requerido!', action: 'keyup, blur', rule: 'required' },
+      { input: '.correoInput', message: 'E-mail incorrecto!', action: 'keyup', rule: 'email' },
       {
         input: '.celularInput', message: 'Celular incorrecto! Ingrese 10 dígitos', action: 'valuechanged, blur',
         rule: (input: any, commit: any): any => {
@@ -455,7 +533,6 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
           return (this.validadorService.validaDireccion(this.txtAreaDireccion.val()));
         }
       },
-      { input: '.histMedicoInput', message: 'Historial Médico Requerido!', action: 'keyup, blur', rule: 'required' },
       { input: '.usuarioInput', message: 'Usuario requerido!', action: 'keyup, blur', rule: 'required' },
       { input: '.passwordInput', message: 'Contraseña requerida!', action: 'keyup, blur', rule: 'required' },
       { input: '.passwordInputCon', message: 'Verificación de contraseña requerida!', action: 'keyup, blur', rule: 'required' },
@@ -463,6 +540,36 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
         input: '.passwordInputCon', message: 'Las contraseñas no coinciden', action: 'keyup, change, blur',
         rule: (input: any, commit: any): any => {
           return (this.verificarCoincideClave())
+        }
+      },
+      {
+        input: '.anioDesdeInput', message: 'Año de edición requerido!', action: 'keyup, blur',
+        rule: (input: any, commit: any): any => {
+          if (!this.txtAnioDesde.val() || this.txtAnioDesde.val() == 0) { return false; };
+        }
+      },
+      {
+        input: '.anioDesdeInput', message: 'Año de edición  debe tener 4 caracteres!', action: 'keyup', rule: (input: any, commit: any): any => {
+          if (this.txtAnioDesde.val())
+            if (Number(this.txtAnioDesde.val()) < 1000) { return false; };
+        }
+      },
+      {
+        input: '.anioHastaInput', message: 'Año de edición requerido!', action: 'keyup, blur',
+        rule: (input: any, commit: any): any => {
+          if (!this.txtAnioHasta.val() || this.txtAnioHasta .val() == 0) { return false; };
+        }
+      },
+      {
+        input: '.anioHastaInput', message: 'Año de edición  debe tener 4 caracteres!', action: 'keyup', rule: (input: any, commit: any): any => {
+          if (this.txtAnioHasta.val())
+            if (Number(this.txtAnioHasta.val()) < 1000) { return false; };
+        }
+      },
+      {
+        input: '.anioHastaInput', message: 'Año de hasta  debe ser mayor o igual al año desde!', action: 'keyup', rule: (input: any, commit: any): any => {
+          if (this.txtAnioHasta.val())
+            if (Number(this.txtAnioHasta.val()) > 2020) { return false; };
         }
       },
     ];
@@ -496,59 +603,41 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
 
   validaDatos(): boolean {
     let valido = true
-    //valida cedula o pasaporte
     if (!this.validarCedulaPasaporte(this.txtIdenficacion.val())) {
       valido = false
-      // alert('cedu')
       return valido
     }
-    //valida Apellidos
     if (!this.validadorService.validaApellidos(this.txtApellidos.val())) {
       valido = false
-      // alert('ape')
       return valido
     }
-    //valida fecha de nacimiento
     if (!this.validaFechaNacimiento(this.dateFechaNace.value())) {
       valido = false
-      // alert('nace')
       return valido
     }
-    //valida mails
     if (!this.validadorService.validaMails(this.txtEmailPersonal.val())) {
       valido = false
-      // alert('mai per')
       return valido
     }
-    //valida celular
     if (!this.validadorService.validaCelular(this.masketCelular.val())) {
       valido = false
-      // alert('cel')
       return valido
     }
-    //valida direccion
     if (!this.validadorService.validaDireccion(this.txtAreaDireccion.val())) {
       valido = false
-      // alert('dir')
       return valido
     }
-    //validar combos
     if (!this.comboGenero.val()) {
       valido = false
-      // alert('combos')
       return valido
     }
-    if (this.idTipoPar == 'pac') {
-      if (!this.comboTipoSangre.val()) {
-        valido = false
-        // alert('combos')
-        return valido
-      }
+    if (!this.comboTipoScout.val() || !this.comboGrupo.val() || !this.comboRama.val()) {
+      valido = false
+      return valido
     }
-    if (this.idTipoPar == 'med') {
-      if (!this.comboEspecialidad.val()) {
+    if (this.idTipoPar == 'com') {
+      if (!this.txtAnioDesde.val() || !this.txtAnioHasta.val()) {
         valido = false
-        // alert('combos')
         return valido
       }
     }
@@ -559,7 +648,7 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
     //valida edad entre 16 y 70 años
     let fecha_actual = new Date();
     let yearTo = fecha_actual.getFullYear() - 5;
-    let yearFrom = fecha_actual.getFullYear() - 90;
+    let yearFrom = fecha_actual.getFullYear() - 60;
     let date = new Date(fecha)
     let result = date.getFullYear() >= yearFrom && date.getFullYear() <= yearTo;
     return result;

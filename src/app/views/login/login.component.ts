@@ -14,7 +14,7 @@ import { ScoutService } from '../../services/scout/scout.service';
   templateUrl: 'login.component.html',
 })
 export class LoginComponent implements OnInit {
-  @Input() title = 'Consultorio Odontológico La Libertad';
+  @Input() title = 'Distrito Scout Santa Elena';
   usuario: Usuario = new Usuario();
   @Input() mensajeNotificacion = 'Credenciales incorrectas!';
   // @ViewChild('msgNotification') msgNotification: jqxNotificationComponent;
@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   constructor(//public messagerService: MessagerService,
     private router: Router,
     private autenticacionService: AuthService,
-    private consultorioService: ScoutService) { }
+    private ScoutService: ScoutService) { }
 
 
   ngOnInit() {
@@ -36,9 +36,12 @@ export class LoginComponent implements OnInit {
 
 
   procesarEvento(event: any) {
-    this.autenticacionService.login('rcatuto', 'consultorio')
+    this.ScoutService.getBuscarUsuario(this.usuario.usuario).subscribe(data => {
+      localStorage.setItem('datosUsuario', JSON.stringify(data));
+    });
+    this.autenticacionService.login('cmendoza', 'scout')
       .subscribe(data => {
-        this.router.navigate(['/consultorio/persona-edicion', 0, 'pac']);
+        this.router.navigate(['/scout/persona-edicion', 0, 'sco']);
       }, error => {
         alert('Credenciales no válidas   Soy un botón sexy');
         console.log(error);
@@ -50,24 +53,26 @@ export class LoginComponent implements OnInit {
       .subscribe(data => {
         // Si se obtuvo el token lo almacena en memoria en notación JSON.
         this.recuperarUsuario()
+        this.recuperarDatosScout()
         localStorage.setItem('usuarioActual', JSON.stringify(data));
         //localStorage.getItem('usuarioActual');
         this.gotoHome();
       }, error => {
         alert('Credenciales no válidas');
-        /*  this.messagerService.alert({
-          title: 'Credenciales no válidas',
-          msg: 'Ingrese correctamente sus credenciales de acceso!'
-         }); */
         console.log(error);
       });
   }
 
   recuperarUsuario() {
-    // alert(this.usuario.usuario)
-    this.consultorioService.getBuscarUsuario(this.usuario.usuario).subscribe(data => {
-      // alert(JSON.stringify(data))
+    this.ScoutService.getBuscarUsuario(this.usuario.usuario).subscribe(data => {
       localStorage.setItem('datosUsuario', JSON.stringify(data));
+    });
+  }
+
+
+  recuperarDatosScout() {
+    this.ScoutService.getRecuperarDatosScout(this.usuario.usuario).subscribe(data => {
+      localStorage.setItem('datosScout', JSON.stringify(data));
     });
   }
 
