@@ -163,17 +163,26 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
           // this.usuario.claveDescifrada=rev(constrasenaCifrada)
           this.generarImagen()
           this.myValidator.hide();
-          this.myModal.alertQuestion({
-            title: 'Registro de ' + this.labelPersona,
-            msg: '¿Desea grabar este registro?',
-            result: (k) => {
-              if (k) {
-                this.ScoutService.grabarScout(this.ScoutAng).subscribe(result => {
-                  this.gotoList();
-                }, error => console.error(error));
+          if (this.idTipoPar == 'PAC') {
+            this.banderaSubioArchivo = true
+          }
+          if (this.banderaSubioArchivo = true) {
+            this.myModal.alertQuestion({
+              title: 'Registro de ' + this.labelPersona,
+              msg: '¿Desea grabar este registro?',
+              result: (k) => {
+                if (k) {
+                  this.ScoutService.grabarScout(this.ScoutAng).subscribe(result => {
+                    this.gotoList();
+                  }, error => console.error(error));
+                }
               }
-            }
-          })
+            })
+          }
+          else {
+            this.myModal.alertMessage({ title: 'Registro de Comisionado', msg: 'Carque un foto!' })
+            return
+          }
         } else {
           this.myModal.alertMessage({
             title: 'Registro de ' + this.labelPersona,
@@ -229,7 +238,7 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
             for (let i = 0; i < dataAdapter.length; i++) {
               let record = dataAdapter[i];
               if (record.idGrupoRama == data[0].idGrupoRama) {
-                this.comboGrupo.selectIndex(i+1)
+                this.comboGrupo.selectIndex(i + 1)
               }
             }
           })
@@ -292,13 +301,14 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
             })
           return
         }).catch(e => console.log(e));
-      } else {
-        this.myModal.alertMessage({
-          title: 'Registro de Scout',
-          msg: 'Carque un foto!'
-        })
-        return
       }
+      //  else {
+      //   this.myModal.alertMessage({
+      //     title: 'Registro de Scout',
+      //     msg: 'Carque un foto!'
+      //   })
+      //   return
+      // }
     }
   }
 
@@ -557,7 +567,7 @@ export class PersonaEdicionComponent implements OnInit, AfterContentInit {
       {
         input: '.anioHastaInput', message: 'Año de edición requerido!', action: 'keyup, blur',
         rule: (input: any, commit: any): any => {
-          if (!this.txtAnioHasta.val() || this.txtAnioHasta .val() == 0) { return false; };
+          if (!this.txtAnioHasta.val() || this.txtAnioHasta.val() == 0) { return false; };
         }
       },
       {

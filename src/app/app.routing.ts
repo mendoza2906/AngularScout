@@ -62,10 +62,6 @@ export const routes: Routes = [
         loadChildren: './views/scout/scout.module#ScoutModule'
       },
       {
-        path: 'matriculas',
-        loadChildren: './views/matriculas/matriculas.module#MatriculasModule'
-      },
-      {
         path: 'base',
         loadChildren: './views/base/base.module#BaseModule'
       },

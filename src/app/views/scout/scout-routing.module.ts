@@ -4,7 +4,6 @@ import { ControlAutenticacion } from '../../security/control-autenticacion';
 import { ComisionadoListadoComponent } from './comisionado-listado/comisionado-listado.component';
 import { PersonaEdicionComponent } from './persona-edicion/persona-edicion.component';
 import { SubirArchivoComponent } from './subir-archivo/subir-archivo.component';
-import { RevisarArchivoComponent } from './revisar-archivo/revisar-archivo.component';
 import { ProgresionListadoComponent } from './progresion-listado/progresion-listado.component';
 import { RevisarProgresionComponent } from './revisar-progresion/revisar-progresion.component';
 import { ScoutListadoComponent } from './scout-listado/scout-listado.component';
@@ -54,14 +53,6 @@ const routes: Routes = [
         canActivate: [ControlAutenticacion],
         data: {
           title: 'Subir Archivo'
-        }
-      },
-      {
-        path: 'revisar-archivo',
-        component: RevisarArchivoComponent,
-        canActivate: [ControlAutenticacion],
-        data: {
-          title: 'Revisar Archivo'
         }
       },
       {

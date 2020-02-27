@@ -51,7 +51,7 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
       let idPerfilLogeado: any
       if (localStorage.getItem('datosUsuario')) {
         let datosUsuario = JSON.parse(localStorage.getItem('datosUsuario'));
-        alert(JSON.stringify(data))
+        // alert(JSON.stringify(data))
         idPerfilLogeado = datosUsuario.idPerfil
         this.idScoutLogeado=datosUsuario.idScout
         // alert(this.idScoutLogeado)
@@ -112,11 +112,6 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
       icon: 'icon-cursor',
       children: [
         {
-          name: 'Módulos Habilitados',
-          url: '/scout/subir-archivo/',
-          icon: 'icon-grid'
-        },
-        {
           name: 'Listado de Progresión Scout',
           url: '/scout/progresion-listado/',
           icon: 'icon-grid'
@@ -144,7 +139,12 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
       icon: 'icon-cursor',
       children: [
         {
-          name: 'Distributivo',
+          name: 'Asistencia',
+          url: '/reportes/distributivo/',
+          icon: 'icon-grid'
+        },
+        {
+          name: 'Progresión',
           url: '/reportes/distributivo/',
           icon: 'icon-grid'
         },

@@ -76,11 +76,11 @@ export class RevisarProgresionComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // this.getStorageFormularioState();
+  
   }
 
   doSomethingWithCurrentValue() {
-    // alert('estoy pendejo')
+  
 
   }
   recuperarIdScout() {
@@ -110,6 +110,7 @@ export class RevisarProgresionComponent implements OnInit, AfterViewInit {
         this.labelInsignia = data[0].insignia
         this.labelRama = data[0].rama
         this.labelImagen = data[0].imagen
+        // this.labelImagen = 'localhost/galeria/insignia/unidad/02uni_insig.png'
         this.labelTipoScout = data[0].tipoScout
         this.current = Math.round((data[0].contCumplidos * 100) / data[0].contTotales)
       }

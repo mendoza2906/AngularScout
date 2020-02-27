@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatriculasService } from '../../../services/matriculas/matriculas.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessagerService } from 'ng-easyui/components/messager/messager.service';
-import { jqxComboBoxComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxcombobox';
 import { jqxGridComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxgrid';
 import { ModalComponentComponent } from '../../modal-view/modal-component/modal-component.component';
 import { getLocalization } from 'jqwidgets-scripts/scripts/localization';

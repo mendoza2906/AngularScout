@@ -285,19 +285,19 @@ export class ComisionadoListadoComponent implements OnInit {
 
   reportAgendaMedico(idMedico: number, pi_fecha_inicio: string, pi_fecha_fin: string) {
     this.ocultarReporte();
-    this.consultorioService.getAgendaMedico(idMedico, pi_fecha_inicio, pi_fecha_fin).subscribe((blob: Blob) => {
-      // Para navegadores de Microsoft.
-      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-        window.navigator.msSaveOrOpenBlob(blob);
-      }
-      let filename = "";
-      filename = this.nombreArchivo();
-      const objectUrl = window.URL.createObjectURL(blob);
-      const enlace = document.createElement('a');
-      enlace.href = objectUrl;
-      this.pdfSrc = "";
-      this.pdfSrc = enlace.href;
-    });
+    // this.consultorioService.getAgendaMedico(idMedico, pi_fecha_inicio, pi_fecha_fin).subscribe((blob: Blob) => {
+    //   // Para navegadores de Microsoft.
+    //   if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+    //     window.navigator.msSaveOrOpenBlob(blob);
+    //   }
+    //   let filename = "";
+    //   filename = this.nombreArchivo();
+    //   const objectUrl = window.URL.createObjectURL(blob);
+    //   const enlace = document.createElement('a');
+    //   enlace.href = objectUrl;
+    //   this.pdfSrc = "";
+    //   this.pdfSrc = enlace.href;
+    // });
   }
 
   controlIsCollapsed() {

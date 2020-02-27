@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" [hidden]="isCollapsed">
   <div class="card-header">
     <h3> Listado de Actividades Realizadas </h3>
   </div>
@@ -53,7 +53,41 @@
     </form>
   </jqxValidator>
 </div>
-
+<div class="card-footer" [hidden]="ocultarPdfViewer" class="col-sm-12">
+  <div class="form-group row">
+    <div class="col-md-1">Desde: </div>
+    <div class="col-md-2">
+      <jqxDateTimeInput #dateDesde [formatString]="'yyyy-MM-dd'" [height]="22" [width]="'100%'"
+        [(ngModel)]="varFechaDesde" [theme]="'material'" [disabled]="false" name="desde"
+        (onValueChanged)="valueChangedFechas()">
+      </jqxDateTimeInput>
+    </div>
+    <div class="col-md-1">Hasta:</div>
+    <div class="col-md-2">
+      <jqxDateTimeInput #dateHasta [formatString]="'yyyy-MM-dd'" [height]="22" [width]="'100%'"
+        [(ngModel)]="varFechaHasta" [theme]="'material'" [disabled]="false" name="hasta"
+        (onValueChanged)="valueChangedFechas()">
+      </jqxDateTimeInput>
+    </div>
+    <div class="col-md-3">
+      <jqxButton #botonGenerar [width]="'60'" [height]="'25'" [theme]="'darkblue'" [disabled]="false"
+        (click)="generarReporte()">Generar Reporte
+      </jqxButton>
+    </div>
+    <div class="col-md-3">
+      <jqxButton #botonVolver [width]="'60'" [height]="'25'" [theme]="'darkblue'" [disabled]="true"
+        (click)="controlIsCollapsed()">Volver
+      </jqxButton>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-12">
+      <ngx-extended-pdf-viewer #myPdfViewer [src]="pdfSrc" [hidden]="ocultarPdfViewer" backgroundColor="#ffffff"
+        [height]="'90vh'" [useBrowserLocale]="true">
+      </ngx-extended-pdf-viewer>
+    </div>
+  </div>
+</div>
 <div style="margin-left: 3px; margin-top: 10px; font-size: 13px; font-family: Verdana;" #eventLog></div>
 
 <app-modal-component></app-modal-component>

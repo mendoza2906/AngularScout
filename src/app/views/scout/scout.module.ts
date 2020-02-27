@@ -19,12 +19,10 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { FormsModule } from '@angular/forms'
 import { ScoutRoutingModule } from './scout-routing.module';
-import { ConsultaMedicaComponent } from './consulta-medica/consulta-medica.component';
 import { jqxPasswordInputModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxpasswordinput';
 import { PersonaEdicionComponent } from './persona-edicion/persona-edicion.component';
 import { ScoutService } from '../../services/scout/scout.service';
 import { SubirArchivoComponent } from './subir-archivo/subir-archivo.component';
-import { RevisarArchivoComponent } from './revisar-archivo/revisar-archivo.component';
 import { jqxPanelModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxPanel';
 import { jqxFileUploadModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxfileupload';
 import { ProgresionListadoComponent } from './progresion-listado/progresion-listado.component';
@@ -38,17 +36,14 @@ import { AsistenciaRegistroComponent } from './asistencia-registro/asistencia-re
 
 @NgModule({
   declarations: [
-    ConsultaMedicaComponent,
     ScoutListadoComponent,
     AsistenciaListadoComponent,
     ComisionadoListadoComponent,
     PersonaEdicionComponent,
     SubirArchivoComponent,
-    RevisarArchivoComponent,
     ProgresionListadoComponent,
     RevisarProgresionComponent,
     AsistenciaRegistroComponent
-
   ],
   imports: [
     CommonModule,

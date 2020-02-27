@@ -145,7 +145,10 @@ export class SubirArchivoComponent implements OnInit {
               result: (k) => {
                 if (k) {
                   this.ScoutService.grabarDocumentoModulos(this.documentoAng).subscribe(result => {
-                    alert('joder emtro')
+                    this.myModal.alertMessage({
+                      title: 'Registro de Documentación',
+                      msg: 'Documento Subido Exitosamente!'
+                    })
                   }, error => console.error(error));
                 }
               }

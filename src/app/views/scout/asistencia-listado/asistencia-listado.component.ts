@@ -9,6 +9,8 @@ import { ValidadorService } from '../../../services/validacion/validador.service
 import { ModalComponentComponent } from '../../modal-view/modal-component/modal-component.component';
 import { ScoutService } from '../../../services/scout/scout.service';
 import { getLocalization } from 'jqwidgets-scripts/scripts/localization';
+import { jqxButtonComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxbuttons';
+import { NgxExtendedPdfViewerComponent } from 'ngx-extended-pdf-viewer';
 
 @Component({
   selector: 'app-asistencia-listado',
@@ -21,6 +23,8 @@ export class AsistenciaListadoComponent implements OnInit {
   @ViewChild('dateHasta') dateHasta: jqxDateTimeInputComponent;
   @ViewChild('gridListadoActividades') gridListadoActividades: jqxGridComponent;
   @ViewChild('myValidator') myValidator: jqxValidatorComponent;
+  @ViewChild('botonVolver') botonVolver: jqxButtonComponent;
+  @ViewChild('myPdfViewer') myPdfViewer: NgxExtendedPdfViewerComponent;
   @ViewChild(ModalComponentComponent) myModal: ModalComponentComponent;
 
   sub: Subscription;
@@ -34,6 +38,13 @@ export class AsistenciaListadoComponent implements OnInit {
     "direction": "DESC",
     "filterInformation": []
   };
+
+
+  ocultarPdfViewer: boolean = true;
+  ocultarGridReportes: boolean = false;
+  pdfSrc: string = '';
+  isCollapsed: boolean = false;
+
 
   fechaDesdeDt: Date;
   fechaHastaDt: Date;
@@ -77,6 +88,12 @@ this.listarAsistencias()
       'id': '3',
       'parentid': '-1',
       'subMenuWidth': '250px'
+    },
+    {
+      'text': 'Imprimir Listado Actividades',
+      'id': '4',
+      'parentid': '-1',
+      'subMenuWidth': '250px'
     }
   ];
 
@@ -94,9 +111,9 @@ this.listarAsistencias()
   };
 
   getAdapter(source1: any): any {
-    // create data adapter and perform data
     return new jqx.dataAdapter(this.source1, { autoBind: true });
   };
+
   menus = this.getAdapter(this.source1).getRecordsHierarchy('id', 'parentid', 'items', [{ name: 'text', map: 'label' }]);
   itemclick(event: any): void {
     const selectedrowindex = this.gridListadoActividades.getselectedrowindex();
@@ -109,11 +126,26 @@ this.listarAsistencias()
       case 'Editar':
         if(idAsistenciaSel){
           this.router.navigate(['scout/asistencia-registro',idAsistenciaSel]);
+        }else{
+          this.myModal.alertMessage({
+            title: 'Registro de Asistencia',
+            msg: 'Seleccione un listado de Asistencia!'
+          });
         }
         break;
       case 'Eliminar':
         //  this.gotoList();
         //    this.eliminar();
+        break;
+      case 'Imprimir Listado Actividades':
+        if(idAsistenciaSel){
+        this.reporteListadoAsistencia(idAsistenciaSel)
+        }else{
+          this.myModal.alertMessage({
+            title: 'Registro de Asistencia',
+            msg: 'Seleccione un listado de Asistencia!'
+          });
+        }
         break;
       default:
 
@@ -207,6 +239,48 @@ this.listarAsistencias()
       { text: 'Observación ', datafield: 'observacion', width: '20%' },
     ];
     localization: any = getLocalization('es');
+
+    nombreArchivo(): string {
+      let filename = "";
+      var fecha = new Date();
+      filename = fecha.getHours() + "_" + fecha.getMinutes() + "_" + fecha.getDate() + "_" + fecha.getMonth() + "_" + fecha.getFullYear()
+      return filename;
+    }
+  
+    reporteListadoAsistencia(idAsistencia: number) {
+      this.ocultarReporte();
+      this.ScoutService.getListadoAsistencia(idAsistencia).subscribe((blob: Blob) => {
+        // Para navegadores de Microsoft.
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+          window.navigator.msSaveOrOpenBlob(blob);
+        }
+        let filename = "";
+        filename = this.nombreArchivo();
+        const objectUrl = window.URL.createObjectURL(blob);
+        const enlace = document.createElement('a');
+        enlace.href = objectUrl;
+        this.pdfSrc = "";
+        this.pdfSrc = enlace.href;
+      });
+    }
+  
+    controlIsCollapsed() {
+      this.mostrarReporte();
+      this.isCollapsed = !this.isCollapsed;
+      this.pdfSrc = "";
+      this.ocultarPdfViewer = !this.ocultarPdfViewer
+    }
+  
+    mostrarReporte() {
+      this.botonVolver.disabled(true);
+      this.myPdfViewer.showPrintButton = true;
+    }
+  
+    ocultarReporte() {
+      this.isCollapsed = !this.isCollapsed;
+      this.ocultarPdfViewer = !this.ocultarPdfViewer
+      this.botonVolver.disabled(false);
+    }
 }
 
 

@@ -79,8 +79,6 @@ import { jqxPanelComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxPan
 import { jqxPanelModule } from 'jqwidgets-scripts/jqwidgets-ng/jqxPanel';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-
-import { MatriculasModule } from './views/matriculas/matriculas.module';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { Base64Util } from './util/base-64-util';
 import { AuthService } from './services/auth/auth.service';
@@ -110,7 +108,6 @@ import { ScoutModule } from './views/scout/scout.module';
     HttpModule,
     HttpClientModule,
     FormsModule,
-    MatriculasModule,
     ScoutModule,
     jqxTreeGridModule,
     jqxTreeModule,

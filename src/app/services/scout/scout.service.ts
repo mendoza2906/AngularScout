@@ -138,77 +138,14 @@ export class ScoutService {
   }
   //PANTALLA ASISTENCIA
 
-
-
-
-
-
-
-
-  getListarCitas(fechaCita: string): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS + '/listarCitas/' + fechaCita);
+  getListadoAsistencia(idAsistencia: number): Observable<Blob> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/getListadoAsistencia/' + idAsistencia , { responseType: 'blob' });
   }
 
-  getListarCitasFn(idMedico: number, fechaCita: string): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS + '/listarCitasProc/' + idMedico + '/' + fechaCita);
-  }
-
-  getListarCitasFechas(fechaCitaInicio: string, fechaCitaFin: string): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS + '/listarCitasFechas/' + fechaCitaInicio + '/' + fechaCitaFin);
-  }
-
-  getListarHoras(idMedico: number, fechaCita: string, idHora: number): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS + '/listarHoras/' + idMedico + '/' + fechaCita + '/' + idHora);
-  }
-
-  getListarCitaId(idCita: number): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS + '/listarCitaId/' + idCita);
-  }
-
-
-
-  borrarMatricula(idEstudianteMatricula: number) {
-    return this.http.delete(this.URL_ROOT_WS + '/borrarMatricula/' + idEstudianteMatricula);
-  }
-
-
-  //PANTALLA PRINCIPAL CONSULTAS
-
-  getRecuperarDatosCita(idCita: number): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS + '/recuperarDatosCita/' + idCita);
-  }
-
-  getRecuperarConsultaId(idConsulta: number): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS + '/listarConsultaId/' + idConsulta);
-  }
-
-  getListarProcedimientos(): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS + '/listarProcedimientos');
-  }
-
-  grabarConsulta(consultaPojo: any): Observable<any> {
-    let result: Observable<Object>;
-    result = this.http.post(this.URL_ROOT_WS + '/grabarConsulta', consultaPojo);
-    return result;
-  }
-
-  //PANTALLA  PACIENTES 
-  getListadoPacientes(): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS_PER + '/listadoPacientes');
-  }
-
-
-  //PANTALLA  MEDICOS 
-  getListadoMedicos(idEspecialidad: number): Observable<any> {
-    return this.http.get(this.URL_ROOT_WS_PER + '/listadoMedicos/' + idEspecialidad);
-  }
-
-
-
-  getAgendaMedico(idMedico: number, pi_fecha_inicio: string, pi_fecha_fin: string): Observable<Blob> {
-    return this.http.get(this.URL_ROOT_WS_PER + '/getAgendaMedico/' + idMedico + '/' + pi_fecha_inicio +
-      '/' + pi_fecha_fin, { responseType: 'blob' });
-  }
+  // getListadoAsistencia(idMedico: number, pi_fecha_inicio: string, pi_fecha_fin: string): Observable<Blob> {
+  //   return this.http.get(this.URL_ROOT_WS_PER + '/getListadoAsistencia/' + idMedico + '/' + pi_fecha_inicio +
+  //     '/' + pi_fecha_fin, { responseType: 'blob' });
+  // }
 
   getHistorialPaciente(idPaciente: number): Observable<Blob> {
     return this.http.get(this.URL_ROOT_WS_PER + '/getHistorialPaciente/' + idPaciente, { responseType: 'blob' });
