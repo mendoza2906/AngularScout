@@ -1,0 +1,42 @@
+<div class="card">
+  <!-- [hidden]="isCollapsed" -->
+  <div class="card-header">
+    <h3> Reporte de Ranking de Insignias </h3>
+  </div>
+  <jqxMenu style='margin-left: 5px; margin-right: 5px; margin-top: 5px;' #jqxMenu (onItemclick)="itemclick($event)"
+    [source]="menus" [theme]="'material'" [width]="'auto'" [height]="30">
+  </jqxMenu>
+  <!-- [hidden]="ocultarPdfViewer"  -->
+  <div class="card-footer" class="col-sm-12">
+    <!-- <div class="form-group row">
+      <div class="col-md-3">
+        <jqxButton #botonGenerar [width]="'60'" [height]="'25'" [theme]="'material'" [disabled]="false"
+          (click)="generarReporte()">Generar Reporte
+        </jqxButton>
+      </div>
+      <div class="col-md-3">
+        <jqxButton #botonVolver [width]="'60'" [height]="'25'" [theme]="'material'" [disabled]="true"
+          (click)="controlIsCollapsed()">Volver
+        </jqxButton>
+      </div>
+    </div> -->
+    <div class="form-group row">
+      <div class="col-md-12">
+        <!-- [hidden]="ocultarPdfViewer" -->
+        <ngx-extended-pdf-viewer #myPdfViewer [src]="pdfSrc" backgroundColor="#ffffff"
+          [height]="'90vh'" [useBrowserLocale]="true">
+        </ngx-extended-pdf-viewer>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<app-modal-component></app-modal-component>
+
+
+<pre>
+<!-- {{sourceDistributivoDocenteAsig| json}}  -->
+<!-- {{dataAdapterListadoActividades | json}}     -->
+</pre>

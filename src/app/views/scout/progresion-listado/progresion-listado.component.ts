@@ -68,22 +68,10 @@ export class ProgresionListadoComponent implements OnInit {
   dataMenu = [
     {
       'id': '1',
-      'text': 'Nuevo',
+      'text': 'Ver Progresión',
       'parentid': '-1',
       'subMenuWidth': '250px'
-    },
-    {
-      'id': '2',
-      'text': 'Editar',
-      'parentid': '-1',
-      'subMenuWidth': '250px'
-    },
-    {
-      'id': '3',
-      'text': 'Eliminar',
-      'parentid': '-1',
-      'subMenuWidth': '250px'
-    },
+    }
 
   ];
 
@@ -112,11 +100,7 @@ export class ProgresionListadoComponent implements OnInit {
     var opt = event.args.innerText;
 
     switch (opt) {
-      case 'Nuevo':
-        this.setFormularioState();
-        this.router.navigate(['scout/revisar-progresion', 0]);
-        break;
-      case 'Editar':
+      case 'Ver Progresión':
         if (idScoutSel) {
           this.setFormularioState();
           this.router.navigate(['scout/revisar-progresion', idScoutSel]);
@@ -124,43 +108,9 @@ export class ProgresionListadoComponent implements OnInit {
           this.myModal.alertMessage({ title: 'Progresión de Scouts', msg: 'Seleccione un Scout!' });
         }
         break;
-      case 'Eliminar':
-        if (idScoutSel) {
-          if (this.banderaDepencia == false) {
-            this.myModal.alertQuestion({
-              title: 'Progresión de Scouts',
-              msg: 'Desea eliminar este registro?',
-              result: (k) => {
-                if (k) {
-                  // this.eliminarEstudiante(idPersonaSel)
-                  this.myModal.alertMessage({ title: 'Progresión de Scouts', msg: 'Scout eliminado Correctamente!' });
-                  this.gridScouts.clear()
-                  this.gridScouts.clearselection()
-                  this.listarScouts()
-                  this.gridScouts.refreshdata()
-                }
-              }
-            })
-          } else {
-            this.myModal.alertMessage({
-              title: 'Progresión de Scouts',
-              msg: 'No es posible eliminar este registro activo, por sus dependencias con otros registros!'
-            });
-          }
-        } else {
-          this.myModal.alertMessage({ title: 'Progresión de Scouts', msg: 'Seleccione un Scout!' });
-        }
-        break;
       default:
     }
   };
-
-  // eliminarEstudiante(idPersona: number) {
-  //   this.MatriculasService.borrarEstudiante(idPersona).subscribe(result => {
-  //   }, error => console.error(error));
-  // }
-
-
 
   //FUENTE DE DATOS PARA EL COMBOBOX DE RAMAS
   sourceRamas: any =
@@ -209,7 +159,6 @@ export class ProgresionListadoComponent implements OnInit {
     })
   }
 
-
   sourceScouts: any =
     {
       datatype: 'array',
@@ -251,11 +200,11 @@ export class ProgresionListadoComponent implements OnInit {
 
   columnsScouts: any[] =
     [
-      { text: 'Id Scout', datafield: 'idScout', width: '5%', filtertype: 'none' },
+      { text: 'Id Scout', datafield: 'idScout', width: '5%', filtertype: 'none', hidden: true },
       { text: 'Identificacion', datafield: 'identificacion', width: '15%', cellsalign: 'center', center: 'center' },
       { text: 'Nombres', datafield: 'nombresCompletos', width: '30%' },
       { text: 'tipoScout', datafield: 'tipoScout', width: '25%' },
-      { text: 'Dirección', datafield: 'direccion', width: '15%', cellsalign: 'center', center: 'center' },
+      { text: 'Dirección', datafield: 'direccion', width: '20%', cellsalign: 'center', center: 'center' },
       { text: 'Celular', datafield: 'celular', width: '10%', cellsalign: 'center', center: 'center' },
     ];
 

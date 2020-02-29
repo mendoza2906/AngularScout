@@ -9,6 +9,10 @@ import { RevisarProgresionComponent } from './revisar-progresion/revisar-progres
 import { ScoutListadoComponent } from './scout-listado/scout-listado.component';
 import { AsistenciaListadoComponent } from './asistencia-listado/asistencia-listado.component';
 import { AsistenciaRegistroComponent } from './asistencia-registro/asistencia-registro.component';
+import { ReporteInsigniasComponent } from './reporte-insignias/reporte-insignias.component';
+import { ReporteProyectosComponent } from './reporte-proyectos/reporte-proyectos.component';
+import { NoticiaListadoComponent } from './noticia-listado/noticia-listado.component';
+import { NoticiaEdicionComponent } from './noticia-edicion/noticia-edicion.component';
 
 
 const routes: Routes = [
@@ -28,7 +32,7 @@ const routes: Routes = [
         component: ComisionadoListadoComponent,
         canActivate: [ControlAutenticacion],
         data: {
-          title: 'Listado de Médicos'
+          title: 'Listado de Comisionados'
         }
       },
       {
@@ -36,7 +40,7 @@ const routes: Routes = [
         component: ScoutListadoComponent,
         canActivate: [ControlAutenticacion],
         data: {
-          title: 'Listado de Pacientes'
+          title: 'Listado de Scouts'
         }
       },
       {
@@ -85,6 +89,38 @@ const routes: Routes = [
         canActivate: [ControlAutenticacion],
         data: {
           title: 'Registrar Asistencia'
+        }
+      },
+      {
+        path: 'reporte-insignias',
+        component: ReporteInsigniasComponent,
+        canActivate: [ControlAutenticacion],
+        data: {
+          title: 'Reporte de Insignias'
+        }
+      },
+      {
+        path: 'reporte-proyectos',
+        component: ReporteProyectosComponent,
+        canActivate: [ControlAutenticacion],
+        data: {
+          title: 'Reporte de Proyectos '
+        }
+      },
+      {
+        path: 'noticia-listado',
+        component: NoticiaListadoComponent,
+        canActivate: [ControlAutenticacion],
+        data: {
+          title: 'Listado de Noticias '
+        }
+      },
+      {
+        path: 'noticia-edicion/:idNoticia',
+        component: NoticiaEdicionComponent,
+        canActivate: [ControlAutenticacion],
+        data: {
+          title: 'Registrar Noticias'
         }
       },
     ]

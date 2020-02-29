@@ -138,19 +138,41 @@ export class ScoutService {
   }
   //PANTALLA ASISTENCIA
 
+
+  //PANTALLA NOTICIAS
+  getRecuperarNoticiaId(idNoticia: number): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/recuperarNoticiaId/' + idNoticia);
+  }
+
+  getListadoNoticias(): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/listadoNoticias');
+  }
+
+  grabarNoticia(noticiaAng: any): Observable<any> {
+    let result: Observable<Object>;
+    result = this.http.post(this.URL_ROOT_WS_PER + '/grabarNoticia', noticiaAng);
+    return result;
+  }
+  //PANTALLA NOTICIAS
+
+  //PANTALLA PARA REPORTE
+  getListarInsignias(): Observable<any> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/listarInsignias');
+  }
+
   getListadoAsistencia(idAsistencia: number): Observable<Blob> {
     return this.http.get(this.URL_ROOT_WS_PER + '/getListadoAsistencia/' + idAsistencia , { responseType: 'blob' });
   }
 
-  // getListadoAsistencia(idMedico: number, pi_fecha_inicio: string, pi_fecha_fin: string): Observable<Blob> {
-  //   return this.http.get(this.URL_ROOT_WS_PER + '/getListadoAsistencia/' + idMedico + '/' + pi_fecha_inicio +
-  //     '/' + pi_fecha_fin, { responseType: 'blob' });
-  // }
-
-  getHistorialPaciente(idPaciente: number): Observable<Blob> {
-    return this.http.get(this.URL_ROOT_WS_PER + '/getHistorialPaciente/' + idPaciente, { responseType: 'blob' });
+  getListadoProyectos(idInsignia: number): Observable<Blob> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/getListadoProyectos/' + idInsignia , { responseType: 'blob' });
   }
 
+  getRankings(): Observable<Blob> {
+    return this.http.get(this.URL_ROOT_WS_PER + '/getRankings', { responseType: 'blob' });
+  }
+
+  //PANTALLA PARA REPORTE
 
 }
 

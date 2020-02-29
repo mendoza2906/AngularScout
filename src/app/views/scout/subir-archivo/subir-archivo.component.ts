@@ -145,10 +145,17 @@ export class SubirArchivoComponent implements OnInit {
               result: (k) => {
                 if (k) {
                   this.ScoutService.grabarDocumentoModulos(this.documentoAng).subscribe(result => {
-                    this.myModal.alertMessage({
-                      title: 'Registro de Documentación',
-                      msg: 'Documento Subido Exitosamente!'
-                    })
+                    if(this.codigoPerfil=='BEN'){
+                      this.myModal.alertMessage({
+                        title: 'Registro de Documentación',
+                        msg: 'Documento Subido Exitosamente!'
+                      })
+                    }else{
+                      this.myModal.alertMessage({
+                        title: 'Revisión de Módulo',
+                        msg: 'Revisión realizada Exitosamente!'
+                      })
+                    }
                   }, error => console.error(error));
                 }
               }
@@ -163,7 +170,6 @@ export class SubirArchivoComponent implements OnInit {
         break;
       case 'Cancelar':
         this.myValidator.hide();
-        // this.router.navigate(['dashboard']);
         this.router.navigate(['scout/revisar-progresion', this.idScoutPar]);
         break;
       default:
@@ -246,7 +252,7 @@ export class SubirArchivoComponent implements OnInit {
     if (files) {
       this.banderaSubioArchivo = true
       let arregloDeSubCadenas = files.type.split("/", 2);
-      console.log(files.type + ' XD ' + arregloDeSubCadenas[1]);
+      // console.log(files.type + ' XD ' + arregloDeSubCadenas[1]);
       let imgPromise = this.getFileBlob(files);
       imgPromise.then(blob => {
 

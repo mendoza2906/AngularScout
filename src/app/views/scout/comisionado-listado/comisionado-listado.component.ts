@@ -74,12 +74,12 @@ export class ComisionadoListadoComponent implements OnInit {
       'parentid': '-1',
       'subMenuWidth': '250px'
     },
-    {
-      'id': '3',
-      'text': 'Eliminar',
-      'parentid': '-1',
-      'subMenuWidth': '250px'
-    }
+    // {
+    //   'id': '3',
+    //   'text': 'Eliminar',
+    //   'parentid': '-1',
+    //   'subMenuWidth': '250px'
+    // }
 
   ];
 
@@ -229,10 +229,10 @@ export class ComisionadoListadoComponent implements OnInit {
 
   columnsComisionados: any[] =
     [
-      { text: 'Id Scout', datafield: 'idScout', width: '5%', filtertype: 'none' },
+      { text: 'Id Scout', datafield: 'idScout', width: '5%', filtertype: 'none',hidden: true },
       { text: 'Id TipoScout', datafield: 'idTipoScout', width: '5%', hidden: true, filtertype: 'none' },
       { text: 'Id GrupoRama', datafield: 'idGrupoRama', width: '5%', hidden: true, filtertype: 'none' },
-      { text: 'Identificacion', datafield: 'identificacion', width: '15%', cellsalign: 'center', center: 'center' },
+      { text: 'Identificacion', datafield: 'identificacion', width: '20%', cellsalign: 'center', center: 'center' },
       { text: 'Nombres', datafield: 'nombresCompletos', width: '30%' },
       { text: 'Tipo Scout', datafield: 'tipoScout', width: '25%' },
       { text: 'Dirección', datafield: 'direccion', width: '15%', cellsalign: 'center', center: 'center' },

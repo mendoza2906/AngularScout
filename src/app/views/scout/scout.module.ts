@@ -32,6 +32,10 @@ import { ScoutListadoComponent } from './scout-listado/scout-listado.component';
 import { ComisionadoListadoComponent } from './comisionado-listado/comisionado-listado.component';
 import { AsistenciaListadoComponent } from './asistencia-listado/asistencia-listado.component';
 import { AsistenciaRegistroComponent } from './asistencia-registro/asistencia-registro.component';
+import { ReporteInsigniasComponent } from './reporte-insignias/reporte-insignias.component';
+import { ReporteProyectosComponent } from './reporte-proyectos/reporte-proyectos.component';
+import { NoticiaListadoComponent } from './noticia-listado/noticia-listado.component';
+import { NoticiaEdicionComponent } from './noticia-edicion/noticia-edicion.component';
  
 
 @NgModule({
@@ -43,7 +47,11 @@ import { AsistenciaRegistroComponent } from './asistencia-registro/asistencia-re
     SubirArchivoComponent,
     ProgresionListadoComponent,
     RevisarProgresionComponent,
-    AsistenciaRegistroComponent
+    AsistenciaRegistroComponent, 
+    ReporteInsigniasComponent, 
+    ReporteProyectosComponent, 
+    NoticiaListadoComponent,
+    NoticiaEdicionComponent
   ],
   imports: [
     CommonModule,

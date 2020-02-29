@@ -19,8 +19,6 @@ import { NgxExtendedPdfViewerComponent } from 'ngx-extended-pdf-viewer';
 })
 export class AsistenciaListadoComponent implements OnInit {
 
-  @ViewChild('dateDesde') dateDesde: jqxDateTimeInputComponent;
-  @ViewChild('dateHasta') dateHasta: jqxDateTimeInputComponent;
   @ViewChild('gridListadoActividades') gridListadoActividades: jqxGridComponent;
   @ViewChild('myValidator') myValidator: jqxValidatorComponent;
   @ViewChild('botonVolver') botonVolver: jqxButtonComponent;
@@ -152,40 +150,6 @@ this.listarAsistencias()
     }
   };
 
-  valueChangedFechas() {
-    //desde
-    let fechaDesde: Date
-    fechaDesde = this.dateDesde.value()
-    this.varFechaDesde = fechaDesde
-    //hasta
-    let fechaHasta: Date
-    fechaHasta = this.dateHasta.value()
-    this.varFechaHasta = fechaHasta
-    if (fechaDesde) {
-
-
-      let dayd = fechaDesde.getDate()
-      let monthd = fechaDesde.getMonth() + 1
-      let yeard = fechaDesde.getFullYear()
-
-      if (monthd < 10)
-        this.varDesde = `${yeard}-0${monthd}-${dayd}`
-      else
-        this.varDesde = `${yeard}-${monthd}-${dayd}`
-    }
-    if (fechaHasta) {
-
-      let dayh = fechaHasta.getDate()
-      let monthh = fechaHasta.getMonth() + 1
-      let yearh = fechaHasta.getFullYear()
-      if (monthh < 10)
-        this.varHasta = `${yearh}-0${monthh}-${dayh}`
-      else
-        this.varHasta = `${yearh}-${monthh}-${dayh}`
-    }
-  }
-
-
   imprimirListadoCitas() {
     alert('Vamo imprimiendo!!!!')
   }
@@ -227,12 +191,12 @@ this.listarAsistencias()
 
   columnsActividades: any[] =
     [
-      { text: 'id Asistencia', datafield: 'idAsistencia', width: '5%' },
+      { text: 'id Asistencia', datafield: 'idAsistencia', width: '5%', hidden: true },
       { text: 'id Actividad', datafield: 'idActividad', width: '5%', hidden: true },
       { text: 'id GrupoRama', datafield: 'idGrupoRama', width: '5%', hidden: true },
       { text: 'id idRama', datafield: 'idRama', width: '5%', hidden: true },
       { text: 'id Grupo', datafield: 'idGrupo', width: '5%', hidden: true },
-      { text: 'Fecha Asistencia', datafield: 'fechaAsistencia', width: '10%', hidden: false,columntype: 'datetimeinput', cellsformat: 'd' },
+      { text: 'Fecha Asistencia', datafield: 'fechaAsistencia', width: '15%', hidden: false,columntype: 'datetimeinput', cellsformat: 'd' },
       { text: 'Actividad', datafield: 'actividad', width: '25%', hidden: false },
       { text: 'Rama', datafield: 'rama', width: '20%', cellsalign: 'left', align: 'center' },
       { text: 'Grupo', datafield: 'grupo', width: '20%', cellsalign: 'left', align: 'left' },

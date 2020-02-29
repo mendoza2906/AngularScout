@@ -2,21 +2,21 @@
   <div class="col-sm-12">
     <div class="card" style="width: 100%">
       <div class="card-header">
-        <h3> Listado de Scouts Registrados </h3>
+        <h3> Listado de Noticias </h3>
         <jqxMenu style='margin-left: 3px; margin-top: 5px;' (onItemclick)="itemclick($event)" [source]="menuMatricula"
           [theme]="'material'" [width]="'99%'" [height]="30">
         </jqxMenu>
       </div>
       <div class="card-body" >
-        <jqxGrid #gridScouts style='margin-left: 3px;' [theme]="'material'" [width]="'100%'"
-          [source]="dataAdapterScouts" [columns]="columnsScouts" [filterable]="true" [pageable]="true"
+        <jqxGrid #gridNoticias style='margin-left: 3px;' [theme]="'material'" [width]="'100%'"
+          [source]="dataAdapterNoticias" [columns]="columnsNoticias" [filterable]="true" [pageable]="true"
           [showfilterrow]="true" [localization]="localization" [sortable]="false" [height]='600'>
         </jqxGrid>
       </div>
     </div>
   </div>
 </div>
-<app-modal-component (PassMethods)="getEvents($event)"></app-modal-component>
+<app-modal-component></app-modal-component>
 
 <pre>
   <!-- {{dataAdapterPacientes |json}} -->

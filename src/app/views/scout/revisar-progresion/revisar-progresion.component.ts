@@ -29,6 +29,7 @@ export class RevisarProgresionComponent implements OnInit, AfterViewInit {
   @ViewChild('dateFechaCita') dateFechaCita: jqxDateTimeInputComponent;
   @ViewChild('txtMotivoConsulta') txtMotivoConsulta: jqxInputComponent;
   @ViewChild('progresInsignia') progresInsignia: RoundProgressComponent;
+  banderaSubioDocumento: boolean;
 
 
   constructor(public messagerService: MessagerService,
@@ -65,6 +66,7 @@ export class RevisarProgresionComponent implements OnInit, AfterViewInit {
         this.recuperarDetalleInsignias()
         this.listarInsignias()
         this.recuperarIdScout()
+        this.recuperarUltimaModuloInsignia(this.idScoutPar)
       }
       if(this.codigoPerfil=='BEN'){
         this.ocultarBen=true
@@ -90,12 +92,38 @@ export class RevisarProgresionComponent implements OnInit, AfterViewInit {
     }
   }
 
+  recuperarUltimaModuloInsignia(idScoutLogeado: number) {
+    this.ScoutService.getRecuperarUltimaModuloInsignia(idScoutLogeado).subscribe(data => {
+      if (data.length > 0) {
+        this.buscarPorScoutModulo(data[0].idModulo, idScoutLogeado)
+      }
+    });
+  }
+  
+  buscarPorScoutModulo(IdModulo: number, idScout: number) {
+    this.ScoutService.getBuscarPorScoutModulo(IdModulo, idScout).subscribe(data => {
+      if (data) {
+        this.banderaSubioDocumento=true
+      } else {
+        this.banderaSubioDocumento=false
+      }
+    })
+  }
+
   gotoList() {
     this.router.navigate(['scout/progresion-listado']);
   }
 
   revisarModulo(){
-    this.router.navigate(['scout/subir-archivo', this.idScoutPar]);
+    if(this.banderaSubioDocumento){
+      this.router.navigate(['scout/subir-archivo', this.idScoutPar]);
+    }else{
+      this.myModal.alertMessage({
+        title: 'Revisión de Progresión',
+        msg: 'El Scout aún no sube el documento respectivo!'
+      })
+    }
+
   }
 
   subirModulo(){
@@ -109,7 +137,8 @@ export class RevisarProgresionComponent implements OnInit, AfterViewInit {
         this.labelGrupo = data[0].grupo
         this.labelInsignia = data[0].insignia
         this.labelRama = data[0].rama
-        this.labelImagen = data[0].imagen
+        // this.labelImagen = data[0].imagen
+        this.labelImagen = data[0].urlFoto
         // this.labelImagen = 'localhost/galeria/insignia/unidad/02uni_insig.png'
         this.labelTipoScout = data[0].tipoScout
         this.current = Math.round((data[0].contCumplidos * 100) / data[0].contTotales)
@@ -128,6 +157,7 @@ export class RevisarProgresionComponent implements OnInit, AfterViewInit {
           { name: 'insignia', type: 'string' },
           { name: 'descripcion', type: 'string' },
           { name: 'imagen', type: 'string' },
+          { name: 'urlFoto', type: 'string' },
           { name: 'contCumplidos', type: 'string' },
           { name: 'contTotales', type: 'string' },
         ],
@@ -173,7 +203,7 @@ export class RevisarProgresionComponent implements OnInit, AfterViewInit {
       { text: 'Insignia', datafield: 'insignia', width: '25%', hidden: false },
       { text: 'Descripción', datafield: 'descripcion', width: '50%', hidden: false },
       {
-        text: 'Imagen', datafield: 'imagen', width: '15%',
+        text: 'Imagen', datafield: 'urlFoto', width: '15%',
         cellsrenderer: this.imagerenderer, cellsalign: 'center', align: 'center',
       },
       { text: 'actAprobadas', datafield: 'actAprobadas', width: '5%', hidden: true },

@@ -10,12 +10,12 @@ import { NgxExtendedPdfViewerComponent } from 'ngx-extended-pdf-viewer';
 import { ScoutService } from '../../../services/scout/scout.service';
 
 @Component({
-  selector: 'app-scout-listado',
-  templateUrl: './scout-listado.component.html',
-  styleUrls: ['./scout-listado.component.scss']
+  selector: 'app-noticia-listado',
+  templateUrl: './noticia-listado.component.html',
+  styleUrls: ['./noticia-listado.component.scss']
 })
-export class ScoutListadoComponent implements OnInit {
-  @ViewChild('gridScouts') gridScouts: jqxGridComponent;
+export class NoticiaListadoComponent implements OnInit {
+  @ViewChild('gridNoticias') gridNoticias: jqxGridComponent;
   @ViewChild(ModalComponentComponent) myModal: ModalComponentComponent;
   @ViewChild('botonVolver') botonVolver: jqxButtonComponent;
   @ViewChild('myPdfViewer') myPdfViewer: NgxExtendedPdfViewerComponent;
@@ -35,13 +35,12 @@ export class ScoutListadoComponent implements OnInit {
   };
 
   //Variable paa cargar datos del objeto 
-  listaScouts: Array<any>;
   rowindex: number = -1;
   banderaDepencia: boolean = false
 
 
   ngOnInit() {
-    this.listadoScouts()
+    this.listadoNoticias()
   }
 
   ngAfterViewInit(): void {
@@ -62,12 +61,12 @@ export class ScoutListadoComponent implements OnInit {
       'parentid': '-1',
       'subMenuWidth': '250px'
     },
-    // {
-    //   'id': '3',
-    //   'text': 'Eliminar',
-    //   'parentid': '-1',
-    //   'subMenuWidth': '250px'
-    // },
+    {
+      'id': '3',
+      'text': 'Eliminar',
+      'parentid': '-1',
+      'subMenuWidth': '250px'
+    },
   ];
 
   sourceMenu =
@@ -89,47 +88,42 @@ export class ScoutListadoComponent implements OnInit {
 
   itemclick(event: any): void {
     // captura el id seleccionado
-    const selectedrowindex = this.gridScouts.getselectedrowindex();
-    const idScoutSel = this.gridScouts.getcellvalue(selectedrowindex, 'idScout');
+    const selectedrowindex = this.gridNoticias.getselectedrowindex();
+    const idNoticiaSel = this.gridNoticias.getcellvalue(selectedrowindex, 'idNoticia');
     var opt = event.args.innerText;
 
     switch (opt) {
       case 'Nuevo':
-        this.router.navigate(['scout/persona-edicion', 0, 'sco']);
+        this.router.navigate(['scout/noticia-edicion', 0]);
         break;
       case 'Editar':
-        if (idScoutSel) {
+        if (idNoticiaSel) {
           this.setFormularioState();
-          this.router.navigate(['scout/persona-edicion', idScoutSel, 'sco']);
+          this.router.navigate(['scout/noticia-edicion', idNoticiaSel]);
         } else {
-          this.myModal.alertMessage({ title: 'Registro de Scouts', msg: 'Seleccione un Scout!' });
+          this.myModal.alertMessage({ title: 'Listado de Noticias', msg: 'Seleccione una Noticia!' });
         }
         break;
       case 'Eliminar':
-        if (idScoutSel) {
-          if (this.banderaDepencia == false) {
-            this.myModal.alertQuestion({
-              title: 'Registro de Scouts',
-              msg: '¿Desea eliminar este registro?',
-              result: (k) => {
-                if (k) {
-                  // this.eliminarPaciente(idPersonaSel)
-                  this.myModal.alertMessage({ title: 'Registro de Scouts', msg: 'Scout eliminado Correctamente!' });
-                  this.gridScouts.clear()
-                  this.gridScouts.clearselection()
-                  this.listadoScouts()
-                  this.gridScouts.refreshdata()
-                }
+        if (idNoticiaSel) {
+
+          this.myModal.alertQuestion({
+            title: 'Listado de Noticias',
+            msg: '¿Desea eliminar este registro?',
+            result: (k) => {
+              if (k) {
+                // this.eliminarPaciente(idPersonaSel)
+                this.myModal.alertMessage({ title: 'Listado de Noticias', msg: 'Noticia eliminado Correctamente!' });
+                this.gridNoticias.clear()
+                this.gridNoticias.clearselection()
+                this.listadoNoticias()
+                this.gridNoticias.refreshdata()
               }
-            })
-          } else {
-            this.myModal.alertMessage({
-              title: 'Registro de Scouts',
-              msg: 'No es posible eliminar este registro activo, por sus dependencias con otros registros!'
-            });
-          }
+            }
+          })
+
         } else {
-          this.myModal.alertMessage({ title: 'Registro de Scouts', msg: 'Seleccione un Paciente!' });
+          this.myModal.alertMessage({ title: 'Listado de Noticias', msg: 'Seleccione un Paciente!' });
         }
         break;
       default:
@@ -142,53 +136,48 @@ export class ScoutListadoComponent implements OnInit {
   //   }, error => console.error(error));
   // }
 
-  sourceScouts: any =
+  sourceNoticias: any =
     {
       datatype: 'array',
-      id: 'idScout',
+      id: 'idNoticia',
       datafields:
         [
-          { name: 'idScout', type: 'int' },
-          { name: 'idTipoScout', type: 'int' },
-          { name: 'idGrupoRama', type: 'int' },
-          { name: 'identificacion', type: 'string' },
-          { name: 'nombresCompletos', type: 'string' },
-          { name: 'tipoScout', type: 'string'},
-          { name: 'direccion', type: 'string' },
-          { name: 'celular', type: 'string' },
+          { name: 'idNoticia', type: 'int' },
+          { name: 'titulo', type: 'string' },
+          { name: 'contenido', type: 'string' },
+          { name: 'urlImg', type: 'string' },
+          { name: 'fechaPublic', type: 'date' },
+          { name: 'fuente', type: 'string' },
         ],
       hierarchy:
       {
-        keyDataField: { name: 'idScout' },
+        keyDataField: { name: 'idNoticia' },
         parentDataField: { name: 'padre_id' }
       }
     };
-  dataAdapterScouts: any = new jqx.dataAdapter(this.sourceScouts);
+  dataAdapterNoticias: any = new jqx.dataAdapter(this.sourceNoticias);
 
   //metodo de reinderizado de filas del grid
   rendergridrows = (params: any): any[] => {
     return params.data;
   }
 
-  listadoScouts() {
-    this.ScoutService.getListadoScouts().subscribe(data => {
-      this.listaScouts = data;
-      this.sourceScouts.localdata = data;
-      this.dataAdapterScouts.dataBind();
-      this.gridScouts.gotopage(this.pageinformation.page)
+  listadoNoticias() {
+    this.ScoutService.getListadoNoticias().subscribe(data => {
+      this.sourceNoticias.localdata = data;
+      this.dataAdapterNoticias.dataBind();
+      this.gridNoticias.gotopage(this.pageinformation.page)
     });
   }
 
-  columnsScouts: any[] =
+  columnsNoticias: any[] =
     [
-      { text: 'Id Scout', datafield: 'idScout', width: '5%', filtertype: 'none', hidden: true },
-      { text: 'Id TipoScout', datafield: 'idTipoScout', width: '5%', hidden: true, filtertype: 'none' },
-      { text: 'Id GrupoRama', datafield: 'idGrupoRama', width: '5%', hidden: true, filtertype: 'none' },
-      { text: 'Identificacion', datafield: 'identificacion', width: '15%', cellsalign: 'center', center: 'center' },
-      { text: 'Nombres', datafield: 'nombresCompletos', width: '30%' },
-      { text: 'Tipo Scout', datafield: 'tipoScout', width: '25%' },
-      { text: 'Dirección', datafield: 'direccion', width: '20%', cellsalign: 'center', center: 'center' },
-      { text: 'Celular', datafield: 'celular', width: '10%', cellsalign: 'center', center: 'center' },
+      { text: 'Id Noticia', datafield: 'idNoticia', width: '5%', filtertype: 'none', hidden: true },
+      { text: 'Fecha Publicación', datafield: 'fechaPublic', width: '20%', hidden: false, columntype: 'datetimeinput', cellsformat: 'd' },
+      { text: 'Titulo', datafield: 'titulo', width: '30%', hidden: false },
+      { text: 'Contenido', datafield: 'contenido', width: '25%', hidden: false },
+      // { text: 'Identificacion', datafield: 'identificacion', width: '15%', cellsalign: 'center', center: 'center' },
+      { text: 'Fuente', datafield: 'fuente', width: '25%' },
     ];
 
   localization: any = getLocalization('es');
@@ -209,7 +198,7 @@ export class ScoutListadoComponent implements OnInit {
   //graba el estado del grid y combox
   setFormularioState() {
     //Prepara estado de grabado del grid
-    let gridState = JSON.stringify(this.gridScouts.savestate())
+    let gridState = JSON.stringify(this.gridNoticias.savestate())
     this.pageinformation.page = JSON.parse(gridState).pagenum;
     localStorage.setItem('pageinformation', JSON.stringify(this.pageinformation));
     localStorage.setItem('gridScoutState', gridState);
@@ -218,10 +207,10 @@ export class ScoutListadoComponent implements OnInit {
   getStorageFormularioState() {
     if (localStorage.getItem('gridScoutState')) {
       let gridState = JSON.parse(localStorage.getItem('gridScoutState'));
-      this.gridScouts.loadstate(gridState);
+      this.gridNoticias.loadstate(gridState);
       this.pageinformation.page = JSON.stringify(gridState.pagenum)
       //recupera y asigana puntero fila del grid seleccionad
-      this.gridScouts.gotopage(this.pageinformation.page)
+      this.gridNoticias.gotopage(this.pageinformation.page)
       //borra la variable temporal de control de estados del grid
       localStorage.removeItem('gridScoutState');
     }

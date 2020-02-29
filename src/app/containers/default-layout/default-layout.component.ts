@@ -64,7 +64,8 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
                 this.navItems = this.itemsBeneficiario
                 this.itemsBeneficiario[2].children[0].url= '/scout/revisar-progresion/'+this.idScoutLogeado
               }else if (data[i].codigo == 'EXT'){
-                this.ocultarElementos=true}
+                this.ocultarElementos=true
+                this.navItems =[]}
             }
           }
         }
@@ -84,10 +85,10 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
     },
     {
       title: true,
-      name: 'Seguridad'
+      name: 'Gestión'
     },
     {
-      name: 'Seguridad',
+      name: 'Gestor de Contenido',
       url: '/seguridad/usuarios/',
       icon: 'icon-cursor',
       children: [
@@ -99,6 +100,11 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
         {
           name: 'Scouts',
           url: '/scout/scout-listado/',
+          icon: 'icon-grid'
+        },
+        {
+          name: 'Noticias',
+          url: '/scout/noticia-listado/',
           icon: 'icon-grid'
         }
       ]
@@ -135,17 +141,17 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
     },
     {
       name: 'Reportes',
-      url: '/reportes/distributivo/',
+      url: '/reportes/reporte-insignias/',
       icon: 'icon-cursor',
       children: [
+        // {
+        //   name: 'Reporte Insignia',
+        //   url: '/scout/reporte-insignias/',
+        //   icon: 'icon-grid'
+        // },
         {
-          name: 'Asistencia',
-          url: '/reportes/distributivo/',
-          icon: 'icon-grid'
-        },
-        {
-          name: 'Progresión',
-          url: '/reportes/distributivo/',
+          name: 'Reporte Proyectos',
+          url: '/scout/reporte-proyectos/',
           icon: 'icon-grid'
         },
       ]
